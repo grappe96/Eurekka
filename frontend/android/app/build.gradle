@@ -201,6 +201,8 @@ dependencies {
     addUnimodulesDependencies()
 
     implementation "com.kakao.sdk:v2-user:2.5.0"
+    implementation 'com.facebook.fresco:fresco:1.+'
+    implementation 'com.facebook.fresco:animated-gif:1.+'
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";

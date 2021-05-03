@@ -1,17 +1,20 @@
 import React from 'react';
-import { Button, View, Text } from 'react-native';
+import styled from 'styled-components/native';
+import { Text, Button } from 'react-native';
 
-function HomeScreen({ navigation }) {
+const HomeScreen = () => {
+  const Container = styled.View`
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    background-color: ${({ theme }) => theme.background};
+  `;
+
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Details Screen</Text>
-      <Button
-        title="Go to Home... again"
-        onPress={() => navigation.push('Home')}
-      />
-      <Button title="Go back" onPress={() => navigation.goBack()} />
-    </View>
+    <Container>
+      <Text style={{ fontSize: 30 }}>Home Screen</Text>
+    </Container>
   );
-}
+};
 
 export default HomeScreen;

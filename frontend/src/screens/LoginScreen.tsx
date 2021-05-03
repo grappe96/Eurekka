@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { KakaoOAuthToken, login } from '@react-native-seoul/kakao-login';
 import { Text, Button } from 'react-native';
+import axios from 'axios';
 
 const LoginScreen = ({ navigation }) => {
   const Container = styled.View`
@@ -16,9 +17,13 @@ const LoginScreen = ({ navigation }) => {
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login();
 
-    setResult(JSON.stringify(token));
-    console.log(result);
-    navigation.navigate('Home');
+    setResult(JSON.stringify(token.accessToken));
+    // console.log(result);
+    const res = await axios.post(`http://localhost:8080/user/kakao/login`, {
+      token: result,
+    });
+    console.log(res);
+    // navigation.navigate('Home');
   };
 
   return (

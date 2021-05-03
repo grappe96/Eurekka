@@ -18,7 +18,7 @@ public class User {
   @Id
   private ObjectId id;
 
-  private String eamil;
+  private String email;
   private String name;
   private String profileImg;
   private ObjectId refrigeratorId;

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { LoginScreen, HomeScreen } from '../screens';
+import { LoginScreen, HomeScreen, BarcodeViewScreen } from '../screens';
 
 const Stack = createStackNavigator();
 
@@ -13,7 +13,7 @@ const AuthStack = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName="BarcodeView"
       screenOptions={{
         headerTitleAlign: 'center',
         cardStyle: { backgroundColor: theme.background },
@@ -21,6 +21,7 @@ const AuthStack = () => {
     >
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="BarcodeView" component={BarcodeViewScreen} />
     </Stack.Navigator>
   );
 };

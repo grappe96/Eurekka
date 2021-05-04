@@ -83,12 +83,14 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
   }
 
   @Override
-  public void updateAbandon(ObjectId userId, ObjectId refrigerId, int category, Product product) {
+  public void updateAbandon(String email, int category, Product product) {
+    User user = userRepository.findByEmail(email);
+    ObjectId refrigerId = user.getRefrigeratorId();
+
     updateDone(refrigerId, category, product);
 
     //user에 product 정보 추가
     DoneProduct done = new DoneProduct(new Date(System.currentTimeMillis()), category);
-    User user = userRepository.findById(userId).get();
     List<DoneProduct> doneList = user.getAbandoned();
     if (doneList == null) {
       doneList = new ArrayList<>();
@@ -99,12 +101,14 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
   }
 
   @Override
-  public void updateEat(ObjectId userId, ObjectId refrigerId, int category, Product product) {
+  public void updateEat(String email, int category, Product product) {
+    User user = userRepository.findByEmail(email);
+    ObjectId refrigerId = user.getRefrigeratorId();
+
     updateDone(refrigerId, category, product);
 
     //user에 product 정보 추가
     DoneProduct done = new DoneProduct(new Date(System.currentTimeMillis()), category);
-    User user = userRepository.findById(userId).get();
     List<DoneProduct> doneList = user.getEaten();
     if (doneList == null) {
       doneList = new ArrayList<>();

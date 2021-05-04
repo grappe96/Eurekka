@@ -23,8 +23,8 @@ public class MattermostSender {
   private String webhookUrl;
 
   @Autowired
-  private RestTemplate restTemplate;
-  private MattermostConfig mattermostConfig;
+  private final RestTemplate restTemplate;
+  private final MattermostConfig mattermostConfig;
 
   public void sendMessage(Exception e, String uri, String params) {
     if (!enabled) {

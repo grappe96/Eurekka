@@ -8,6 +8,7 @@ import com.ssafy.eurekka.vo.Product;
 import com.ssafy.eurekka.vo.Refrigerator;
 import com.ssafy.eurekka.vo.User;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -25,8 +26,16 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
   @Autowired
   private UserRepository userRepository;
 
+  private class ProductComparator implements Comparator<Product> {
+
+    @Override
+    public int compare(Product o1, Product o2) {
+      return o1.getExpirationDate().compareTo(o2.getExpirationDate());
+    }
+  }
+
   @Override
-  public Refrigerator createProduct(ObjectId id, int category, Product product) {
+  public Refrigerator createProduct(ObjectId id, Product product) {
     //product db에 저장
     Product p = productRepository.save(product);
 
@@ -34,6 +43,7 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
     Optional<Refrigerator> found = refrigeratorRepository.findById(id);
     if (found.isPresent()) {
       Refrigerator refrigerator = found.get();
+      int category = p.getCategory();
       List<Product> productList = getProductListByCategory(refrigerator, category);
       productList.add(p);
       refrigerator = setProductListByCategory(refrigerator, productList, category);
@@ -44,27 +54,30 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
   }
 
   @Override
-  public List[] findAllProduct(ObjectId id) {
+  public List<Product> findAllProduct(ObjectId id) {
     Optional<Refrigerator> found = refrigeratorRepository.findById(id);
     if (found.isPresent()) {
       Refrigerator refrigerator = found.get();
-      List[] products = new List[15];
-      products[0] = refrigerator.getNoodles();
-      products[1] = refrigerator.getSnack();
-      products[2] = refrigerator.getBeverage();
-      products[3] = refrigerator.getPickles();
-      products[4] = refrigerator.getDiary();
-      products[5] = refrigerator.getHealth();
-      products[6] = refrigerator.getPowder();
-      products[7] = refrigerator.getMeat();
-      products[8] = refrigerator.getSeasoning();
-      products[9] = refrigerator.getOcean();
-      products[10] = refrigerator.getFresh();
-      products[11] = refrigerator.getAlcohol();
-      products[12] = refrigerator.getFrozen();
-      products[13] = refrigerator.getIces();
-      products[14] = refrigerator.getOthers();
-      return products;
+      List<Product> productList = new ArrayList<>();
+      productList.addAll(refrigerator.getNoodles());
+      productList.addAll(refrigerator.getSnack());
+      productList.addAll(refrigerator.getBeverage());
+      productList.addAll(refrigerator.getPickles());
+      productList.addAll(refrigerator.getDiary());
+      productList.addAll(refrigerator.getHealth());
+      productList.addAll(refrigerator.getPowder());
+      productList.addAll(refrigerator.getMeat());
+      productList.addAll(refrigerator.getSeasoning());
+      productList.addAll(refrigerator.getOcean());
+      productList.addAll(refrigerator.getFresh());
+      productList.addAll(refrigerator.getAlcohol());
+      productList.addAll(refrigerator.getFrozen());
+      productList.addAll(refrigerator.getIces());
+      productList.addAll(refrigerator.getOthers());
+
+      //유통기한 순으로 정렬
+      productList.sort(new ProductComparator());
+      return productList;
     }
 
     return null;
@@ -83,10 +96,12 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
   }
 
   @Override
-  public void updateAbandon(String email, int category, Product product) {
+  public void updateAbandon(String email, Product product) {
     User user = userRepository.findByEmail(email);
     ObjectId refrigerId = user.getRefrigeratorId();
+    int category = product.getCategory();
 
+    //냉장고에서 제품 제거
     updateDone(refrigerId, category, product);
 
     //user에 product 정보 추가
@@ -101,10 +116,12 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
   }
 
   @Override
-  public void updateEat(String email, int category, Product product) {
+  public void updateEat(String email, Product product) {
     User user = userRepository.findByEmail(email);
     ObjectId refrigerId = user.getRefrigeratorId();
+    int category = product.getCategory();
 
+    //냉장고에서 제품 제거
     updateDone(refrigerId, category, product);
 
     //user에 product 정보 추가

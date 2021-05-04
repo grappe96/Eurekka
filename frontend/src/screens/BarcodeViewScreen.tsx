@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Button, Image } from 'react-native';
 import RNBarcode from 'react-native-barcode-zxing';
+
+import sampleImage from '../../assets/barcode_sample.png';
  
 export default class EncodeApp extends Component<{}, any> {
  
@@ -9,9 +11,10 @@ export default class EncodeApp extends Component<{}, any> {
     
     this.onEncodePress = this.onEncodePress.bind(this);
  
+    const sampleImageUri = Image.resolveAssetSource(sampleImage).uri
     this.state = {
-      imagesrc: require('../../assets/barcode_sample.png')
-    }
+      imagesrc: sampleImageUri,
+    };
   }
  
   onEncodePress() {
@@ -41,7 +44,7 @@ export default class EncodeApp extends Component<{}, any> {
           title="Encode"
           onPress={this.onEncodePress}
           color="#841584"></Button>
-        <Image style={styles.barcode} ref='barcode' source={{ uri: this.state.imagesrc }}></Image>
+        <Image style={styles.barcode} ref='barcode' source={{ uri : this.state.imagesrc }}></Image>
       </View>
     );
   }

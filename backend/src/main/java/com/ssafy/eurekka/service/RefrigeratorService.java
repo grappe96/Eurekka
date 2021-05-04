@@ -10,6 +10,6 @@ public interface RefrigeratorService {
   Refrigerator createProduct(ObjectId id, int category, Product product);
   List[] findAllProduct(ObjectId id);
   List<Product> findByCategory(ObjectId id, int category);
-  void updateAbandon(ObjectId userId, ObjectId refrigerId, int category, Product product);
-  void updateEat(ObjectId userId, ObjectId refrigerId, int category, Product product);
+  void updateAbandon(String email, int category, Product product);
+  void updateEat(String email, int category, Product product);
 }

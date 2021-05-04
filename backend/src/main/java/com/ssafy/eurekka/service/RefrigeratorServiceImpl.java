@@ -74,6 +74,8 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
       productList.addAll(refrigerator.getFrozen());
       productList.addAll(refrigerator.getIces());
       productList.addAll(refrigerator.getOthers());
+
+      //유통기한 순으로 정렬
       productList.sort(new ProductComparator());
       return productList;
     }
@@ -99,6 +101,7 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
     ObjectId refrigerId = user.getRefrigeratorId();
     int category = product.getCategory();
 
+    //냉장고에서 제품 제거
     updateDone(refrigerId, category, product);
 
     //user에 product 정보 추가
@@ -118,6 +121,7 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
     ObjectId refrigerId = user.getRefrigeratorId();
     int category = product.getCategory();
 
+    //냉장고에서 제품 제거
     updateDone(refrigerId, category, product);
 
     //user에 product 정보 추가

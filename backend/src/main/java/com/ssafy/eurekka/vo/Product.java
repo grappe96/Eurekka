@@ -24,4 +24,6 @@ public class Product {
   @Temporal(TemporalType.TIMESTAMP)
   private Date expirationDate;
   private String ingredient;
+
+  private int category;
 }

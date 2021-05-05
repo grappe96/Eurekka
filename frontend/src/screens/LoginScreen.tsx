@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { KakaoOAuthToken, login } from '@react-native-seoul/kakao-login';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
-import { images } from '../images';
-import { theme } from '../theme';
+import { images } from '../common/images';
+import { theme } from '../common/theme';
+import { UserContext } from '../contexts';
+import AsyncStoarage from '@react-native-community/async-storage';
 
 // kakao 로그인 실행하는 첫 화면
-// jwt토큰 발급 시 다음 화면으로 넘기는 부분 구현 예정
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = () => {
+  // style
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -45,6 +47,8 @@ const LoginScreen = ({ navigation }) => {
     },
   });
 
+  const { updateInfo, userInfo } = useContext(UserContext);
+
   // kakao login 실행되면 받는 인증 토큰 서버로 전달
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login();
@@ -54,12 +58,12 @@ const LoginScreen = ({ navigation }) => {
         token: token.accessToken,
       })
       .then((res) => {
-        console.log(res);
+        AsyncStoarage.setItem('token', res.data.jwt);
+        updateInfo(res.data.user);
       })
       .catch((err) => {
         console.error(err);
       });
-    // navigation.navigate('Home');
   };
 
   // 시작화면 (로고, 냉장고, 로그인 버튼)

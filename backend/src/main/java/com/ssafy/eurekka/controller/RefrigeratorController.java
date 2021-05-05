@@ -1,10 +1,12 @@
 package com.ssafy.eurekka.controller;
 
+import com.ssafy.eurekka.service.JwtService;
 import com.ssafy.eurekka.service.RefrigeratorService;
 import com.ssafy.eurekka.vo.Product;
 import com.ssafy.eurekka.vo.Refrigerator;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,12 +27,13 @@ public class RefrigeratorController {
 
   @Autowired
   private RefrigeratorService refrigeratorService;
+  @Autowired
+  private JwtService jwtService;
 
   @ApiOperation(value = "제품등록", notes = "냉장고 id와 제품 정보를 받아 제품 등록")
   @PostMapping("/{refrigerId}")
-  public ResponseEntity<?> createProduct(
-      @PathVariable("refrigerId") ObjectId id, @RequestParam("category") int category, @RequestBody Product product) {
-    Refrigerator result = refrigeratorService.createProduct(id, category, product);
+  public ResponseEntity<?> createProduct(@PathVariable("refrigerId") ObjectId id, @RequestBody Product product) {
+    Refrigerator result = refrigeratorService.createProduct(id, product);
     if (result == null) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } else {
@@ -41,7 +44,7 @@ public class RefrigeratorController {
   @ApiOperation(value = "전체제품조회", notes = "냉장고 id를 인자로 받아 해당 냉장고(document)에 있는 전체 제품 반환")
   @GetMapping("/{refrigerId}")
   public ResponseEntity<?> findAllProduct(@PathVariable("refrigerId") ObjectId id) {
-    List[] result = refrigeratorService.findAllProduct(id);
+    List<Product> result = refrigeratorService.findAllProduct(id);
     if (result == null) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -60,19 +63,23 @@ public class RefrigeratorController {
 
   @ApiOperation(value = "버림", notes = "사용자, 냉장고 id와 카테고리, 제품 정보를 받아 처리")
   @PostMapping("/abandon")
-  public ResponseEntity<?> updateAbandon(
-      @RequestParam("userId") ObjectId userId, @RequestParam("refrigerId") ObjectId refrigerId,
-      @RequestParam("category") int category, @RequestBody Product product) {
-    refrigeratorService.updateAbandon(userId, refrigerId, category, product);
+  public ResponseEntity<?> updateAbandon(HttpServletRequest req, @RequestBody Product product) {
+    // 헤더의 jwt를 복호화하여 email 가져오기
+    String jwt = req.getHeader("jwt");
+    String email = jwtService.decode(jwt);
+
+    refrigeratorService.updateAbandon(email, product);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @ApiOperation(value = "먹음", notes = "사용자, 냉장고 id와 카테고리, 제품 정보를 받아 처리")
   @PostMapping("/eat")
-  public ResponseEntity<?> updateEat(
-      @RequestParam("userId") ObjectId userId, @RequestParam("refrigerId") ObjectId refrigerId,
-      @RequestParam("category") int category, @RequestBody Product product) {
-    refrigeratorService.updateEat(userId, refrigerId, category, product);
+  public ResponseEntity<?> updateEat(HttpServletRequest req, @RequestBody Product product) {
+    // 헤더의 jwt를 복호화하여 email 가져오기
+    String jwt = req.getHeader("jwt");
+    String email = jwtService.decode(jwt);
+
+    refrigeratorService.updateEat(email, product);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 

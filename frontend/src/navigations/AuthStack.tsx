@@ -15,7 +15,7 @@ const AuthStack = () => {
   // stack에 등록할 컴포넌트들, 초기 화면인 Login에 헤더 숨기는 옵션
   return (
     <Stack.Navigator
-      initialRouteName="ProductList"
+      initialRouteName="Login"
       screenOptions={{
         headerTitleAlign: 'center',
         cardStyle: { backgroundColor: theme.background },

@@ -1,65 +1,96 @@
-import React, { useState } from 'react';
+import React, { Component, useState } from 'react';
 import styled from 'styled-components/native';
 import { List } from 'react-native-paper';
-import { Text, Image } from 'react-native';
+import {
+  Text,
+  Image,
+  Animated,
+  StyleSheet,
+  View,
+  I18nManager,
+} from 'react-native';
+import { RectButton, Swipeable } from 'react-native-gesture-handler';
 
-function ProductList({ id, category, name, date }) {
-    var img;
-    switch (category) {
-        case "alcohol":
-            img = require("../../../assets/images/category/alcohol.png");
-            break;
-        case "beverage":
-            img = require("../../../assets/images/category/beverage.png");
-            break;
-        case "diary":
-            img = require("../../../assets/images/category/diary.png");
-            break;
-        case "fresh":
-            img = require("../../../assets/images/category/fresh.png");
-            break;
-        case "frozen":
-            img = require("../../../assets/images/category/frozen.png");
-            break;
-        case "health":
-            img = require("../../../assets/images/category/health.png");
-            break;
-        case "ices":
-            img = require("../../../assets/images/category/ices.png");
-            break;
-        case "meat":
-            img = require("../../../assets/images/category/meat.png");
-            break;
-        case "noodles":
-            img = require("../../../assets/images/category/noodles.png");
-            break;
-        case "ocean":
-            img = require("../../../assets/images/category/ocean.png");
-            break;
-        case "others":
-            img = require("../../../assets/images/category/others.png");
-            break;
-        case "pickles":
-            img = require("../../../assets/images/category/pickles.png");
-            break;
-        case "powder":
-            img = require("../../../assets/images/category/powder.png");
-            break;
-        case "seasoning":
-            img = require("../../../assets/images/category/seasoning.png");
-            break;
-        case "snack":
-            img = require("../../../assets/images/category/snack.png");
-            break;
-    }
+export default class ProductList extends Component {
+  _swipeableRow?: Swipeable;
+  renderRightAction = (text, color, x, progress) => {
+    const trans = progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [x, 0],
+    });
+    const pressHandler = () => {
+      this.close();
+      alert(text);
+    };
     return (
-        <List.Item
-            title={name}
-            left={props => <Image source={img} style={{ width: 40, height: 40 }}/>}
-            right={props => <Text style={{ padding: 7 }}>{date}</Text>}
-        />
+      <Animated.View style={{ flex: 1, transform: [{ translateX: 0 }] }}>
+        <RectButton
+          style={[styles.rightAction, { backgroundColor: color }]}
+          onPress={pressHandler}
+        >
+          <Image source={text} style={{ width: 40, height: 40 }} />
+        </RectButton>
+      </Animated.View>
     );
+  };
+  renderRightActions = (progress) => (
+    <View
+      style={{
+        width: 192,
+        flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
+      }}
+    >
+      {this.renderRightAction(
+        require('../../../assets/images/done/restaurant.png'),
+        '#6D86DF',
+        128,
+        progress
+      )}
+      {this.renderRightAction(
+        require('../../../assets/images/done/trash.png'),
+        '#FB5C6F',
+        64,
+        progress
+      )}
+    </View>
+  );
+  updateRef = (ref: Swipeable) => {
+    this._swipeableRow = ref;
+  };
+  close = () => {
+    this._swipeableRow.close();
+  };
+  render() {
+    const { children } = this.props;
+    return (
+      <Swipeable
+        ref={this.updateRef}
+        friction={2}
+        leftThreshold={30}
+        rightThreshold={40}
+        renderRightActions={this.renderRightActions}
+      >
+        {children}
+      </Swipeable>
+    );
+  }
 }
 
-
-export default ProductList;
+const styles = StyleSheet.create({
+  leftAction: {
+    flex: 1,
+    backgroundColor: '#497AFC',
+    justifyContent: 'center',
+  },
+  actionText: {
+    color: 'white',
+    fontSize: 16,
+    backgroundColor: 'transparent',
+    padding: 10,
+  },
+  rightAction: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+});

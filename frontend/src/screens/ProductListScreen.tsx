@@ -4,7 +4,7 @@ import axios from 'axios';
 import ProductList from '../components/Product/ProductList';
 import { StyleSheet, Text, View, I18nManager, Image } from 'react-native';
 import { FlatList, RectButton } from 'react-native-gesture-handler';
-import { theme } from '../theme';
+import { theme } from '../common/theme';
 import { List } from 'react-native-paper';
 import { black } from 'react-native-paper/lib/typescript/styles/colors';
 import { Fonts } from '../Fonts';

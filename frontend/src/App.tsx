@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { ThemeProvider } from 'styled-components/native';
-import { theme } from './theme';
+import { theme } from './common/theme';
 import Navigation from './navigations';
 import { UserProvider } from './contexts';
 

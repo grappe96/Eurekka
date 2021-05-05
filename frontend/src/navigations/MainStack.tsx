@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen, ProductListScreen } from '../screens';
+import Header from '../components/Common/Header';
 
 const Stack = createStackNavigator();
 
@@ -17,8 +18,10 @@ const MainStack = () => {
     <Stack.Navigator
       initialRouteName="Home"
       screenOptions={{
-        headerTitleAlign: 'center',
-        cardStyle: { backgroundColor: theme.background },
+        headerStyle: {
+          backgroundColor: '#bacde6',
+        },
+        headerTitle: () => <Header />,
       }}
     >
       <Stack.Screen name="Home" component={HomeScreen} />

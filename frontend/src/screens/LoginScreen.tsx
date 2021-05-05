@@ -3,12 +3,12 @@ import { KakaoOAuthToken, login } from '@react-native-seoul/kakao-login';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { images } from '../common/images';
-import { theme } from '../theme';
+import { theme } from '../common/theme';
 import { UserContext } from '../contexts';
 import AsyncStoarage from '@react-native-community/async-storage';
 
 // kakao 로그인 실행하는 첫 화면
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = () => {
   // style
   const styles = StyleSheet.create({
     container: {
@@ -52,7 +52,6 @@ const LoginScreen = ({ navigation }) => {
   // kakao login 실행되면 받는 인증 토큰 서버로 전달
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login();
-    console.log(userInfo);
 
     axios
       .post(`http://10.0.2.2:8080/user/kakao/login`, {

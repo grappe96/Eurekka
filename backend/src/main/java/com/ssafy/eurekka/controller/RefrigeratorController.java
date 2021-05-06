@@ -5,7 +5,7 @@ import com.ssafy.eurekka.service.RefrigeratorService;
 import com.ssafy.eurekka.vo.Product;
 import com.ssafy.eurekka.vo.Refrigerator;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -44,7 +43,7 @@ public class RefrigeratorController {
   @ApiOperation(value = "전체제품조회", notes = "냉장고 id를 인자로 받아 해당 냉장고(document)에 있는 전체 제품 반환")
   @GetMapping("/{refrigerId}")
   public ResponseEntity<?> findAllProduct(@PathVariable("refrigerId") ObjectId id) {
-    List<Product> result = refrigeratorService.findAllProduct(id);
+    Map<Product, Integer> result = refrigeratorService.findAllProduct(id);
     if (result == null) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -54,7 +53,7 @@ public class RefrigeratorController {
   @ApiOperation(value = "카테고리별조회", notes = "냉장고 id와 category 코드를 받아 Product list 반환")
   @GetMapping("/{refrigerId}/{category}")
   public ResponseEntity<?> findByCategory(@PathVariable("refrigerId") ObjectId id, @PathVariable int category) {
-    List<Product> result = refrigeratorService.findByCategory(id, category);
+    Map<Product, Integer> result = refrigeratorService.findByCategory(id, category);
     if (result == null) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

@@ -12,9 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,26 +37,27 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
   }
 
   @Override
-  public Refrigerator createProduct(ObjectId id, Product product) {
+  public Product createProduct(ObjectId id, Product product) {
     //product db에 저장
-    Product p = productRepository.save(product);
+    Product created = productRepository.save(product);
 
     //refrigerator에 product 추가
     Optional<Refrigerator> found = refrigeratorRepository.findById(id);
     if (found.isPresent()) {
       Refrigerator refrigerator = found.get();
-      int category = p.getCategory();
+      int category = created.getCategory();
       List<Product> productList = getProductListByCategory(refrigerator, category);
-      productList.add(p);
+      productList.add(created);
       refrigerator = setProductListByCategory(refrigerator, productList, category);
-      return refrigeratorRepository.save(refrigerator);
+      refrigeratorRepository.save(refrigerator);
+      return created;
     }
 
     return null;
   }
 
   @Override
-  public Map<Product, Integer> findAllProduct(ObjectId id) {
+  public List<Product> findAllProduct(ObjectId id) {
     Optional<Refrigerator> found = refrigeratorRepository.findById(id);
     if (found.isPresent()) {
       Refrigerator refrigerator = found.get();
@@ -82,17 +81,15 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
       //유통기한 순으로 정렬
       productList.sort(new ProductComparator());
 
-      //d-day 계산
-      Map<Product, Integer> result = getDday(productList);
-
-      return result;
+      //d-day 계산해서 return
+      return getDday(productList);
     }
 
     return null;
   }
 
   @Override
-  public Map<Product, Integer> findByCategory(ObjectId id, int category) {
+  public List<Product> findByCategory(ObjectId id, int category) {
     Optional<Refrigerator> found = refrigeratorRepository.findById(id);
     if (found.isPresent()) {
       Refrigerator refrigerator = found.get();
@@ -101,10 +98,8 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
       //유통기한 순으로 정렬
       productList.sort(new ProductComparator());
 
-      //d-day 계산
-      Map<Product, Integer> result = getDday(productList);
-
-      return result;
+      //d-day 계산해서 return
+      return getDday(productList);
     }
 
     return null;
@@ -165,20 +160,19 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
     }
   }
 
-  private Map<Product, Integer> getDday(List<Product> productList) {
-    Map<Product, Integer> result = new HashMap<>();
+  private List<Product> getDday(List<Product> productList) {
     for (Product p : productList) {
       SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
       try {
         Date today = formatter.parse(formatter.format(new Date()));
         Date dday = formatter.parse(formatter.format(p.getExpirationDate()));
         long diff = (dday.getTime() - today.getTime()) / (24*60*60*1000);
-        result.put(p, (int)diff);
+        p.setDDay((int)diff);
       } catch (ParseException e) {
         e.printStackTrace();
       }
     }
-    return result;
+    return productList;
   }
 
   private List<Product> getProductListByCategory(Refrigerator refrigerator, int category) {

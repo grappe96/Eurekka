@@ -5,7 +5,7 @@ import com.ssafy.eurekka.service.RefrigeratorService;
 import com.ssafy.eurekka.vo.Product;
 import com.ssafy.eurekka.vo.Refrigerator;
 import io.swagger.annotations.ApiOperation;
-import java.util.Map;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class RefrigeratorController {
   @ApiOperation(value = "제품등록", notes = "냉장고 id와 제품 정보를 받아 제품 등록")
   @PostMapping("/{refrigerId}")
   public ResponseEntity<?> createProduct(@PathVariable("refrigerId") ObjectId id, @RequestBody Product product) {
-    Refrigerator result = refrigeratorService.createProduct(id, product);
+    Product result = refrigeratorService.createProduct(id, product);
     if (result == null) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } else {
@@ -43,7 +43,7 @@ public class RefrigeratorController {
   @ApiOperation(value = "전체제품조회", notes = "냉장고 id를 인자로 받아 해당 냉장고(document)에 있는 전체 제품 반환")
   @GetMapping("/{refrigerId}")
   public ResponseEntity<?> findAllProduct(@PathVariable("refrigerId") ObjectId id) {
-    Map<Product, Integer> result = refrigeratorService.findAllProduct(id);
+    List<Product> result = refrigeratorService.findAllProduct(id);
     if (result == null) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -53,7 +53,7 @@ public class RefrigeratorController {
   @ApiOperation(value = "카테고리별조회", notes = "냉장고 id와 category 코드를 받아 Product list 반환")
   @GetMapping("/{refrigerId}/{category}")
   public ResponseEntity<?> findByCategory(@PathVariable("refrigerId") ObjectId id, @PathVariable int category) {
-    Map<Product, Integer> result = refrigeratorService.findByCategory(id, category);
+    List<Product> result = refrigeratorService.findByCategory(id, category);
     if (result == null) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

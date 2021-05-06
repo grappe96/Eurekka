@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService{
                 // 회원 등록
                 user.setName(kakaoUserInfo.properties.nickname);
                 user.setEmail(kakaoUserInfo.kakao_account.email);
-                user.setProfileImg("http://k4a404.p.ssafy.io/home/ubuntu/profileImg/img1.png");
+                user.setProfileImg("img1");
                 user.setRefrigeratorId(refrigerator.getId());
                 user.setAlarmCycle(1);
                 userRepository.save(user);
@@ -130,8 +130,4 @@ public class UserServiceImpl implements UserService{
         refrigeratorRepository.deleteById(user.getRefrigeratorId());
         return true;
     }
-
-
-
-
 }

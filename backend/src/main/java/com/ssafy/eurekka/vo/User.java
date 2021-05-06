@@ -21,6 +21,7 @@ public class User {
   private String email;
   private String name;
   private String profileImg;
+  @JsonSerialize(using = CustomObjectIdSerializer.class)
   private ObjectId refrigeratorId;
 
   private List<DoneProduct> abandoned;

@@ -1,96 +1,154 @@
-import React, { Component, useState } from 'react';
-import styled from 'styled-components/native';
-import { List } from 'react-native-paper';
+import React from 'react';
 import {
-  Text,
-  Image,
-  Animated,
-  StyleSheet,
   View,
-  I18nManager,
+  Text,
+  StyleSheet,
+  Animated,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
-import { RectButton, Swipeable } from 'react-native-gesture-handler';
-
-export default class ProductList extends Component {
-  _swipeableRow?: Swipeable;
-  renderRightAction = (text, color, x, progress) => {
-    const trans = progress.interpolate({
-      inputRange: [0, 1],
-      outputRange: [x, 0],
-    });
-    const pressHandler = () => {
-      this.close();
-      alert(text);
-    };
-    return (
-      <Animated.View style={{ flex: 1, transform: [{ translateX: 0 }] }}>
-        <RectButton
-          style={[styles.rightAction, { backgroundColor: color }]}
-          onPress={pressHandler}
-        >
-          <Image source={text} style={{ width: 40, height: 40 }} />
-        </RectButton>
-      </Animated.View>
-    );
-  };
-  renderRightActions = (progress) => (
-    <View
-      style={{
-        width: 192,
-        flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
-      }}
-    >
-      {this.renderRightAction(
-        require('../../../assets/images/done/restaurant.png'),
-        '#6D86DF',
-        128,
-        progress
-      )}
-      {this.renderRightAction(
-        require('../../../assets/images/done/trash.png'),
-        '#FB5C6F',
-        64,
-        progress
-      )}
-    </View>
-  );
-  updateRef = (ref: Swipeable) => {
-    this._swipeableRow = ref;
-  };
-  close = () => {
-    this._swipeableRow.close();
-  };
-  render() {
-    const { children } = this.props;
-    return (
-      <Swipeable
-        ref={this.updateRef}
-        friction={2}
-        leftThreshold={30}
-        rightThreshold={40}
-        renderRightActions={this.renderRightActions}
-      >
-        {children}
-      </Swipeable>
-    );
-  }
-}
+import { List } from 'react-native-paper';
+import { Swipeable, RectButton } from 'react-native-gesture-handler';
+import { images } from '../../common/images';
+const _swipeableRow = Swipeable;
 
 const styles = StyleSheet.create({
-  leftAction: {
+  container: {
+    backgroundColor: '#fff',
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+  },
+  text: {
+    color: '#4a4a4a',
+    fontSize: 15,
+  },
+  separator: {
     flex: 1,
-    backgroundColor: '#497AFC',
-    justifyContent: 'center',
+    height: 1,
+    backgroundColor: '#e4e4e4',
+    marginLeft: 10,
   },
-  actionText: {
-    color: 'white',
-    fontSize: 16,
-    backgroundColor: 'transparent',
-    padding: 10,
+  btnContainer: {
+    flexDirection: 'row',
+    width: 192,
   },
-  rightAction: {
+  restaurant: {
+    backgroundColor: '#6D86DF',
     alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
   },
+  trash: {
+    backgroundColor: '#FB5C6F',
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  restaurantImg: {
+    width: 40,
+    height: 40,
+  },
+  trashImg: {
+    width: 40,
+    height: 40,
+  },
 });
+
+export const Separator = () => <View style={styles.separator} />;
+
+const RightActions = ({ progress, dragX, onPressEat, onPressAbandon }) => {
+  const scale = dragX.interpolate({
+    inputRange: [-100, 0],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+  return (
+    <View style={styles.btnContainer}>
+      <Animated.View style={{ flex: 1, transform: [{ translateX: 0 }] }}>
+        <RectButton style={styles.restaurant} onPress={onPressEat}>
+          <Image source={images.restaurant} style={styles.restaurantImg} />
+        </RectButton>
+      </Animated.View>
+      <Animated.View style={{ flex: 1, transform: [{ translateX: 0 }] }}>
+        <RectButton style={styles.trash} onPress={onPressAbandon}>
+          <Image source={images.trash} style={styles.trashImg} />
+        </RectButton>
+      </Animated.View>
+    </View>
+  );
+};
+
+const ListItem = ({ id, category, dday, name, onEatPress, onAbandonPress }) => {
+  var img;
+  switch (category) {
+    case 0:
+      img = require('../../../assets/images/category/noodles.png');
+      break;
+    case 1:
+      img = require('../../../assets/images/category/snack.png');
+      break;
+    case 2:
+      img = require('../../../assets/images/category/beverage.png');
+      break;
+    case 3:
+      img = require('../../../assets/images/category/pickles.png');
+      break;
+    case 4:
+      img = require('../../../assets/images/category/diary.png');
+      break;
+    case 5:
+      img = require('../../../assets/images/category/health.png');
+      break;
+    case 6:
+      img = require('../../../assets/images/category/powder.png');
+      break;
+    case 7:
+      img = require('../../../assets/images/category/meat.png');
+      break;
+    case 8:
+      img = require('../../../assets/images/category/seasoning.png');
+      break;
+    case 9:
+      img = require('../../../assets/images/category/ocean.png');
+      break;
+    case 10:
+      img = require('../../../assets/images/category/fresh.png');
+      break;
+    case 11:
+      img = require('../../../assets/images/category/alcohol.png');
+      break;
+    case 12:
+      img = require('../../../assets/images/category/frozen.png');
+      break;
+    case 13:
+      img = require('../../../assets/images/category/ices.png');
+      break;
+    case 14:
+      img = require('../../../assets/images/category/others.png');
+      break;
+  }
+  return (
+    <Swipeable
+      renderRightActions={(progress, dragX) => (
+        <RightActions
+          progress={progress}
+          dragX={dragX}
+          onPressEat={onEatPress}
+          onPressAbandon={onAbandonPress}
+        />
+      )}
+    >
+      <View style={styles.container}>
+        <List.Item
+          title={name}
+          left={(props) => (
+            <Image source={img} style={{ width: 40, height: 40 }} />
+          )}
+          right={(props) => <Text style={{ padding: 7 }}>D - {dday}</Text>}
+        />
+      </View>
+    </Swipeable>
+  );
+};
+
+export default ListItem;

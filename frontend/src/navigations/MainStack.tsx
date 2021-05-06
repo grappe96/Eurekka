@@ -16,7 +16,7 @@ const MainStack = () => {
   // stack에 등록할 컴포넌트들
   return (
     <Stack.Navigator
-      initialRouteName="Home"
+      initialRouteName="ProductList"
       screenOptions={{
         headerStyle: {
           backgroundColor: '#bacde6',

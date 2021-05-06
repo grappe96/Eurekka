@@ -7,10 +7,14 @@ import com.ssafy.eurekka.vo.DoneProduct;
 import com.ssafy.eurekka.vo.Product;
 import com.ssafy.eurekka.vo.Refrigerator;
 import com.ssafy.eurekka.vo.User;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +58,7 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
   }
 
   @Override
-  public List<Product> findAllProduct(ObjectId id) {
+  public Map<Product, Integer> findAllProduct(ObjectId id) {
     Optional<Refrigerator> found = refrigeratorRepository.findById(id);
     if (found.isPresent()) {
       Refrigerator refrigerator = found.get();
@@ -77,19 +81,30 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
 
       //유통기한 순으로 정렬
       productList.sort(new ProductComparator());
-      return productList;
+
+      //d-day 계산
+      Map<Product, Integer> result = getDday(productList);
+
+      return result;
     }
 
     return null;
   }
 
   @Override
-  public List<Product> findByCategory(ObjectId id, int category) {
+  public Map<Product, Integer> findByCategory(ObjectId id, int category) {
     Optional<Refrigerator> found = refrigeratorRepository.findById(id);
     if (found.isPresent()) {
       Refrigerator refrigerator = found.get();
       List<Product> productList = getProductListByCategory(refrigerator, category);
-      return productList;
+
+      //유통기한 순으로 정렬
+      productList.sort(new ProductComparator());
+
+      //d-day 계산
+      Map<Product, Integer> result = getDday(productList);
+
+      return result;
     }
 
     return null;
@@ -148,6 +163,22 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
       refrigerator = setProductListByCategory(refrigerator, productList, category);
       refrigeratorRepository.save(refrigerator);
     }
+  }
+
+  private Map<Product, Integer> getDday(List<Product> productList) {
+    Map<Product, Integer> result = new HashMap<>();
+    for (Product p : productList) {
+      SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+      try {
+        Date today = formatter.parse(formatter.format(new Date()));
+        Date dday = formatter.parse(formatter.format(p.getExpirationDate()));
+        long diff = (dday.getTime() - today.getTime()) / (24*60*60*1000);
+        result.put(p, (int)diff);
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+    }
+    return result;
   }
 
   private List<Product> getProductListByCategory(Refrigerator refrigerator, int category) {

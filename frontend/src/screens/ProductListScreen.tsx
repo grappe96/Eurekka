@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import axios from 'axios';
 import ListItem, { Separator } from '../components/Product/ProductList';
-import { StyleSheet, SafeAreaView, FlatList } from 'react-native';
+import { StyleSheet, SafeAreaView, FlatList, Text, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { theme } from '../common/theme';
 import { List } from 'react-native-paper';
@@ -14,15 +14,18 @@ import AsyncStoarage from '@react-native-community/async-storage';
 const ProductListScreen = ({ navigation }) => {
   type product = {
     id: string;
-    category: string;
-    dday: number;
     name: string;
+    expirationDate: Date;
+    ingredient: string;
+    category: number;
+    dday: number;
   };
+
   const [products, setResult] = useState<Array<product>>([]);
 
   const getProducts = async () => {
     axios
-      .get(`http://10.0.2.2:8080/refrigerator/6093b8af7ae0dd0e126cd2e5`)
+      .get(`http://10.0.2.2:8080/refrigerator/609496a9ae61d85ea1e569c5`)
       .then(({ data }) => {
         setResult(data);
       })
@@ -36,14 +39,25 @@ const ProductListScreen = ({ navigation }) => {
     getProducts();
   }, []);
 
+  const [token, setToken] = useState<String>('');
+  AsyncStoarage.getItem('token', (err, res) => {
+    setToken(res);
+  });
+
   const eatProduct = async (item) => {
+    console.log(item);
     axios
       .post(
         `http://10.0.2.2:8080/refrigerator/eat`,
-        { product: item },
+        {
+          data: {
+            product: item,
+          },
+        },
         {
           headers: {
-            jwt: AsyncStoarage.getItem('token'),
+            'content-type': 'application/json',
+            jwt: token,
           },
         }
       )
@@ -57,10 +71,14 @@ const ProductListScreen = ({ navigation }) => {
     axios
       .post(
         `http://10.0.2.2:8080/refrigerator/adandon`,
-        { product: item },
+        {
+          body: {
+            product: item,
+          },
+        },
         {
           headers: {
-            jwt: AsyncStoarage.getItem('token'),
+            jwt: token,
           },
         }
       )
@@ -72,18 +90,23 @@ const ProductListScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={products}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <ListItem
-            {...item}
-            onEatPress={() => eatProduct(item)}
-            onAbandonPress={() => abandonProduct(item)}
-          />
-        )}
-        ItemSeparatorComponent={() => <Separator />}
-      />
+      <View style={styles.titleBox}>
+        <Text style={styles.title}>전체</Text>
+      </View>
+      <View style={styles.listItem}>
+        <FlatList
+          data={products}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <ListItem
+              {...item}
+              onEatPress={() => eatProduct(item)}
+              onAbandonPress={() => abandonProduct(item)}
+            />
+          )}
+          ItemSeparatorComponent={() => <Separator />}
+        />
+      </View>
     </SafeAreaView>
   );
 };

@@ -1,20 +1,14 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import { View, Text, StyleSheet, Animated, TouchableOpacity, Image } from 'react-native';
 import { List } from 'react-native-paper';
 import { Swipeable, RectButton } from 'react-native-gesture-handler';
 import { images } from '../../common/images';
+import { theme } from '../../common/theme';
 const _swipeableRow = Swipeable;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: theme.background,
     paddingHorizontal: 10,
     paddingVertical: 20,
   },
@@ -141,9 +135,7 @@ const ListItem = ({ id, category, dday, name, onEatPress, onAbandonPress }) => {
       <View style={styles.container}>
         <List.Item
           title={name}
-          left={(props) => (
-            <Image source={img} style={{ width: 40, height: 40 }} />
-          )}
+          left={(props) => <Image source={img} style={{ width: 40, height: 40 }} />}
           right={(props) => <Text style={{ padding: 7 }}>D - {dday}</Text>}
         />
       </View>

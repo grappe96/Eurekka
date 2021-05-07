@@ -77,9 +77,6 @@ function SelectButton({navigation}) {
         <View>
           <View>
             <View>
-              <Image source = {require('../assets/icon.png')}/>
-            </View>
-            <View>
               <TouchableOpacity onPress={onOpneScanner}>
                 <Text>
                   바코드 스캔하기

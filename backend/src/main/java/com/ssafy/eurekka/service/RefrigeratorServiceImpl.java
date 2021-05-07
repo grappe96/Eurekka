@@ -167,7 +167,7 @@ public class RefrigeratorServiceImpl implements RefrigeratorService{
         Date today = formatter.parse(formatter.format(new Date()));
         Date dday = formatter.parse(formatter.format(p.getExpirationDate()));
         long diff = (dday.getTime() - today.getTime()) / (24*60*60*1000);
-        p.setDDay((int)diff);
+        p.setDday((int)diff);
       } catch (ParseException e) {
         e.printStackTrace();
       }

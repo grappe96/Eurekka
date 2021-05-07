@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { HomeScreen, ProductListScreen } from '../screens';
+import { HomeScreen, ProductListScreen, RegisterScreen } from '../screens';
 import Header from '../components/Common/Header';
+import { View, StyleSheet } from 'react-native';
+import BottomTab from './BottomTab';
 
 const Stack = createStackNavigator();
 
@@ -13,20 +15,27 @@ const MainStack = () => {
     text: string;
   }>(ThemeContext);
 
-  // stack에 등록할 컴포넌트들
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+  });
+
+  // main stack 안에 하단 Tab Navigation(Footer)
   return (
-    <Stack.Navigator
-      initialRouteName="Home"
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: '#bacde6',
-        },
-        headerTitle: () => <Header />,
-      }}
-    >
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="ProductList" component={ProductListScreen} />
-    </Stack.Navigator>
+    <View style={styles.container}>
+      <Stack.Navigator
+        initialRouteName="Tab"
+        screenOptions={({ navigation }) => ({
+          headerStyle: {
+            backgroundColor: '#bacde6',
+          },
+          headerTitle: () => <Header navigation={navigation} />,
+        })}
+      >
+        <Stack.Screen name="Tab" component={BottomTab} />
+      </Stack.Navigator>
+    </View>
   );
 };
 

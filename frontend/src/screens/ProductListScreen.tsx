@@ -1,139 +1,119 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import axios from 'axios';
-import ProductList from '../components/Product/ProductList';
-import { StyleSheet, Text, View, I18nManager, Image } from 'react-native';
-import { FlatList, RectButton } from 'react-native-gesture-handler';
+import ListItem, { Separator } from '../components/Product/ProductList';
+import { StyleSheet, SafeAreaView, FlatList, Text, View } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 import { theme } from '../common/theme';
 import { List } from 'react-native-paper';
 import { black } from 'react-native-paper/lib/typescript/styles/colors';
 import { Fonts } from '../Fonts';
-
-const Row = ({ item }) => {
-  var img;
-  switch (item.category) {
-    case 'alcohol':
-      img = require('../../assets/images/category/alcohol.png');
-      break;
-    case 'beverage':
-      img = require('../../assets/images/category/beverage.png');
-      break;
-    case 'diary':
-      img = require('../../assets/images/category/diary.png');
-      break;
-    case 'fresh':
-      img = require('../../assets/images/category/fresh.png');
-      break;
-    case 'frozen':
-      img = require('../../assets/images/category/frozen.png');
-      break;
-    case 'health':
-      img = require('../../assets/images/category/health.png');
-      break;
-    case 'ices':
-      img = require('../../assets/images/category/ices.png');
-      break;
-    case 'meat':
-      img = require('../../assets/images/category/meat.png');
-      break;
-    case 'noodles':
-      img = require('../../assets/images/category/noodles.png');
-      break;
-    case 'ocean':
-      img = require('../../assets/images/category/ocean.png');
-      break;
-    case 'others':
-      img = require('../../assets/images/category/others.png');
-      break;
-    case 'pickles':
-      img = require('../../assets/images/category/pickles.png');
-      break;
-    case 'powder':
-      img = require('../../assets/images/category/powder.png');
-      break;
-    case 'seasoning':
-      img = require('../../assets/images/category/seasoning.png');
-      break;
-    case 'snack':
-      img = require('../../assets/images/category/snack.png');
-      break;
-  }
-  return (
-    <View style={styles.rectButton}>
-      <List.Item
-        title={item.name}
-        left={(props) => (
-          <Image source={img} style={{ width: 40, height: 40 }} />
-        )}
-        right={(props) => <Text style={{ padding: 7 }}>{item.date}</Text>}
-      />
-    </View>
-  );
-};
-
-const SwipeableRow = ({ item, index }) => {
-  return (
-    <ProductList>
-      <Row item={item} />
-    </ProductList>
-  );
-};
+import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
+import AsyncStoarage from '@react-native-community/async-storage';
 
 const ProductListScreen = ({ navigation }) => {
-  // const [products, setResult] = useState<Object>([]);
+  type product = {
+    id: string;
+    name: string;
+    expirationDate: Date;
+    ingredient: string;
+    category: number;
+    dday: number;
+  };
 
-  // const getProducts = async () => {
-  //     axios
-  //         .get("/refrigerator/{refrigerId}")
-  //         .then(({ data }) => {
-  //             setResult(data.data);
-  //           })
-  //           .catch(e => {  // API 호출이 실패한 경우
-  //             console.error(e);  // 에러표시
-  //           });
-  // };
+  const [products, setResult] = useState<Array<product>>([]);
 
-  // useEffect(() => {
-  //     getProducts();
-  // },([]))
+  const getProducts = async () => {
+    axios
+      .get(`http://10.0.2.2:8080/refrigerator/609496a9ae61d85ea1e569c5`)
+      .then(({ data }) => {
+        setResult(data);
+      })
+      .catch((e) => {
+        // API 호출이 실패한 경우
+        console.error(e); // 에러표시
+      });
+  };
 
-  const products = [
-    {
-      id: 0,
-      category: 'diary',
-      name: '서울우유',
-      date: 'D-5',
-    },
-    {
-      id: 1,
-      category: 'diary',
-      name: '서울우유',
-      date: 'D-7',
-    },
-    {
-      id: 2,
-      category: 'fresh',
-      name: '대파',
-      date: 'D-10',
-    },
-  ];
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  const [token, setToken] = useState<String>('');
+  AsyncStoarage.getItem('token', (err, res) => {
+    setToken(res);
+  });
+
+  const eatProduct = async (item) => {
+    axios
+      .post(
+        `http://10.0.2.2:8080/refrigerator/eat`,
+        {
+          id: item.id,
+          name: item.name,
+          expirationDate: item.expirationDate,
+          ingredient: item.ingredient,
+          category: item.category,
+          dday: 0,
+        },
+        {
+          headers: {
+            'content-type': 'application/json',
+            jwt: token,
+          },
+        }
+      )
+      .then(getProducts)
+      .catch(() => {
+        alert('서버와 통신할 수 없습니다.');
+      });
+  };
+
+  const abandonProduct = async (item) => {
+    axios
+      .post(
+        `http://10.0.2.2:8080/refrigerator/abandon`,
+        {
+          id: item.id,
+          name: item.name,
+          expirationDate: item.expirationDate,
+          ingredient: item.ingredient,
+          category: item.category,
+          dday: 0,
+        },
+        {
+          headers: {
+            'content-type': 'application/json',
+            jwt: token,
+          },
+        }
+      )
+      .then(getProducts)
+      .catch(() => {
+        alert('서버와 통신할 수 없습니다.');
+      });
+  };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.titleBox}>
         <Text style={styles.title}>전체</Text>
       </View>
       <View style={styles.listItem}>
         <FlatList
           data={products}
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
-          renderItem={({ item, index }) => (
-            <SwipeableRow item={item} index={index} />
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <ListItem
+              {...item}
+              onEatPress={() => eatProduct(item)}
+              onAbandonPress={() => abandonProduct(item)}
+            />
           )}
-          keyExtractor={(item, index) => `message ${index}`}
+          ItemSeparatorComponent={() => <Separator />}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

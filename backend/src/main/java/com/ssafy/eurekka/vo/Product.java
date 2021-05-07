@@ -23,6 +23,7 @@ public class Product {
   private String name;
   @Temporal(TemporalType.TIMESTAMP)
   private Date expirationDate;
+  private int dday;
   private String ingredient;
 
   private int category;

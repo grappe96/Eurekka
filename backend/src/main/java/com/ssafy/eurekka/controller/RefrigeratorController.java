@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -33,7 +32,7 @@ public class RefrigeratorController {
   @ApiOperation(value = "제품등록", notes = "냉장고 id와 제품 정보를 받아 제품 등록")
   @PostMapping("/{refrigerId}")
   public ResponseEntity<?> createProduct(@PathVariable("refrigerId") ObjectId id, @RequestBody Product product) {
-    Refrigerator result = refrigeratorService.createProduct(id, product);
+    Product result = refrigeratorService.createProduct(id, product);
     if (result == null) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } else {

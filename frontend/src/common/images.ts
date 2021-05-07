@@ -6,6 +6,7 @@ import Loading from '../../assets/images/eurekka_loading.gif';
 import Logo from '../../assets/images/header/title.png';
 import OpenedFridge from '../../assets/images/home/refrigerator-open.png';
 import BottomBtn from '../../assets/images/footer/bottom-button.png';
+import ColorBtn from '../../assets/images/footer/bottom-button-color.png';
 import Restaurant from '../../assets/images/done/restaurant.png';
 import Trash from '../../assets/images/done/trash.png';
 
@@ -16,6 +17,7 @@ export const images = {
   logoImg: Logo,
   openImg: OpenedFridge,
   menu: BottomBtn,
+  coloredMenu: ColorBtn,
   restaurant: Restaurant,
   trash: Trash,
 };

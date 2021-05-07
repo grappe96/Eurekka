@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { images } from '../../common/images';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const Footer = () => {
+const Footer = ({ navigation }) => {
   const styles = StyleSheet.create({
     container: {
       alignItems: 'center',
@@ -11,9 +11,22 @@ const Footer = () => {
       backgroundColor: '#bacde6',
     },
     img: {
-      width: 75,
-      height: 75,
-      marginBottom: 100,
+      width: 70,
+      height: 70,
+    },
+    btnContainer: {
+      flexDirection: 'row',
+    },
+    recipeBtn: {
+      bottom: -20,
+      left: -20,
+    },
+    registerBtn: {
+      bottom: 5,
+    },
+    listBtn: {
+      bottom: -20,
+      right: -20,
     },
   });
 
@@ -25,12 +38,30 @@ const Footer = () => {
   return (
     <View style={styles.container}>
       {isClick && (
-        <View>
-          <MaterialCommunityIcons />
+        <View style={styles.btnContainer}>
+          <TouchableOpacity style={styles.recipeBtn}>
+            <MaterialCommunityIcons name="chef-hat" size={36} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.registerBtn}
+            onPressOut={() => navigation.navigate('Register')}
+          >
+            <MaterialCommunityIcons name="barcode-scan" size={36} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.listBtn}
+            onPressOut={() => navigation.navigate('ProductList')}
+          >
+            <MaterialCommunityIcons name="view-list" size={36} />
+          </TouchableOpacity>
         </View>
       )}
       <TouchableOpacity onPressOut={() => toggleClick()}>
-        <Image source={images.menu} style={styles.img} />
+        {isClick ? (
+          <Image source={images.coloredMenu} style={styles.img} />
+        ) : (
+          <Image source={images.menu} style={styles.img} />
+        )}
       </TouchableOpacity>
     </View>
   );

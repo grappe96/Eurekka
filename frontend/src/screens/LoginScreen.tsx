@@ -4,7 +4,7 @@ import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { images } from '../common/images';
 import { theme } from '../common/theme';
-import AsyncStoarage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 // kakao 로그인 실행하는 첫 화면
 const LoginScreen = () => {
@@ -56,8 +56,8 @@ const LoginScreen = () => {
       })
       .then((res) => {
         // 서버에서 받은 jwt와 사용자 정보 저장
-        AsyncStoarage.setItem('token', res.data.jwt);
-        AsyncStoarage.setItem('userInfo', res.data.user);
+        AsyncStorage.setItem('token', res.data.jwt);
+        AsyncStorage.setItem('userInfo', JSON.stringify(res.data.user));
       })
       .catch((err) => {
         console.error(err);

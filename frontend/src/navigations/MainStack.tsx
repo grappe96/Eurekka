@@ -21,7 +21,7 @@ const MainStack = () => {
     },
   });
 
-  // stack에 등록할 컴포넌트들
+  // main stack 안에 하단 Tab Navigation(Footer)
   return (
     <View style={styles.container}>
       <Stack.Navigator

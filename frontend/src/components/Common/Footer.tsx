@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { images } from '../../common/images';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+// Footer Component
 const Footer = ({ navigation }) => {
   const styles = StyleSheet.create({
     container: {
@@ -31,10 +32,12 @@ const Footer = ({ navigation }) => {
   });
 
   const [isClick, setIsClick] = useState<boolean>(false);
+  // 하단 버튼 클릭 시 toggle
   const toggleClick = () => {
     setIsClick(!isClick);
   };
 
+  // 하단 버튼 클릭 하면 화면 이동 버튼 등장
   return (
     <View style={styles.container}>
       {isClick && (

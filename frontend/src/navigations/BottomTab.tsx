@@ -1,11 +1,11 @@
 import React from 'react';
-import { Text, View, Button, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeScreen, ProductListScreen, RegisterScreen } from '../screens';
 import Footer from '../components/Common/Footer';
 
 const Tab = createBottomTabNavigator();
 
+// 하단 Tab Navigation(Footer)에 기본 메뉴 화면 담음
 const BottomTab = () => {
   return (
     <Tab.Navigator

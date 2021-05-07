@@ -45,14 +45,16 @@ const ProductListScreen = ({ navigation }) => {
   });
 
   const eatProduct = async (item) => {
-    console.log(item);
     axios
       .post(
         `http://10.0.2.2:8080/refrigerator/eat`,
         {
-          data: {
-            product: item,
-          },
+          id: item.id,
+          name: item.name,
+          expirationDate: item.expirationDate,
+          ingredient: item.ingredient,
+          category: item.category,
+          dday: 0,
         },
         {
           headers: {
@@ -70,14 +72,18 @@ const ProductListScreen = ({ navigation }) => {
   const abandonProduct = async (item) => {
     axios
       .post(
-        `http://10.0.2.2:8080/refrigerator/adandon`,
+        `http://10.0.2.2:8080/refrigerator/abandon`,
         {
-          body: {
-            product: item,
-          },
+          id: item.id,
+          name: item.name,
+          expirationDate: item.expirationDate,
+          ingredient: item.ingredient,
+          category: item.category,
+          dday: 0,
         },
         {
           headers: {
+            'content-type': 'application/json',
             jwt: token,
           },
         }

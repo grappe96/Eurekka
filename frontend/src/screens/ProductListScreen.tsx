@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import axios from 'axios';
-import ListItem, { Separator } from '../components/Product/ProductList';
+import ProductList, { Separator } from '../components/Product/ProductList';
 import { StyleSheet, SafeAreaView, FlatList, Text, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { theme } from '../common/theme';
@@ -23,9 +23,15 @@ const ProductListScreen = ({ navigation }) => {
 
   const [products, setResult] = useState<Array<product>>([]);
 
+  const [refrigerId, setRefId] = useState<String>('');
+  AsyncStoarage.getItem('userInfo', (err, res) => {
+    const user = JSON.parse(res);
+    setRefId(user.refrigeratorId);
+  });
+
   const getProducts = async () => {
     axios
-      .get(`http://10.0.2.2:8080/refrigerator/609496a9ae61d85ea1e569c5`)
+      .get(`http://10.0.2.2:8080/refrigerator/${refrigerId}`)
       .then(({ data }) => {
         setResult(data);
       })
@@ -36,8 +42,10 @@ const ProductListScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    getProducts();
-  }, []);
+    if (refrigerId.length != 0) {
+      getProducts();
+    }
+  }, [refrigerId]);
 
   const [token, setToken] = useState<String>('');
   AsyncStoarage.getItem('token', (err, res) => {
@@ -104,7 +112,7 @@ const ProductListScreen = ({ navigation }) => {
           data={products}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <ListItem
+            <ProductList
               {...item}
               onEatPress={() => eatProduct(item)}
               onAbandonPress={() => abandonProduct(item)}

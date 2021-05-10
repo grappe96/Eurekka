@@ -1,6 +1,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HomeScreen, ProductListScreen, RegisterScreen } from '../screens';
+import {
+  HomeScreen,
+  ProductListScreen,
+  RecipeListScreen,
+  RegisterScreen,
+} from '../screens';
 import Footer from '../components/Common/Footer';
 
 const Tab = createBottomTabNavigator();
@@ -14,6 +19,7 @@ const BottomTab = () => {
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="ProductList" component={ProductListScreen} />
+      <Tab.Screen name="RecipeList" component={RecipeListScreen} />
       <Tab.Screen name="Register" component={RegisterScreen} />
     </Tab.Navigator>
   );

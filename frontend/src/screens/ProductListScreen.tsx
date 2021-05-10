@@ -9,7 +9,7 @@ import { List } from 'react-native-paper';
 import { black } from 'react-native-paper/lib/typescript/styles/colors';
 import { Fonts } from '../Fonts';
 import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
-import AsyncStoarage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProductListScreen = ({ navigation }) => {
   type product = {
@@ -25,7 +25,7 @@ const ProductListScreen = ({ navigation }) => {
 
   const getProducts = async () => {
     axios
-      .get(`http://10.0.2.2:8080/refrigerator/609496a9ae61d85ea1e569c5`)
+      .get(`http://10.0.2.2:8080/refrigerator/6098b77a2c08392f10b3e52c`)
       .then(({ data }) => {
         setResult(data);
       })
@@ -40,7 +40,7 @@ const ProductListScreen = ({ navigation }) => {
   }, []);
 
   const [token, setToken] = useState<String>('');
-  AsyncStoarage.getItem('token', (err, res) => {
+  AsyncStorage.getItem('token', (err, res) => {
     setToken(res);
   });
 

@@ -50,3 +50,10 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+// jar 파일명 설정
+bootJar{
+    archivesBaseName = 'backend_boot'
+    archiveFileName = 'backend_boot.jar'
+    archiveVersion = "0.0.0"
+}

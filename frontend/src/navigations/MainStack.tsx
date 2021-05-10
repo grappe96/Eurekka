@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { HomeScreen, ProductListScreen, RegisterScreen } from '../screens';
 import Header from '../components/Common/Header';
 import { View, StyleSheet } from 'react-native';
 import BottomTab from './BottomTab';

@@ -58,7 +58,10 @@ const Footer = ({ navigation }) => {
       <View style={styles.bar}></View>
       {isClick && (
         <View style={styles.btnContainer}>
-          <TouchableOpacity style={styles.recipeBtn}>
+          <TouchableOpacity
+            style={styles.recipeBtn}
+            onPressOut={() => navigation.navigate('RecipeList')}
+          >
             <MaterialCommunityIcons name="chef-hat" size={36} />
           </TouchableOpacity>
           <TouchableOpacity

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { StyleSheet, SafeAreaView, FlatList, Text, View } from 'react-native';
 import { theme } from '../common/theme';
-import AsyncStoarage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import RecipeList, { Separator } from '../components/Recipe/RecipeList';
 const RecipeListScreen = ({ navigation }) => {
   type recipe = {
@@ -67,7 +67,7 @@ const RecipeListScreen = ({ navigation }) => {
   const [recipes, setResult] = useState<Array<recipe>>([]);
 
   const [refrigerId, setRefId] = useState<String>('');
-  AsyncStoarage.getItem('userInfo', (err, res) => {
+  AsyncStorage.getItem('userInfo', (err, res) => {
     const user = JSON.parse(res);
     setRefId(user.refrigeratorId);
   });

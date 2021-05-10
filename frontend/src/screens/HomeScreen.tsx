@@ -51,7 +51,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.row}>
           <TouchableOpacity
             onPressOut={() =>
-              navigation.navigate('ProductList', {
+              navigation.navigate('ProductDetailList', {
                 category: 5,
               })
             }
@@ -62,7 +62,7 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPressOut={() =>
-              navigation.navigate('ProductList', {
+              navigation.navigate('ProductDetailList', {
                 category: 6,
               })
             }
@@ -73,7 +73,7 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPressOut={() =>
-              navigation.navigate('ProductList', {
+              navigation.navigate('ProductDetailList', {
                 category: 1,
               })
             }
@@ -84,7 +84,7 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPressOut={() =>
-              navigation.navigate('ProductList', {
+              navigation.navigate('ProductDetailList', {
                 category: 11,
               })
             }
@@ -97,7 +97,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.row}>
           <TouchableOpacity
             onPressOut={() =>
-              navigation.navigate('ProductList', {
+              navigation.navigate('ProductDetailList', {
                 category: 8,
               })
             }
@@ -108,7 +108,7 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPressOut={() =>
-              navigation.navigate('ProductList', {
+              navigation.navigate('ProductDetailList', {
                 category: 0,
               })
             }
@@ -119,7 +119,7 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPressOut={() =>
-              navigation.navigate('ProductList', {
+              navigation.navigate('ProductDetailList', {
                 category: 4,
               })
             }
@@ -130,7 +130,7 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPressOut={() =>
-              navigation.navigate('ProductList', {
+              navigation.navigate('ProductDetailList', {
                 category: 2,
               })
             }
@@ -143,7 +143,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.row}>
           <TouchableOpacity
             onPressOut={() =>
-              navigation.navigate('ProductList', {
+              navigation.navigate('ProductDetailList', {
                 category: 13,
               })
             }
@@ -154,7 +154,7 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPressOut={() =>
-              navigation.navigate('ProductList', {
+              navigation.navigate('ProductDetailList', {
                 category: 9,
               })
             }
@@ -165,7 +165,7 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPressOut={() =>
-              navigation.navigate('ProductList', {
+              navigation.navigate('ProductDetailList', {
                 category: 7,
               })
             }
@@ -176,7 +176,7 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPressOut={() =>
-              navigation.navigate('ProductList', {
+              navigation.navigate('ProductDetailList', {
                 category: 3,
               })
             }
@@ -189,7 +189,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.row}>
           <TouchableOpacity
             onPressOut={() =>
-              navigation.navigate('ProductList', {
+              navigation.navigate('ProductDetailList', {
                 category: 14,
               })
             }
@@ -200,7 +200,7 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPressOut={() =>
-              navigation.navigate('ProductList', {
+              navigation.navigate('ProductDetailList', {
                 category: 12,
               })
             }
@@ -211,7 +211,7 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPressOut={() =>
-              navigation.navigate('ProductList', {
+              navigation.navigate('ProductDetailList', {
                 category: 10,
               })
             }

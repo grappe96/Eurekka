@@ -4,16 +4,15 @@ import {
   StyleSheet,
   View,
   Text,
-  Image,
   SafeAreaView,
   TouchableOpacity,
   PermissionsAndroid,
   Platform,
 } from 'react-native';
 
-import CameraKitCameraScreen from 'react-native-camera-kit';
+import { CameraScreen } from 'react-native-camera-kit';
 
-function SelectButton({navigation}) {
+function BarcodeScreen({navigation}) {
   const [qrvalue, setQrvalue] = useState('');
   const [opneScanner, setOpneScanner] = useState(false);
 
@@ -57,7 +56,7 @@ function SelectButton({navigation}) {
     <SafeAreaView>
       {opneScanner ? (
         <View>
-          <CameraKitCameraScreen
+          <CameraScreen
             showFrame={false}
             // Show/hide scan frame
             scanBarcode={true}
@@ -90,8 +89,4 @@ function SelectButton({navigation}) {
   );
 }
 
-const styles = StyleSheet.create({
-
-});
-
-export default SelectButton;
+export default BarcodeScreen;

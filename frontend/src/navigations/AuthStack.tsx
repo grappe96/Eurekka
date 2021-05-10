@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { LoginScreen, HomeScreen, ProductListScreen, SelectButton } from '../screens';
+import { LoginScreen, HomeScreen, ProductListScreen, BarcodeScreen } from '../screens';
 
 const Stack = createStackNavigator();
 
@@ -14,7 +14,7 @@ const AuthStack = () => {
 
   // stack에 등록할 컴포넌트들, 초기 화면인 Login에 헤더 숨기는 옵션
   return (
-    <Stack.Navigator initialRouteName="SelectButton">
+    <Stack.Navigator initialRouteName="Login">
       <Stack.Screen
         name="Login"
         component={LoginScreen}
@@ -22,7 +22,7 @@ const AuthStack = () => {
       />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="ProductList" component={ProductListScreen} />
-      <Stack.Screen name="SelectButton" component={SelectButton} />
+      <Stack.Screen name="SelectButton" component={BarcodeScreen} />
     </Stack.Navigator>
   );
 };

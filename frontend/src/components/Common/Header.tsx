@@ -40,12 +40,14 @@ function Header({ navigation }) {
       >
         <Image source={images.logoImg} style={styles.img} />
       </TouchableOpacity>
-      <MaterialCommunityIcons
-        style={styles.icon}
-        name="account-circle-outline"
-        size={32}
-        color="#606dca"
-      />
+      <TouchableOpacity onPressOut={() => navigation.navigate('MyPage')}>
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name="account-circle-outline"
+          size={32}
+          color="#606dca"
+        />
+      </TouchableOpacity>
     </View>
   );
 }

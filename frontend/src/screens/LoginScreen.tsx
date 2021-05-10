@@ -4,7 +4,7 @@ import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { images } from '../common/images';
 import { theme } from '../common/theme';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // kakao 로그인 실행하는 첫 화면
 const LoginScreen = () => {

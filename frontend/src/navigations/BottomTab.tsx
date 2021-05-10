@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   HomeScreen,
   ProductListScreen,
+  MyPageScreen,
   RecipeListScreen,
   RegisterScreen,
 } from '../screens';
@@ -21,6 +22,7 @@ const BottomTab = () => {
       <Tab.Screen name="ProductList" component={ProductListScreen} />
       <Tab.Screen name="RecipeList" component={RecipeListScreen} />
       <Tab.Screen name="Register" component={RegisterScreen} />
+      <Tab.Screen name="MyPage" component={MyPageScreen} />
     </Tab.Navigator>
   );
 };

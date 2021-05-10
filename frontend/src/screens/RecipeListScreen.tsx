@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { StyleSheet, SafeAreaView, FlatList, Text, View } from 'react-native';
 import { theme } from '../common/theme';
-import AsyncStoarage from '@react-native-community/async-storage';
+import AsyncStoarage from '@react-native-async-storage/async-storage';
 import RecipeList, { Separator } from '../components/Recipe/RecipeList';
 const RecipeListScreen = ({ navigation }) => {
   type recipe = {

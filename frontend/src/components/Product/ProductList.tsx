@@ -90,49 +90,49 @@ const ProductList = ({
   var img;
   switch (category) {
     case 0:
-      img = require('../../../assets/images/category/noodles.png');
+      img = images.noodles;
       break;
     case 1:
-      img = require('../../../assets/images/category/snack.png');
+      img = images.snack;
       break;
     case 2:
-      img = require('../../../assets/images/category/beverage.png');
+      img = images.beverage;
       break;
     case 3:
-      img = require('../../../assets/images/category/pickles.png');
+      img = images.pickles;
       break;
     case 4:
-      img = require('../../../assets/images/category/diary.png');
+      img = images.diary;
       break;
     case 5:
-      img = require('../../../assets/images/category/health.png');
+      img = images.health;
       break;
     case 6:
-      img = require('../../../assets/images/category/powder.png');
+      img = images.powder;
       break;
     case 7:
-      img = require('../../../assets/images/category/meat.png');
+      img = images.meat;
       break;
     case 8:
-      img = require('../../../assets/images/category/seasoning.png');
+      img = images.seasoning;
       break;
     case 9:
-      img = require('../../../assets/images/category/ocean.png');
+      img = images.ocean;
       break;
     case 10:
-      img = require('../../../assets/images/category/fresh.png');
+      img = images.fresh;
       break;
     case 11:
-      img = require('../../../assets/images/category/alcohol.png');
+      img = images.alcohol;
       break;
     case 12:
-      img = require('../../../assets/images/category/frozen.png');
+      img = images.frozen;
       break;
     case 13:
-      img = require('../../../assets/images/category/ices.png');
+      img = images.ices;
       break;
     case 14:
-      img = require('../../../assets/images/category/others.png');
+      img = images.others;
       break;
   }
   return (

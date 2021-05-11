@@ -30,7 +30,7 @@ const Footer = ({ navigation }) => {
     clickedImg: {
       width: 70,
       height: 70,
-      top: -5,
+      top: -10,
     },
     btnContainer: {
       flexDirection: 'row',
@@ -38,11 +38,31 @@ const Footer = ({ navigation }) => {
     recipeBtn: {
       bottom: -15,
       left: -20,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#95A0C0',
+      width: 50,
+      height: 50,
+      borderRadius: 25,
     },
-    registerBtn: {},
+    registerBtn: {
+      bottom: 15,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#606DCA',
+      width: 50,
+      height: 50,
+      borderRadius: 25,
+    },
     listBtn: {
       bottom: -15,
       right: -20,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#0C276F',
+      width: 50,
+      height: 50,
+      borderRadius: 25,
     },
   });
 
@@ -62,19 +82,27 @@ const Footer = ({ navigation }) => {
             style={styles.recipeBtn}
             onPressOut={() => navigation.navigate('RecipeList')}
           >
-            <MaterialCommunityIcons name="chef-hat" size={36} />
+            <MaterialCommunityIcons name="chef-hat" size={30} color="#F0F0FA" />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.registerBtn}
             onPressOut={() => navigation.navigate('Register')}
           >
-            <MaterialCommunityIcons name="barcode-scan" size={36} />
+            <MaterialCommunityIcons
+              name="barcode-scan"
+              size={30}
+              color="#F0F0FA"
+            />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.listBtn}
             onPressOut={() => navigation.navigate('ProductList')}
           >
-            <MaterialCommunityIcons name="view-list" size={36} />
+            <MaterialCommunityIcons
+              name="view-list"
+              size={30}
+              color="#F0F0FA"
+            />
           </TouchableOpacity>
         </View>
       )}

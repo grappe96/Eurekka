@@ -7,6 +7,7 @@ import {
   RecipeListScreen,
   RegisterScreen,
   ProductDetailListScreen,
+  BarcodeScreen,
 } from '../screens';
 import Footer from '../components/Common/Footer';
 
@@ -28,6 +29,7 @@ const BottomTab = () => {
         name="ProductDetailList"
         component={ProductDetailListScreen}
       />
+      <Tab.Screen name="Barcode" component={BarcodeScreen} />
     </Tab.Navigator>
   );
 };

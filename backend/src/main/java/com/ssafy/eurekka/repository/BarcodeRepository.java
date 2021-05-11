@@ -7,5 +7,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface BarcodeRepository extends MongoRepository<Barcode, ObjectId> {
 
-  Optional<Barcode> findByCode(int code);
+  Optional<Barcode> findByCode(Double code);
 }

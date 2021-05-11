@@ -24,6 +24,7 @@ import Pickles from '../../assets/images/category/pickles.png';
 import Powder from '../../assets/images/category/powder.png';
 import Seasoning from '../../assets/images/category/seasoning.png';
 import Snack from '../../assets/images/category/snack.png';
+import Chef from '../../assets/images/recipe/chef.png';
 
 export const images = {
   fridgeImg: Fridge,
@@ -50,4 +51,5 @@ export const images = {
   powder: Powder,
   seasoning: Seasoning,
   snack: Snack,
+  chef: Chef,
 };

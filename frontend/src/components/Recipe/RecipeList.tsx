@@ -7,31 +7,34 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 import { List, ProgressBar, Colors } from 'react-native-paper';
 import { images } from '../../common/images';
 import { theme } from '../../common/theme';
 
 export const Separator = () => <View style={styles.separator} />;
 
-const RecipeList = ({ seq, title, percentage, img }) => {
+const RecipeList = ({ seq, title, percentage, img, onRecipePress }) => {
   const per = (percentage * 100).toFixed(2);
   return (
     <View style={styles.container}>
-      <List.Item
-        title={title}
-        left={(props) => (
-          <Image source={{ uri: img }} style={styles.recipeImg} />
-        )}
-        right={(props) => (
-          <View style={styles.rightSection}>
-            <Text style={{ fontSize: 13 }}>냉장고 속 재료 일치도</Text>
-            <Text style={styles.percent}>{per}%</Text>
-            <View style={styles.progressSection}>
-              <ProgressBar progress={percentage} color={'#4A63FF'} />
+      <RectButton onPress={onRecipePress}>
+        <List.Item
+          title={title}
+          left={(props) => (
+            <Image source={{ uri: img }} style={styles.recipeImg} />
+          )}
+          right={(props) => (
+            <View style={styles.rightSection}>
+              <Text style={{ fontSize: 13 }}>냉장고 속 재료 일치도</Text>
+              <Text style={styles.percent}>{per}%</Text>
+              <View style={styles.progressSection}>
+                <ProgressBar progress={percentage} color={'#4A63FF'} />
+              </View>
             </View>
-          </View>
-        )}
-      />
+          )}
+        />
+      </RectButton>
     </View>
   );
 };

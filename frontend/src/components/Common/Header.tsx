@@ -11,9 +11,11 @@ function Header({ navigation }) {
       flexDirection: 'row',
       flex: 1,
     },
+    touchArea: {
+      marginTop: 7,
+    },
     icon: {
       flex: 1,
-      alignSelf: 'center',
     },
     img: {
       width: '100%',
@@ -28,19 +30,24 @@ function Header({ navigation }) {
   // 알림, 로고, 마이페이지
   return (
     <View style={styles.row}>
-      <MaterialCommunityIcons
-        style={styles.icon}
-        name="bell-outline"
-        size={32}
-        color="#606dca"
-      />
+      <TouchableOpacity style={styles.touchArea}>
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name="bell-outline"
+          size={32}
+          color="#606dca"
+        />
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.logo}
         onPressOut={() => navigation.navigate('Home')}
       >
         <Image source={images.logoImg} style={styles.img} />
       </TouchableOpacity>
-      <TouchableOpacity onPressOut={() => navigation.navigate('MyPage')}>
+      <TouchableOpacity
+        style={styles.touchArea}
+        onPressOut={() => navigation.navigate('MyPage')}
+      >
         <MaterialCommunityIcons
           style={styles.icon}
           name="account-circle-outline"

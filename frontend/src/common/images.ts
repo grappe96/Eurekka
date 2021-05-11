@@ -25,6 +25,7 @@ import Powder from '../../assets/images/category/powder.png';
 import Seasoning from '../../assets/images/category/seasoning.png';
 import Snack from '../../assets/images/category/snack.png';
 import NoImg from '../../assets/images/noImage.png';
+import Chef from '../../assets/images/recipe/chef.png';
 
 export const images = {
   fridgeImg: Fridge,
@@ -52,4 +53,5 @@ export const images = {
   seasoning: Seasoning,
   snack: Snack,
   noImg: NoImg,
+  chef: Chef,
 };

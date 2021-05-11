@@ -56,10 +56,10 @@ const ProductDetailListScreen = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    if (categoryId.length != 0) {
+    if (refrigerId.length != 0 && categoryId.length != 0) {
       getProducts();
     }
-  }, [categoryId]);
+  }, [refrigerId, categoryId]);
 
   const [token, setToken] = useState<String>('');
   AsyncStorage.getItem('token', (err, res) => {

@@ -4,6 +4,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Header } from '../components';
 import { View, StyleSheet } from 'react-native';
 import BottomTab from './BottomTab';
+import {
+  MyPageScreen,
+  ProductDetailListScreen,
+  BarcodeScreen,
+  RecipeDetailScreen,
+} from '../screens';
 
 const Stack = createStackNavigator();
 
@@ -30,9 +36,17 @@ const MainStack = () => {
           headerStyle: {
             backgroundColor: '#bacde6',
           },
+          headerLeft: () => null,
           headerTitle: () => <Header navigation={navigation} />,
         })}
       >
+        <Stack.Screen name="MyPage" component={MyPageScreen} />
+        <Stack.Screen
+          name="ProductDetailList"
+          component={ProductDetailListScreen}
+        />
+        <Stack.Screen name="Barcode" component={BarcodeScreen} />
+        <Stack.Screen name="RecipeDetail" component={RecipeDetailScreen} />
         <Stack.Screen name="Tab" component={BottomTab} />
       </Stack.Navigator>
     </View>

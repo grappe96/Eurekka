@@ -107,7 +107,16 @@ const RecipeListScreen = ({ navigation }) => {
         <FlatList
           data={recipes}
           keyExtractor={(item) => item.seq.toString()}
-          renderItem={({ item }) => <RecipeList {...item} />}
+          renderItem={({ item }) => (
+            <RecipeList
+              {...item}
+              onRecipePress={() =>
+                navigation.navigate('RecipeDetail', {
+                  recipe: item,
+                })
+              }
+            />
+          )}
           ItemSeparatorComponent={() => <Separator />}
           style={styles.list}
         />

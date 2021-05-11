@@ -5,6 +5,8 @@ import RecipeListScreen from './RecipeListScreen';
 import RegisterScreen from './RegisterScreen';
 import ProductDetailListScreen from './ProductDetailListScreen';
 import MyPageScreen from './MyPageScreen';
+import BarcodeScreen from './BarcodeScreen';
+import RecipeDetailScreen from './RecipeDetailScreen';
 
 export {
   LoginScreen,
@@ -14,4 +16,6 @@ export {
   MyPageScreen,
   RecipeListScreen,
   ProductDetailListScreen,
+  BarcodeScreen,
+  RecipeDetailScreen,
 };

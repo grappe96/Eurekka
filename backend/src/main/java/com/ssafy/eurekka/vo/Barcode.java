@@ -15,7 +15,7 @@ public class Barcode {
   private ObjectId id;
 
   private int seq;
-  private int code;
+  private Double code;
   private String name;
   private String imgUrl;
   private String category;

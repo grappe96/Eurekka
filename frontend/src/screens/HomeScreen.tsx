@@ -1,11 +1,13 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Image, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { images } from '../common/images';
 import { theme } from '../common/theme';
+import constant from '../common/Constant';
 
 // 메인 화면 (열린 냉장고)
 const HomeScreen = ({ navigation }) => {
+  const btnHeight = (constant.width * 1.05) / 4.7;
+  const btnWidth = constant.width / 4.2;
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -19,22 +21,20 @@ const HomeScreen = ({ navigation }) => {
     },
     btnContainer: {
       position: 'absolute',
-      top: 170,
-      left: 40,
+      top: (constant.height - constant.width) / 3,
+      left: constant.width * 0.07,
     },
     row: {
       flexDirection: 'row',
     },
     side: {
-      width: 50,
-      height: 75,
-      margin: 5,
+      width: btnWidth * 0.8,
+      height: btnHeight,
       alignItems: 'center',
     },
     center: {
-      width: 85,
-      height: 75,
-      margin: 5,
+      width: btnWidth,
+      height: btnHeight,
       alignItems: 'center',
     },
     icon: {

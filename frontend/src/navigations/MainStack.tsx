@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Header from '../components/Common/Header';
+import { Header } from '../components';
 import { View, StyleSheet } from 'react-native';
 import BottomTab from './BottomTab';
 import {
@@ -13,7 +13,7 @@ import {
 
 const Stack = createStackNavigator();
 
-// 인증 후 사용하는 모든 화면이 담긴 navigation stack
+// 인증 후 사용하는 화면이 쌓이는 navigation stack
 const MainStack = () => {
   const theme =
     useContext<{

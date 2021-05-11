@@ -20,8 +20,8 @@ public class BarcodeController {
 
   @ApiOperation(value = "바코드정보조회", notes = "바코드 번호를 받아 해당 제품의 정보를 반환")
   @GetMapping()
-  public ResponseEntity<?> findBarcode(@RequestParam("code") int code) {
-    Barcode result = barcodeService.findBarcode(code);
+  public ResponseEntity<?> findBarcode(@RequestParam("code") String code) {
+    Barcode result = barcodeService.findBarcode(Double.parseDouble(code));
     if (result == null) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

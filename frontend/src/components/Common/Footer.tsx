@@ -86,7 +86,7 @@ const Footer = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.registerBtn}
-            onPressOut={() => navigation.navigate('Register', { code: '' })}
+            onPressOut={() => navigation.navigate('Register')}
           >
             <MaterialCommunityIcons
               name="barcode-scan"

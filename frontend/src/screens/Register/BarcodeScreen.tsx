@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
-
+import React, { useEffect, useContext } from 'react';
 import { View, SafeAreaView, PermissionsAndroid, Platform } from 'react-native';
-
 import { CameraScreen } from 'react-native-camera-kit';
+import { RegisterContext } from '../../contexts';
 
 function BarcodeScreen({ navigation }) {
-  const [qrvalue, setQrvalue] = useState('');
+  const { updateCode } = useContext(RegisterContext);
 
-  const onBarcodeScan = (qrvalue) => {
+  const onBarcodeScan = async (qrvalue) => {
     // Called after te successful scanning of QRCode/Barcode
-    setQrvalue(qrvalue);
-    navigation.navigate('Register', {
-      code: qrvalue,
-    });
+    await updateCode(qrvalue);
+    navigation.navigate('Register');
   };
 
-  const onOpneScanner = () => {
+  useEffect(() => {
+    openScanner();
+  }, []);
+
+  const openScanner = () => {
     // To Start Scanning
     if (Platform.OS === 'android') {
       async function requestCameraPermission() {
@@ -25,7 +26,6 @@ function BarcodeScreen({ navigation }) {
           );
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             // If CAMERA Permission is granted
-            setQrvalue('');
           } else {
             alert('CAMERA permission denied');
           }
@@ -36,8 +36,6 @@ function BarcodeScreen({ navigation }) {
       }
       // Calling the camera permission function
       requestCameraPermission();
-    } else {
-      setQrvalue('');
     }
   };
 

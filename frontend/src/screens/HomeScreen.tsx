@@ -21,7 +21,7 @@ const HomeScreen = ({ navigation }) => {
     },
     btnContainer: {
       position: 'absolute',
-      top: (constant.height - constant.width) / 3,
+      top: (constant.height - constant.width) / 3.2,
       left: constant.width * 0.07,
     },
     row: {

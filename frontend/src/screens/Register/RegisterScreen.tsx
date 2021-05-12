@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
   Image,
@@ -12,12 +12,12 @@ import { images } from '../../common/images';
 import { theme } from '../../common/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { List } from 'react-native-paper';
+import { RegisterContext } from '../../contexts';
 import axios from 'axios';
+import { DateModal } from '../../components';
 
 // 식품 등록 화면
-const RegisterScreen = ({ route, navigation }) => {
-  const { code } = route.params;
-
+const RegisterScreen = ({ navigation }) => {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: theme.background,
@@ -56,9 +56,12 @@ const RegisterScreen = ({ route, navigation }) => {
       marginTop: 22,
     },
     icon: {
-      marginTop: 2,
+      marginTop: 11,
     },
   });
+
+  // 등록 화면에서 공통으로 사용할 바코드, 유통기한 변수, 메소드
+  const { barcode, expirationDate } = useContext(RegisterContext);
 
   // 순서대로 사진, 식품명, 품목, 유통기한
   const [img, setImg] = useState<string>('');
@@ -68,13 +71,13 @@ const RegisterScreen = ({ route, navigation }) => {
     new Date().toISOString().split('T')[0]
   );
 
-  // 품목 Accordian 확장하는 변수, 함수
+  // 품목 Accordian 확장하는 변수, 메소드
   const [expanded, setExpanded] = useState<boolean>(false);
   const toggleExpanded = () => {
     setExpanded(!expanded);
   };
 
-  // 품목 이름 설정하는 함수
+  // 품목 이름 설정하는 메소드
   const getCategory = (item) => {
     setCategory(item.title);
     setExpanded(false);
@@ -149,8 +152,9 @@ const RegisterScreen = ({ route, navigation }) => {
     <List.Item title={item.title} onPress={() => getCategory(item)} />
   );
 
+  // 읽어온 바코드 값이 있을 때
   useEffect(() => {
-    if (code.length > 0) {
+    if (barcode.length > 0) {
       findDataByBarcode();
     } else {
       setName('');
@@ -159,13 +163,23 @@ const RegisterScreen = ({ route, navigation }) => {
       setDate('');
       setImg('');
     }
-  }, [code]);
+  }, [barcode]);
 
+  // 읽어온 유통기한 값이 있을 때
+  useEffect(() => {
+    if (expirationDate.length > 0) {
+      setDate(expirationDate);
+    } else {
+      setDate(new Date().toISOString().split('T')[0]);
+    }
+  }, [expirationDate]);
+
+  // 바코드 데이터 조회
   const findDataByBarcode = () => {
     axios
       .get(`http://10.0.2.2:8080/barcode`, {
         params: {
-          code: code,
+          code: barcode,
         },
       })
       .then((res) => {
@@ -179,6 +193,11 @@ const RegisterScreen = ({ route, navigation }) => {
         console.log(err.response);
         alert('스캔하신 바코드의 정보가 없습니다.');
       });
+  };
+
+  const [isModal, setModal] = useState<boolean>(false);
+  const closeModal = () => {
+    setModal(false);
   };
 
   return (
@@ -202,7 +221,7 @@ const RegisterScreen = ({ route, navigation }) => {
           >
             <MaterialCommunityIcons
               name="barcode-scan"
-              size={50}
+              size={36}
               color="#000000"
             />
           </TouchableOpacity>
@@ -228,18 +247,23 @@ const RegisterScreen = ({ route, navigation }) => {
             editable={false}
           ></TextInput>
         </View>
-        <View></View>
       </View>
       <View style={styles.row}>
         <View style={styles.textBox}>
           <View style={styles.row}>
             <Text style={styles.text}>유통기한</Text>
-            <MaterialCommunityIcons
-              name="calendar"
-              size={36}
-              color="#000000"
+            <TouchableOpacity
               style={styles.icon}
-            />
+              onPressOut={() => {
+                setModal(true);
+              }}
+            >
+              <MaterialCommunityIcons
+                name="calendar"
+                size={28}
+                color="#000000"
+              />
+            </TouchableOpacity>
           </View>
           <TextInput
             style={styles.input}
@@ -248,11 +272,18 @@ const RegisterScreen = ({ route, navigation }) => {
           ></TextInput>
         </View>
         <View>
-          <TouchableOpacity style={styles.touch}>
-            <MaterialCommunityIcons name="camera" size={50} color="#000000" />
+          <TouchableOpacity
+            style={styles.touch}
+            onPressOut={() => {
+              navigation.navigate('OCR');
+            }}
+          >
+            <MaterialCommunityIcons name="camera" size={36} color="#000000" />
           </TouchableOpacity>
         </View>
       </View>
+
+      <DateModal isModal={isModal} close={closeModal} />
     </View>
   );
 };

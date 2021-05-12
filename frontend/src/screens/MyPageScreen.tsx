@@ -1,8 +1,13 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Button } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MyPageScreen = () => {
+  const [token, setToken] = useState<String>('');
+  AsyncStorage.getItem('token', (err, res) => {
+    setToken(res);
+  });
+  const getUserInfo = async () => {};
   const logout = async () => {
     try {
       await AsyncStorage.clear();

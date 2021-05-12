@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Header, DateModal } from '../components';
+import { Header } from '../components';
 import { View, StyleSheet } from 'react-native';
 import BottomTab from './BottomTab';
 import {
@@ -50,7 +50,6 @@ const MainStack = () => {
         <Stack.Screen name="RecipeDetail" component={RecipeDetailScreen} />
         <Stack.Screen name="Tab" component={BottomTab} />
         <Stack.Screen name="OCR" component={OCRScreen} />
-        <Stack.Screen name="Scan" component={DateModal} />
       </Stack.Navigator>
     </View>
   );

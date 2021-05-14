@@ -276,4 +276,4 @@ def find_sim_recipes(df, sorted_ind, my_refrigerator):
 
 if __name__ == "__main__":
     app.debug = True
-    app.run()
+    app.run(host='0.0.0.0', port=5050)

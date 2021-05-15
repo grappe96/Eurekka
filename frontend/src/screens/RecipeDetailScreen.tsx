@@ -98,21 +98,11 @@ const RecipeDetailScreen = ({ route, navigation }) => {
                 </DataTable.Title>
               </DataTable.Header>
               <DataTable.Row>
-                <DataTable.Cell style={styles.energyTableContent}>
-                  {recipe.eng}
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.energyTableContent}>
-                  {recipe.car}
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.energyTableContent}>
-                  {recipe.pro}
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.energyTableContent}>
-                  {recipe.fat}
-                </DataTable.Cell>
-                <DataTable.Cell style={styles.energyTableContent}>
-                  {recipe.nat}
-                </DataTable.Cell>
+                <DataTable.Cell style={styles.energyTableContent}>{recipe.eng}</DataTable.Cell>
+                <DataTable.Cell style={styles.energyTableContent}>{recipe.car}</DataTable.Cell>
+                <DataTable.Cell style={styles.energyTableContent}>{recipe.pro}</DataTable.Cell>
+                <DataTable.Cell style={styles.energyTableContent}>{recipe.fat}</DataTable.Cell>
+                <DataTable.Cell style={styles.energyTableContent}>{recipe.nat}</DataTable.Cell>
               </DataTable.Row>
             </DataTable>
             <View style={styles.bar}></View>

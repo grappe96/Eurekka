@@ -67,9 +67,7 @@ const RegisterScreen = ({ navigation }) => {
   const [img, setImg] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [category, setCategory] = useState<string>('');
-  const [date, setDate] = useState<string>(
-    new Date().toISOString().split('T')[0]
-  );
+  const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
 
   // 품목 Accordian 확장하는 변수, 메소드
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -148,9 +146,7 @@ const RegisterScreen = ({ navigation }) => {
   ];
 
   // 리스트에 담긴 항목 Accordian안에 담아 보여줌
-  const listItem = ({ item }) => (
-    <List.Item title={item.title} onPress={() => getCategory(item)} />
-  );
+  const listItem = ({ item }) => <List.Item title={item.title} onPress={() => getCategory(item)} />;
 
   // 읽어온 바코드 값이 있을 때
   useEffect(() => {
@@ -177,7 +173,7 @@ const RegisterScreen = ({ navigation }) => {
   // 바코드 데이터 조회
   const findDataByBarcode = () => {
     axios
-      .get(`http://10.0.2.2:8080/barcode`, {
+      .get(`http://k4a404.p.ssafy.io:5000/barcode`, {
         params: {
           code: barcode,
         },
@@ -241,11 +237,7 @@ const RegisterScreen = ({ navigation }) => {
               keyExtractor={(item, index) => index.toString()}
             />
           </List.Accordion>
-          <TextInput
-            style={styles.input}
-            value={category}
-            editable={false}
-          ></TextInput>
+          <TextInput style={styles.input} value={category} editable={false}></TextInput>
         </View>
       </View>
       <View style={styles.row}>
@@ -265,11 +257,7 @@ const RegisterScreen = ({ navigation }) => {
               />
             </TouchableOpacity>
           </View>
-          <TextInput
-            style={styles.input}
-            value={date}
-            editable={false}
-          ></TextInput>
+          <TextInput style={styles.input} value={date} editable={false}></TextInput>
         </View>
         <View>
           <TouchableOpacity

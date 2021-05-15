@@ -28,4 +28,5 @@ public class User {
   private List<DoneProduct> eaten;
 
   private int alarmCycle;
+  private String deviceToken;
 }

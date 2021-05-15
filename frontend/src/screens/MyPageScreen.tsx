@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Button, Text, Image, Dimensions, ScrollView } from 'react-native';
-import { LineChart, PieChart, StackedBarChart } from 'react-native-chart-kit';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
+import { LineChart, PieChart } from 'react-native-chart-kit';
+import { BarChart, Grid } from 'react-native-svg-charts';
 import axios from 'axios';
+import { Button } from 'react-native-paper';
 import { images } from '../common/images';
 import { theme } from '../common/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -211,7 +220,20 @@ const MyPageScreen = () => {
   ];
 
   var lineData = {
-    labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+    labels: [
+      '1월',
+      '2월',
+      '3월',
+      '4월',
+      '5월',
+      '6월',
+      '7월',
+      '8월',
+      '9월',
+      '10월',
+      '11월',
+      '12월',
+    ],
     datasets: [
       {
         data: [
@@ -234,7 +256,7 @@ const MyPageScreen = () => {
     ],
   };
 
-  var stackedBarData = {
+  var eatData = {
     labels: [
       '면류',
       '제과제빵류',
@@ -252,26 +274,74 @@ const MyPageScreen = () => {
       '빙과류',
       '기타',
     ],
-    legend: ['먹음', '버림'],
-    data: [
-      [categoryChart.면류[0], categoryChart.면류[1]],
-      [categoryChart.제과제빵류[0], categoryChart.제과제빵류[1]],
-      [categoryChart.음료[0], categoryChart.음료[1]],
-      [categoryChart.절임류[0], categoryChart.절임류[1]],
-      [categoryChart.유제품[0], categoryChart.유제품[1]],
-      [categoryChart.건강식품[0], categoryChart.건강식품[1]],
-      [categoryChart.분말류[0], categoryChart.분말류[1]],
-      [categoryChart.육류[0], categoryChart.육류[1]],
-      [categoryChart.양념류[0], categoryChart.양념류[1]],
-      [categoryChart.수산물[0], categoryChart.수산물[1]],
-      [categoryChart.과채류[0], categoryChart.과채류[1]],
-      [categoryChart.주류[0], categoryChart.주류[1]],
-      [categoryChart.냉동식품[0], categoryChart.냉동식품[1]],
-      [categoryChart.빙과류[0], categoryChart.빙과류[1]],
-      [categoryChart.기타[0], categoryChart.기타[1]],
+    datasets: [
+      {
+        data: [
+          categoryChart.면류[0],
+          categoryChart.제과제빵류[0],
+          categoryChart.음료[0],
+          categoryChart.절임류[0],
+          categoryChart.유제품[0],
+          categoryChart.건강식품[0],
+          categoryChart.분말류[0],
+          categoryChart.육류[0],
+          categoryChart.양념류[0],
+          categoryChart.수산물[0],
+          categoryChart.과채류[0],
+          categoryChart.주류[0],
+          categoryChart.냉동식품[0],
+          categoryChart.빙과류[0],
+          categoryChart.기타[0],
+        ],
+        strokeWidth: 1,
+        backgroundColor: theme.background,
+      },
     ],
-    barColors: ['#6D86DF', '#FB5C6F'],
   };
+
+  var abandonData = {
+    labels: [
+      '면류',
+      '제과제빵류',
+      '음료',
+      '절임류',
+      '유제품',
+      '건강식품',
+      '분말류',
+      '육류',
+      '양념류',
+      '수산물',
+      '과채류',
+      '주류',
+      '냉동식품',
+      '빙과류',
+      '기타',
+    ],
+    datasets: [
+      {
+        data: [
+          categoryChart.면류[1],
+          categoryChart.제과제빵류[1],
+          categoryChart.음료[1],
+          categoryChart.절임류[1],
+          categoryChart.유제품[1],
+          categoryChart.건강식품[1],
+          categoryChart.분말류[1],
+          categoryChart.육류[1],
+          categoryChart.양념류[1],
+          categoryChart.수산물[1],
+          categoryChart.과채류[1],
+          categoryChart.주류[1],
+          categoryChart.냉동식품[1],
+          categoryChart.빙과류[1],
+          categoryChart.기타[1],
+        ],
+        strokeWidth: 1,
+        backgroundColor: theme.background,
+      },
+    ],
+  };
+
   const GetImage = (data) => {
     var img;
     switch (data.image) {
@@ -302,6 +372,15 @@ const MyPageScreen = () => {
   };
 
   const width = Dimensions.get('window').width;
+  const [custom, setCustom] = useState<boolean>(true);
+
+  const pressEat = () => {
+    setCustom(true);
+  };
+
+  const pressAbandon = () => {
+    setCustom(false);
+  };
 
   return (
     <ScrollView style={{ backgroundColor: theme.background }}>
@@ -312,7 +391,11 @@ const MyPageScreen = () => {
           <Text style={styles.email}>{userInfo.email}</Text>
         </View>
         <View style={styles.chartContainer}>
-          <Text style={styles.chartTitle}>{curMonthChart.curMonth}월 음식 소비량</Text>
+          <View style={styles.titleContainer}>
+            <Text style={styles.chartTitle}>
+              {curMonthChart.curMonth}월 음식 소비량
+            </Text>
+          </View>
           <PieChart
             data={pieData}
             width={width}
@@ -328,7 +411,9 @@ const MyPageScreen = () => {
             paddingLeft="15"
             absolute
           />
-          <Text style={styles.chartTitle}>월별 버린 음식 개수</Text>
+          <View style={styles.titleContainer}>
+            <Text style={styles.chartTitle}>월별 버린 음식 개수</Text>
+          </View>
           <LineChart
             data={lineData}
             width={width}
@@ -340,23 +425,85 @@ const MyPageScreen = () => {
               color: (opacity = 1) => `rgba(96, 109, 202, ${opacity})`,
             }}
           />
-          <Text style={styles.chartTitle}>종류별 버린 음식 개수</Text>
-          {/* <StackedBarChart
-            data={stackedBarData}
-            width={1000}
-            height={220}
-            hideLegend={false}
-            chartConfig={{
-              backgroundColor: '#1cc910',
-              backgroundGradientFrom: '#eff3ff',
-              backgroundGradientTo: '#efefef',
-              decimalPlaces: 1,
-              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              style: {
-                borderRadius: 16,
-              },
-            }}
-          /> */}
+          <View style={styles.titleContainer}>
+            <Text style={styles.chartTitle}>종류별 소비 음식 개수</Text>
+          </View>
+          <View style={styles.btnContainer}>
+            {custom ? (
+              <Button
+                icon="silverware-fork-knife"
+                mode="contained"
+                style={styles.btn}
+                color="#6D86DF"
+                dark
+                onPress={() => pressEat()}
+              >
+                먹음
+              </Button>
+            ) : (
+              <Button
+                icon="silverware-fork-knife"
+                mode="outlined"
+                style={styles.btn}
+                color="#6D86DF"
+                onPress={() => pressEat()}
+              >
+                먹음
+              </Button>
+            )}
+
+            {custom ? (
+              <Button
+                icon="trash-can"
+                mode="outlined"
+                style={styles.btn}
+                color="#FB5C6F"
+                onPress={() => pressAbandon()}
+              >
+                버림
+              </Button>
+            ) : (
+              <Button
+                icon="trash-can"
+                mode="contained"
+                style={styles.btn}
+                color="#FB5C6F"
+                dark
+                onPress={() => pressAbandon()}
+              >
+                버림
+              </Button>
+            )}
+          </View>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={true}>
+            {custom ? (
+              <LineChart
+                data={eatData}
+                width={900}
+                height={220}
+                chartConfig={{
+                  backgroundColor: theme.background,
+                  backgroundGradientFrom: theme.background,
+                  backgroundGradientTo: theme.background,
+                  color: (opacity = 1) => `rgba(109, 134, 223, ${opacity})`,
+                }}
+                bezier
+              />
+            ) : (
+              <LineChart
+                data={abandonData}
+                width={900}
+                height={220}
+                chartConfig={{
+                  backgroundColor: theme.background,
+                  backgroundGradientFrom: theme.background,
+                  backgroundGradientTo: theme.background,
+                  color: (opacity = 1) => `rgba(251, 92, 111, ${opacity})`,
+                }}
+                bezier
+              />
+            )}
+          </ScrollView>
         </View>
       </View>
     </ScrollView>
@@ -390,10 +537,26 @@ const styles = StyleSheet.create({
     marginTop: 15,
     alignItems: 'center',
   },
-  chartTitle: {
-    marginTop: 10,
+  titleContainer: {
+    width: '100%',
+    borderBottomColor: '#e4e4e4',
+    borderBottomWidth: 1,
     marginBottom: 10,
-    fontSize: 24,
+  },
+  chartTitle: {
+    marginTop: 20,
+    marginBottom: 5,
+    fontSize: 20,
+  },
+  btnContainer: {
+    width: '80%',
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  btn: {
+    marginHorizontal: 3,
+    width: '20%',
+    height: '100%',
   },
 });
 

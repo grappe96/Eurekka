@@ -1,5 +1,5 @@
 import Footer from './Common/Footer';
 import Header from './Common/Header';
-import DatePicker from './Register/DatePicker';
+import DateModal from './Register/DatePicker';
 
-export { Footer, Header, DatePicker };
+export { Footer, Header, DateModal };

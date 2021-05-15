@@ -7,6 +7,7 @@ import ProductDetailListScreen from './ProductDetailListScreen';
 import MyPageScreen from './MyPageScreen';
 import BarcodeScreen from './Register/BarcodeScreen';
 import RecipeDetailScreen from './RecipeDetailScreen';
+import OCRScreen from './Register/OCRScreen';
 
 export {
   LoginScreen,
@@ -18,4 +19,5 @@ export {
   ProductDetailListScreen,
   BarcodeScreen,
   RecipeDetailScreen,
+  OCRScreen,
 };

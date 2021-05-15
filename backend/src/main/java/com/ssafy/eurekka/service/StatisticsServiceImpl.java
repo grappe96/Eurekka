@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @Service
 public class StatisticsServiceImpl implements StatisticsService{
     @Autowired
@@ -58,6 +59,7 @@ public class StatisticsServiceImpl implements StatisticsService{
     @Override
     public Map<Integer, Integer> findMonthlyStatistics(String email) {
         List<DoneProduct> abandonedProductList = userRepository.findByEmail(email).getAbandoned();
+
         Map<Integer,Integer> map = new HashMap<>();
         for(int i=1;i<=12;i++){
             map.put(i,0);

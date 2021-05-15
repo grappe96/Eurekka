@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,14 +6,16 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import { LineChart, PieChart } from 'react-native-chart-kit';
-import { BarChart, Grid } from 'react-native-svg-charts';
 import axios from 'axios';
-import { Button } from 'react-native-paper';
+import { Button, IconButton, Colors } from 'react-native-paper';
 import { images } from '../common/images';
 import { theme } from '../common/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { blue200 } from 'react-native-paper/lib/typescript/styles/colors';
+import { color } from 'react-native-reanimated';
 
 const MyPageScreen = () => {
   const [token, setToken] = useState<String>('');
@@ -382,131 +384,396 @@ const MyPageScreen = () => {
     setCustom(false);
   };
 
-  return (
-    <ScrollView style={{ backgroundColor: theme.background }}>
-      <View style={styles.container}>
-        <View style={styles.profileContainer}>
-          <GetImage image={userInfo.profileImg} />
-          <Text style={styles.name}>{userInfo.name}</Text>
-          <Text style={styles.email}>{userInfo.email}</Text>
-        </View>
-        <View style={styles.chartContainer}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.chartTitle}>
-              {curMonthChart.curMonth}월 음식 소비량
-            </Text>
-          </View>
-          <PieChart
-            data={pieData}
-            width={width}
-            height={220}
-            chartConfig={{
-              backgroundColor: theme.background,
-              backgroundGradientFrom: theme.background,
-              backgroundGradientTo: theme.background,
-              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            }}
-            accessor="count"
-            backgroundColor={theme.background}
-            paddingLeft="15"
-            absolute
-          />
-          <View style={styles.titleContainer}>
-            <Text style={styles.chartTitle}>월별 버린 음식 개수</Text>
-          </View>
-          <LineChart
-            data={lineData}
-            width={width}
-            height={220}
-            chartConfig={{
-              backgroundColor: theme.background,
-              backgroundGradientFrom: theme.background,
-              backgroundGradientTo: theme.background,
-              color: (opacity = 1) => `rgba(96, 109, 202, ${opacity})`,
-            }}
-          />
-          <View style={styles.titleContainer}>
-            <Text style={styles.chartTitle}>종류별 소비 음식 개수</Text>
-          </View>
-          <View style={styles.btnContainer}>
-            {custom ? (
-              <Button
-                icon="silverware-fork-knife"
-                mode="contained"
-                style={styles.btn}
-                color="#6D86DF"
-                dark
-                onPress={() => pressEat()}
-              >
-                먹음
-              </Button>
-            ) : (
-              <Button
-                icon="silverware-fork-knife"
-                mode="outlined"
-                style={styles.btn}
-                color="#6D86DF"
-                onPress={() => pressEat()}
-              >
-                먹음
-              </Button>
-            )}
+  const [img1, setImg1] = useState<boolean>(true);
+  const [img2, setImg2] = useState<boolean>(false);
+  const [img3, setImg3] = useState<boolean>(false);
+  const [img4, setImg4] = useState<boolean>(false);
+  const [img5, setImg5] = useState<boolean>(false);
+  const [img6, setImg6] = useState<boolean>(false);
 
-            {custom ? (
-              <Button
-                icon="trash-can"
-                mode="outlined"
-                style={styles.btn}
-                color="#FB5C6F"
-                onPress={() => pressAbandon()}
-              >
-                버림
-              </Button>
-            ) : (
-              <Button
-                icon="trash-can"
-                mode="contained"
-                style={styles.btn}
-                color="#FB5C6F"
-                dark
-                onPress={() => pressAbandon()}
-              >
-                버림
-              </Button>
-            )}
+  const ImgModal = (props) => {
+    const styles = StyleSheet.create({
+      container: {
+        position: 'absolute',
+        backgroundColor: '#55555555',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 9999,
+      },
+      modal: {
+        width: '80%',
+        height: 250,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: theme.background,
+      },
+      title: {
+        marginBottom: 10,
+      },
+      imgContainer: {
+        flexDirection: 'row',
+        marginVertical: 5,
+      },
+      profileImg: {
+        width: 63,
+        height: 63,
+        marginLeft: 3,
+      },
+      profileImgSelect: {
+        width: 63,
+        height: 63,
+        marginLeft: 3,
+        borderColor: '#C2B8FF',
+        borderWidth: 3,
+        borderRadius: 50,
+      },
+      btnContainer: {
+        flexDirection: 'row',
+        marginTop: 15,
+      },
+      btn: {
+        marginHorizontal: 3,
+        width: '20%',
+        height: '100%',
+      },
+    });
+
+    const clickOK = async () => {
+      var img;
+      if (img1) {
+        img = 'img1';
+      } else if (img2) {
+        img = 'img2';
+      } else if (img3) {
+        img = 'img3';
+      } else if (img4) {
+        img = 'img4';
+      } else if (img5) {
+        img = 'img5';
+      } else if (img6) {
+        img = 'img6';
+      }
+
+      await axios
+        .put(
+          `http://k4a404.p.ssafy.io:5000/user/info`,
+          {
+            name: userInfo.name,
+            profileImg: img,
+            alarmCycle: userInfo.alarmCycle,
+          },
+          {
+            headers: {
+              'content-type': 'application/json',
+              jwt: token,
+            },
+          }
+        )
+        .then(({ data }) => {
+          if (data === 'SUCCESS') {
+            getUserInfo();
+          } else {
+            alert('정보를 수정할 수 없습니다.');
+          }
+        })
+        .catch((err) => {
+          alert('서버와 연결할 수 없습니다.');
+        });
+      props.close();
+    };
+
+    const clickCancel = async () => {
+      props.close();
+    };
+
+    const clickImg = async (data) => {
+      if (data === 'img1') {
+        setImg1(true);
+        setImg2(false);
+        setImg3(false);
+        setImg4(false);
+        setImg5(false);
+        setImg6(false);
+      } else if (data === 'img2') {
+        setImg1(false);
+        setImg2(true);
+        setImg3(false);
+        setImg4(false);
+        setImg5(false);
+        setImg6(false);
+      } else if (data === 'img3') {
+        setImg1(false);
+        setImg2(false);
+        setImg3(true);
+        setImg4(false);
+        setImg5(false);
+        setImg6(false);
+      } else if (data === 'img4') {
+        setImg1(false);
+        setImg2(false);
+        setImg3(false);
+        setImg4(true);
+        setImg5(false);
+        setImg6(false);
+      } else if (data === 'img5') {
+        setImg1(false);
+        setImg2(false);
+        setImg3(false);
+        setImg4(false);
+        setImg5(true);
+        setImg6(false);
+      } else if (data === 'img6') {
+        setImg1(false);
+        setImg2(false);
+        setImg3(false);
+        setImg4(false);
+        setImg5(false);
+        setImg6(true);
+      }
+    };
+    return (
+      <>
+        {props.isModal ? (
+          <View style={styles.container}>
+            <View style={styles.modal}>
+              <Text style={styles.title}>
+                변경하고 싶은 프로필 사진을 선택해주세요
+              </Text>
+              <View style={styles.imgContainer}>
+                <TouchableOpacity onPress={() => clickImg('img1')}>
+                  {img1 ? (
+                    <Image
+                      source={images.img1}
+                      style={styles.profileImgSelect}
+                    />
+                  ) : (
+                    <Image source={images.img1} style={styles.profileImg} />
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => clickImg('img2')}>
+                  {img2 ? (
+                    <Image
+                      source={images.img2}
+                      style={styles.profileImgSelect}
+                    />
+                  ) : (
+                    <Image source={images.img2} style={styles.profileImg} />
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => clickImg('img3')}>
+                  {img3 ? (
+                    <Image
+                      source={images.img3}
+                      style={styles.profileImgSelect}
+                    />
+                  ) : (
+                    <Image source={images.img3} style={styles.profileImg} />
+                  )}
+                </TouchableOpacity>
+              </View>
+              <View style={styles.imgContainer}>
+                <TouchableOpacity onPress={() => clickImg('img4')}>
+                  {img4 ? (
+                    <Image
+                      source={images.img4}
+                      style={styles.profileImgSelect}
+                    />
+                  ) : (
+                    <Image source={images.img4} style={styles.profileImg} />
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => clickImg('img5')}>
+                  {img5 ? (
+                    <Image
+                      source={images.img5}
+                      style={styles.profileImgSelect}
+                    />
+                  ) : (
+                    <Image source={images.img5} style={styles.profileImg} />
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => clickImg('img6')}>
+                  {img6 ? (
+                    <Image
+                      source={images.img6}
+                      style={styles.profileImgSelect}
+                    />
+                  ) : (
+                    <Image source={images.img6} style={styles.profileImg} />
+                  )}
+                </TouchableOpacity>
+              </View>
+              <View style={styles.btnContainer}>
+                <Button
+                  mode="outlined"
+                  onPress={() => clickOK()}
+                  style={styles.btn}
+                  color={Colors.blue500}
+                >
+                  확인
+                </Button>
+                <Button
+                  mode="outlined"
+                  onPress={() => clickCancel()}
+                  style={styles.btn}
+                  color={Colors.red500}
+                >
+                  취소
+                </Button>
+              </View>
+            </View>
           </View>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={true}>
-            {custom ? (
-              <LineChart
-                data={eatData}
-                width={900}
-                height={220}
-                chartConfig={{
-                  backgroundColor: theme.background,
-                  backgroundGradientFrom: theme.background,
-                  backgroundGradientTo: theme.background,
-                  color: (opacity = 1) => `rgba(109, 134, 223, ${opacity})`,
-                }}
-                bezier
+        ) : null}
+      </>
+    );
+  };
+
+  const [isModal, setModal] = useState<boolean>(false);
+  const closeModal = () => {
+    setModal(false);
+  };
+
+  return (
+    <View>
+      <ScrollView style={{ backgroundColor: theme.background }}>
+        <View style={styles.container}>
+          <View style={styles.profileContainer}>
+            <View style={styles.modifyBtn}>
+              <IconButton
+                icon="pencil"
+                color={Colors.grey600}
+                size={20}
+                onPress={() => setModal(true)}
               />
-            ) : (
-              <LineChart
-                data={abandonData}
-                width={900}
-                height={220}
-                chartConfig={{
-                  backgroundColor: theme.background,
-                  backgroundGradientFrom: theme.background,
-                  backgroundGradientTo: theme.background,
-                  color: (opacity = 1) => `rgba(251, 92, 111, ${opacity})`,
-                }}
-                bezier
-              />
-            )}
-          </ScrollView>
+            </View>
+            <GetImage image={userInfo.profileImg} />
+            <Text style={styles.name}>{userInfo.name}</Text>
+            <Text style={styles.email}>{userInfo.email}</Text>
+          </View>
+          <View style={styles.chartContainer}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.chartTitle}>
+                {curMonthChart.curMonth}월 음식 소비량
+              </Text>
+            </View>
+            <PieChart
+              data={pieData}
+              width={width}
+              height={220}
+              chartConfig={{
+                backgroundColor: theme.background,
+                backgroundGradientFrom: theme.background,
+                backgroundGradientTo: theme.background,
+                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              }}
+              accessor="count"
+              backgroundColor={theme.background}
+              paddingLeft="15"
+              absolute
+            />
+            <View style={styles.titleContainer}>
+              <Text style={styles.chartTitle}>월별 버린 음식 개수</Text>
+            </View>
+            <LineChart
+              data={lineData}
+              width={width}
+              height={220}
+              chartConfig={{
+                backgroundColor: theme.background,
+                backgroundGradientFrom: theme.background,
+                backgroundGradientTo: theme.background,
+                color: (opacity = 1) => `rgba(96, 109, 202, ${opacity})`,
+              }}
+            />
+            <View style={styles.titleContainer}>
+              <Text style={styles.chartTitle}>종류별 소비 음식 개수</Text>
+            </View>
+            <View style={styles.btnContainer}>
+              {custom ? (
+                <Button
+                  icon="silverware-fork-knife"
+                  mode="contained"
+                  style={styles.btn}
+                  color="#6D86DF"
+                  dark
+                  onPress={() => pressEat()}
+                >
+                  먹음
+                </Button>
+              ) : (
+                <Button
+                  icon="silverware-fork-knife"
+                  mode="outlined"
+                  style={styles.btn}
+                  color="#6D86DF"
+                  onPress={() => pressEat()}
+                >
+                  먹음
+                </Button>
+              )}
+
+              {custom ? (
+                <Button
+                  icon="trash-can"
+                  mode="outlined"
+                  style={styles.btn}
+                  color="#FB5C6F"
+                  onPress={() => pressAbandon()}
+                >
+                  버림
+                </Button>
+              ) : (
+                <Button
+                  icon="trash-can"
+                  mode="contained"
+                  style={styles.btn}
+                  color="#FB5C6F"
+                  dark
+                  onPress={() => pressAbandon()}
+                >
+                  버림
+                </Button>
+              )}
+            </View>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={true}>
+              {custom ? (
+                <LineChart
+                  data={eatData}
+                  width={900}
+                  height={220}
+                  chartConfig={{
+                    backgroundColor: theme.background,
+                    backgroundGradientFrom: theme.background,
+                    backgroundGradientTo: theme.background,
+                    color: (opacity = 1) => `rgba(109, 134, 223, ${opacity})`,
+                  }}
+                  bezier
+                />
+              ) : (
+                <LineChart
+                  data={abandonData}
+                  width={900}
+                  height={220}
+                  chartConfig={{
+                    backgroundColor: theme.background,
+                    backgroundGradientFrom: theme.background,
+                    backgroundGradientTo: theme.background,
+                    color: (opacity = 1) => `rgba(251, 92, 111, ${opacity})`,
+                  }}
+                  bezier
+                />
+              )}
+            </ScrollView>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+      <ImgModal isModal={isModal} close={closeModal} />
+    </View>
   );
 };
 
@@ -525,6 +792,11 @@ const styles = StyleSheet.create({
     borderColor: '#606DCA',
     borderWidth: 2,
     borderRadius: 10,
+  },
+  modifyBtn: {
+    width: '100%',
+    height: 10,
+    alignItems: 'flex-end',
   },
   name: {
     fontSize: 18,

@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Image,
-  StyleSheet,
-  TextInput,
-  Text,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import { View, Image, StyleSheet, TextInput, Text, TouchableOpacity, FlatList } from 'react-native';
 import { images } from '../../common/images';
 import { theme } from '../../common/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -64,9 +56,7 @@ const RegisterScreen = ({ route, navigation }) => {
   const [img, setImg] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [category, setCategory] = useState<string>('');
-  const [date, setDate] = useState<string>(
-    new Date().toISOString().split('T')[0]
-  );
+  const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
 
   // 품목 Accordian 확장하는 변수, 함수
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -145,9 +135,7 @@ const RegisterScreen = ({ route, navigation }) => {
   ];
 
   // 리스트에 담긴 항목 Accordian안에 담아 보여줌
-  const listItem = ({ item }) => (
-    <List.Item title={item.title} onPress={() => getCategory(item)} />
-  );
+  const listItem = ({ item }) => <List.Item title={item.title} onPress={() => getCategory(item)} />;
 
   useEffect(() => {
     if (code.length > 0) {
@@ -163,7 +151,7 @@ const RegisterScreen = ({ route, navigation }) => {
 
   const findDataByBarcode = () => {
     axios
-      .get(`http://10.0.2.2:8080/barcode`, {
+      .get(`http://k4a404.p.ssafy.io:5000/barcode`, {
         params: {
           code: code,
         },
@@ -200,11 +188,7 @@ const RegisterScreen = ({ route, navigation }) => {
               navigation.navigate('Barcode');
             }}
           >
-            <MaterialCommunityIcons
-              name="barcode-scan"
-              size={50}
-              color="#000000"
-            />
+            <MaterialCommunityIcons name="barcode-scan" size={50} color="#000000" />
           </TouchableOpacity>
         </View>
       </View>
@@ -222,11 +206,7 @@ const RegisterScreen = ({ route, navigation }) => {
               keyExtractor={(item, index) => index.toString()}
             />
           </List.Accordion>
-          <TextInput
-            style={styles.input}
-            value={category}
-            editable={false}
-          ></TextInput>
+          <TextInput style={styles.input} value={category} editable={false}></TextInput>
         </View>
         <View></View>
       </View>
@@ -234,18 +214,9 @@ const RegisterScreen = ({ route, navigation }) => {
         <View style={styles.textBox}>
           <View style={styles.row}>
             <Text style={styles.text}>유통기한</Text>
-            <MaterialCommunityIcons
-              name="calendar"
-              size={36}
-              color="#000000"
-              style={styles.icon}
-            />
+            <MaterialCommunityIcons name="calendar" size={36} color="#000000" style={styles.icon} />
           </View>
-          <TextInput
-            style={styles.input}
-            value={date}
-            editable={false}
-          ></TextInput>
+          <TextInput style={styles.input} value={date} editable={false}></TextInput>
         </View>
         <View>
           <TouchableOpacity style={styles.touch}>

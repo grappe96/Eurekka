@@ -63,7 +63,7 @@ public class StatisticsServiceImpl implements StatisticsService{
             map.put(i,0);
         }
         if(abandonedProductList!=null){
-            for(int i=1;i<=abandonedProductList.size();i++){
+            for(int i=0;i<abandonedProductList.size();i++){
                 int month = abandonedProductList.get(i).getRecordDate().getMonth()+1;
                 map.put(month, map.get(month)+1);
             }

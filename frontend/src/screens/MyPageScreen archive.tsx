@@ -94,21 +94,21 @@ const MyPageScreen = () => {
   });
 
   const [categoryChart, setCategory] = useState<category>({
-    면류: [0, 0],
-    제과제빵류: [0, 0],
-    음료: [0, 0],
-    절임류: [0, 0],
-    유제품: [0, 0],
-    건강식품: [0, 0],
-    분말류: [0, 0],
-    육류: [0, 0],
-    양념류: [0, 0],
-    수산물: [0, 0],
-    과채류: [0, 0],
-    주류: [0, 0],
-    냉동식품: [0, 0],
-    빙과류: [0, 0],
-    기타: [0, 0],
+    면류: [],
+    제과제빵류: [],
+    음료: [],
+    절임류: [],
+    유제품: [],
+    건강식품: [],
+    분말류: [],
+    육류: [],
+    양념류: [],
+    수산물: [],
+    과채류: [],
+    주류: [],
+    냉동식품: [],
+    빙과류: [],
+    기타: [],
   });
 
   const getUserInfo = async () => {
@@ -343,7 +343,7 @@ const MyPageScreen = () => {
           <Text style={styles.chartTitle}>종류별 버린 음식 개수</Text>
           {/* <StackedBarChart
             data={stackedBarData}
-            width={1000}
+            width={width}
             height={220}
             hideLegend={false}
             chartConfig={{

@@ -45,7 +45,7 @@ const ProductDetailListScreen = ({ route, navigation }) => {
 
   const getProducts = async () => {
     axios
-      .get(`http://10.0.2.2:8080/refrigerator/${refrigerId}/${categoryId}`)
+      .get(`http://k4a404.p.ssafy.io:5000/refrigerator/${refrigerId}/${categoryId}`)
       .then(({ data }) => {
         setResult(data);
       })
@@ -69,7 +69,7 @@ const ProductDetailListScreen = ({ route, navigation }) => {
   const eatProduct = async (item) => {
     axios
       .post(
-        `http://10.0.2.2:8080/refrigerator/eat`,
+        `http://k4a404.p.ssafy.io:5000/refrigerator/eat`,
         {
           id: item.id,
           name: item.name,
@@ -94,7 +94,7 @@ const ProductDetailListScreen = ({ route, navigation }) => {
   const abandonProduct = async (item) => {
     axios
       .post(
-        `http://10.0.2.2:8080/refrigerator/abandon`,
+        `http://k4a404.p.ssafy.io:5000/refrigerator/abandon`,
         {
           id: item.id,
           name: item.name,

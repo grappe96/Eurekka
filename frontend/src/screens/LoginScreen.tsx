@@ -51,7 +51,7 @@ const LoginScreen = () => {
     const token: KakaoOAuthToken = await login();
 
     axios
-      .post(`http://k4a404.p.ssafy.io:5000/user/kakao/login`, {
+      .post(`http://10.0.2.2:8080/user/kakao/login`, {
         token: token.accessToken,
       })
       .then((res) => {

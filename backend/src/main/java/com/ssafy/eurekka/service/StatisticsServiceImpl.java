@@ -7,10 +7,7 @@ import com.ssafy.eurekka.vo.DoneProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class StatisticsServiceImpl implements StatisticsService{
@@ -58,12 +55,13 @@ public class StatisticsServiceImpl implements StatisticsService{
     @Override
     public Map<Integer, Integer> findMonthlyStatistics(String email) {
         List<DoneProduct> abandonedProductList = userRepository.findByEmail(email).getAbandoned();
+
         Map<Integer,Integer> map = new HashMap<>();
         for(int i=1;i<=12;i++){
             map.put(i,0);
         }
         if(abandonedProductList!=null){
-            for(int i=1;i<=abandonedProductList.size();i++){
+            for(int i=0;i<abandonedProductList.size();i++){
                 int month = abandonedProductList.get(i).getRecordDate().getMonth()+1;
                 map.put(month, map.get(month)+1);
             }

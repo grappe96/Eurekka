@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService{
 
     // 카카오 로그인
     @Override
-    public User kakaoLogin(String access_token) {
+    public User kakaoLogin(String access_token, String deviceToken) {
 
         // 카카오 서버에 회원정보 요청
         RestTemplate rt = new RestTemplate();
@@ -81,8 +81,13 @@ public class UserServiceImpl implements UserService{
                 user.setProfileImg("img1");
                 user.setRefrigeratorId(refrigerator.getId());
                 user.setAlarmCycle(1);
-                userRepository.save(user);
+                user.setDeviceToken(deviceToken);
+            }else{
+                // 기존회원 deviceToken 넣기
+                user.setDeviceToken(deviceToken);
             }
+            // 회원가입, 기존회원 모두 deviceToken 재반영
+            userRepository.save(user);
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();

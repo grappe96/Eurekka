@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { KakaoOAuthToken, login } from '@react-native-seoul/kakao-login';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { images } from '../common/images';
 import { theme } from '../common/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { TokenContext } from '../contexts';
 
 // kakao 로그인 실행하는 첫 화면
 const LoginScreen = () => {
@@ -46,18 +47,28 @@ const LoginScreen = () => {
     },
   });
 
+  const { deviceToken, updateToken } = useContext(TokenContext);
   // kakao login 실행되면 받는 인증 토큰 서버로 전달
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login();
 
     axios
-      .post(`http://10.0.2.2:8080/user/kakao/login`, {
-        token: token.accessToken,
-      })
+      .post(
+        `http://10.0.2.2:8080/user/kakao/login`,
+        {
+          token: token.accessToken,
+        },
+        {
+          headers: {
+            deviceToken: deviceToken,
+          },
+        }
+      )
       .then((res) => {
         // 서버에서 받은 jwt와 사용자 정보 저장
         AsyncStorage.setItem('token', res.data.jwt);
         AsyncStorage.setItem('userInfo', JSON.stringify(res.data.user));
+        updateToken(res.data.jwt);
       })
       .catch((err) => {
         console.error(err);
@@ -74,7 +85,7 @@ const LoginScreen = () => {
         <Image source={images.fridgeImg} style={styles.img} />
       </View>
       <View style={styles.footer}>
-        <TouchableOpacity onPressOut={() => signInWithKakao()}>
+        <TouchableOpacity onPress={() => signInWithKakao()}>
           <Image source={images.btnImg} style={styles.btnImg} />
         </TouchableOpacity>
       </View>

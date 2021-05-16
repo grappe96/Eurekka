@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "466485044884",
+    "project_id": "eurekka-bf962",
+    "storage_bucket": "eurekka-bf962.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:466485044884:android:97329465b2d52e88fa3681",
+        "android_client_info": {
+          "package_name": "com.ssafy.eurekka"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "466485044884-i660n8cm4f2dstj1s2r6ivfgfiila9ho.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnb4oLkXZru7A4fi2go24AB6M8OXgGj0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "466485044884-i660n8cm4f2dstj1s2r6ivfgfiila9ho.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

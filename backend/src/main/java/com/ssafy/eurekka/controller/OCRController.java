@@ -25,7 +25,7 @@ public class OCRController {
 	@ApiOperation(value = "OCR 결과 가져오기", notes = "사진 정보를 받아 OCR기능을 활용해 유통기한 읽기")
 	@PostMapping()
 	public ResponseEntity<String> naverOCR(
-			@RequestParam(value = "updatedFile", required = true) MultipartFile expirationDateImg) {
+		@RequestParam(value = "updatedFile", required = true) MultipartFile expirationDateImg) {
 
 		String expirationDate = ocrService.findOCRResult(expirationDateImg);
 		

@@ -3,7 +3,6 @@ import React, { useEffect, useState, useContext } from 'react';
 import {
   View,
   SafeAreaView,
-  Button,
   StyleSheet,
   Image,
   PermissionsAndroid,
@@ -11,17 +10,23 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 import { RegisterContext } from '../../contexts';
+import { CustomButton } from '../../components';
+import constant from '../../common/Constant';
 
 // OCR 인식 화면
 const OCRScreen = ({ navigation }) => {
   const styles = StyleSheet.create({
     image: {
-      marginVertical: 24,
+      marginVertical: 20,
       alignItems: 'center',
     },
-    response: {
-      marginVertical: 16,
-      marginHorizontal: 8,
+    imgContainer: {
+      height: constant.height * 0.4,
+    },
+    btnContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'row',
     },
   });
 
@@ -38,7 +43,6 @@ const OCRScreen = ({ navigation }) => {
 
   // 카메라 권한 얻는 메소드
   const openCamera = () => {
-    // To Start Scanning
     if (Platform.OS === 'android') {
       async function requestCameraPermission() {
         try {
@@ -55,13 +59,14 @@ const OCRScreen = ({ navigation }) => {
           console.warn(err);
         }
       }
-      // Calling the camera permission function
       requestCameraPermission();
     }
   };
 
   // 촬영하거나 갤러리에서 불러온 이미지 백으로 업로드
   const uploadProfileImage = async (image) => {
+    if (image.didCancel == true) return;
+
     const formData = new FormData();
 
     formData.append('updatedFile', {
@@ -78,7 +83,7 @@ const OCRScreen = ({ navigation }) => {
       });
       const result = res.data;
       if (result == 'TRY AGAIN')
-        alert('글자를 파악하기 어렵습니다. 다시 시도해주세요.');
+        alert('올바른 날짜 형식이 아닙니다. 다시 시도해주세요.');
       else {
         const setDate = async () => {
           updateDate(result);
@@ -93,50 +98,55 @@ const OCRScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView>
-      <Button
-        title="Take image"
-        onPress={() =>
-          ImagePicker.launchCamera(
-            {
-              mediaType: 'photo',
-              includeBase64: false,
-              maxHeight: 200,
-              maxWidth: 200,
-            },
-            (response) => {
-              setResponse(response);
-              uploadProfileImage(response);
-            }
-          )
-        }
-      />
+      <View style={styles.imgContainer}>
+        {response && (
+          <View style={styles.image}>
+            <Image
+              style={{ width: 200, height: 200 }}
+              source={{ uri: response.uri }}
+            />
+          </View>
+        )}
+      </View>
+      <View style={styles.btnContainer}>
+        <CustomButton
+          title="사진 촬영하기"
+          onPress={() =>
+            ImagePicker.launchCamera(
+              {
+                mediaType: 'photo',
+                includeBase64: false,
+                maxHeight: 200,
+                maxWidth: 200,
+              },
+              (response) => {
+                setResponse(response);
+                uploadProfileImage(response);
+              }
+            )
+          }
+          margin={5}
+        />
 
-      <Button
-        title="Select image"
-        onPress={() =>
-          ImagePicker.launchImageLibrary(
-            {
-              mediaType: 'photo',
-              includeBase64: false,
-              maxHeight: 200,
-              maxWidth: 200,
-            },
-            (response) => {
-              setResponse(response);
-              uploadProfileImage(response);
-            }
-          )
-        }
-      />
-
-      {response && (
-        <View style={styles.image}>
-          <Image
-            style={{ width: 200, height: 200 }}
-            source={{ uri: response.uri }}
-          />
-        </View>
-      )}
+        <CustomButton
+          title="사진첩에서 가져오기"
+          onPress={() =>
+            ImagePicker.launchImageLibrary(
+              {
+                mediaType: 'photo',
+                includeBase64: false,
+                maxHeight: 200,
+                maxWidth: 200,
+              },
+              (response) => {
+                setResponse(response);
+                uploadProfileImage(response);
+              }
+            )
+          }
+          margin={5}
+        />
+      </View>
     </SafeAreaView>
   );
 };

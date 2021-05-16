@@ -44,8 +44,13 @@ public class StatisticsServiceImpl implements StatisticsService{
         }
 
         int totalCnt = eatenCnt + abandonedCnt;
-        int eatenPercentage = eatenCnt*100/totalCnt;
-        int abandonedPercentage = 100-eatenPercentage;
+        int eatenPercentage = 0;
+        int abandonedPercentage = 0;
+        if(totalCnt>0){
+            eatenPercentage = eatenCnt*100/totalCnt;
+            abandonedPercentage = abandonedCnt*100/totalCnt;
+        }
+
         Map<String, Integer> map = new HashMap<>();
         map.put("curMonth", curMonth);
         map.put("eatenCnt", eatenCnt);

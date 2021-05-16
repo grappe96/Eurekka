@@ -8,6 +8,8 @@ import MyPageScreen from './MyPageScreen';
 import BarcodeScreen from './Register/BarcodeScreen';
 import RecipeDetailScreen from './RecipeDetailScreen';
 import OCRScreen from './Register/OCRScreen';
+import AlarmListScreen from './AlarmListScreen';
+import AlarmRecipeListScreen from './AlarmRecipeListScreen';
 
 export {
   LoginScreen,
@@ -20,4 +22,6 @@ export {
   BarcodeScreen,
   RecipeDetailScreen,
   OCRScreen,
+  AlarmListScreen,
+  AlarmRecipeListScreen,
 };

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { KakaoOAuthToken, login } from '@react-native-seoul/kakao-login';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
@@ -47,32 +47,36 @@ const LoginScreen = () => {
     },
   });
 
-  const { deviceToken, updateToken } = useContext(TokenContext);
+  const { updateToken } = useContext(TokenContext);
+  const [deviceToken, setDeviceToken] = useState('');
+  AsyncStorage.getItem('deviceToken', (err, res) => setDeviceToken(res));
+
   // kakao login 실행되면 받는 인증 토큰 서버로 전달
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login();
-
-    axios
-      .post(
-        `http://10.0.2.2:8080/user/kakao/login`,
-        {
-          token: token.accessToken,
-        },
-        {
-          headers: {
-            deviceToken: deviceToken,
+    if (deviceToken.length > 0) {
+      axios
+        .post(
+          `http://k4a404.p.ssafy.io:5000/user/kakao/login`,
+          {
+            token: token.accessToken,
           },
-        }
-      )
-      .then((res) => {
-        // 서버에서 받은 jwt와 사용자 정보 저장
-        AsyncStorage.setItem('token', res.data.jwt);
-        AsyncStorage.setItem('userInfo', JSON.stringify(res.data.user));
-        updateToken(res.data.jwt);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+          {
+            headers: {
+              deviceToken: deviceToken,
+            },
+          }
+        )
+        .then((res) => {
+          // 서버에서 받은 jwt와 사용자 정보 저장
+          AsyncStorage.setItem('token', res.data.jwt);
+          AsyncStorage.setItem('userInfo', JSON.stringify(res.data.user));
+          updateToken(res.data.jwt);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   };
 
   // 시작화면 (로고, 냉장고, 로그인 버튼)

@@ -1,12 +1,12 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar, Alert } from 'react-native';
 import { ThemeProvider } from 'styled-components/native';
 import { theme } from './common/theme';
 import Navigation from './navigations';
-import { RegisterProvider, TokenProvider, TokenContext } from './contexts';
-import messaging from '@react-native-firebase/messaging';
+import { RegisterProvider, TokenProvider } from './contexts';
 import { fcmService } from '../FCMService';
 import { localNotificationService } from '../LocalNotificationService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Root 역할을 하는 컴포넌트
 const App = () => {
@@ -17,6 +17,7 @@ const App = () => {
 
     function onRegister(token) {
       console.log('[App] onRegister : token :', token);
+      AsyncStorage.setItem('deviceToken', token);
     }
 
     function onNotification(notify) {
@@ -44,20 +45,6 @@ const App = () => {
       localNotificationService.unRegister();
     };
   }, []);
-
-  const { updateDeviceToken } = useContext(TokenContext);
-  const getFcmToken = async () => {
-    const fcmToken = await messaging().getToken();
-    // await Alert.alert(fcmToken);
-    updateDeviceToken(fcmToken);
-  };
-  useEffect(() => {
-    getFcmToken();
-    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    });
-    return unsubscribe;
-  });
 
   // src/theme.tsx 적용, 상태바 숨김, Nagivation에 등록된 화면들 조회
   return (

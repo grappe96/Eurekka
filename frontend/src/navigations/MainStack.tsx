@@ -10,6 +10,8 @@ import {
   BarcodeScreen,
   RecipeDetailScreen,
   OCRScreen,
+  AlarmListScreen,
+  AlarmRecipeListScreen,
 } from '../screens';
 
 const Stack = createStackNavigator();
@@ -50,6 +52,11 @@ const MainStack = () => {
         <Stack.Screen name="RecipeDetail" component={RecipeDetailScreen} />
         <Stack.Screen name="Tab" component={BottomTab} />
         <Stack.Screen name="OCR" component={OCRScreen} />
+        <Stack.Screen name="AlarmList" component={AlarmListScreen} />
+        <Stack.Screen
+          name="AlarmRecipeList"
+          component={AlarmRecipeListScreen}
+        />
       </Stack.Navigator>
     </View>
   );

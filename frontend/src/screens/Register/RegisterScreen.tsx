@@ -241,7 +241,7 @@ const RegisterScreen = ({ navigation }) => {
     }
 
     axios
-      .post(`http://10.0.2.2:8080/refrigerator/${refrigerId}`, {
+      .post(`http://k4a404.p.ssafy.io:5000/refrigerator/${refrigerId}`, {
         name: name,
         expirationDate: date,
         ingredient: ingredient,

@@ -21,7 +21,17 @@ import android.util.Log;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import android.widget.Toast;
+
 public class MainActivity extends ReactActivity {
+
+    private static final String TAG = "MainActivity";
 
     // Added automatically by Expo Config
     @Override
@@ -36,7 +46,8 @@ public class MainActivity extends ReactActivity {
   protected void onCreate(Bundle savedInstanceState) {
     // super.onCreate(null);
     super.onCreate(savedInstanceState);
-    getHashKey();
+//    getHashKey();
+//    getFCMToken();
     // SplashScreen.show(...) has to be called after super.onCreate(...)
     // Below line is handled by '@expo/configure-splash-screen' command and it's discouraged to modify it manually
     SplashScreen.show(this, SplashScreenImageResizeMode.CONTAIN, ReactRootView.class, false);
@@ -61,6 +72,27 @@ public class MainActivity extends ReactActivity {
             Log.e("KeyHash", "Unable to get MessageDigest. signature=" + signature, e);
         }
     }
+}
+
+private void getFCMToken() {
+    FirebaseMessaging.getInstance().getToken()
+            .addOnCompleteListener(new OnCompleteListener<String>() {
+                @Override
+                public void onComplete(@NonNull Task<String> task) {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                        return;
+                    }
+
+                    // Get new FCM registration token
+                    String token = task.getResult();
+
+                    // Log and toast
+                    String msg = token;
+                    Log.d(TAG, msg);
+//                    Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                }
+            });
 }
 
 

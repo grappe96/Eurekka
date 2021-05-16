@@ -1,23 +1,34 @@
 import React, { useState, useContext } from 'react';
-import { Button, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { RegisterContext } from '../../contexts';
+import CustomButton from '../Common/CustomButton';
+import Constant from '../../common/Constant';
 
 // 유통기한 날짜 고르는 모달
 const DateModal = (props) => {
   const styles = StyleSheet.create({
     container: {
       position: 'absolute',
-      backgroundColor: '#00ff0005',
+      backgroundColor: '#000000aa',
       top: 0,
       bottom: 0,
       left: 0,
       right: 0,
       zIndex: 9999,
+      alignItems: 'center',
     },
     modal: {
-      width: 200,
-      height: 100,
+      borderRadius: 5,
+      marginTop: Constant.height * 0.2,
+      width: Constant.width * 0.8,
+      height: 250,
+      alignItems: 'center',
+      backgroundColor: '#ffffff',
+      padding: 10,
+    },
+    btnContainer: {
+      alignItems: 'center',
     },
   });
 
@@ -42,7 +53,9 @@ const DateModal = (props) => {
               onDateChange={(date) => changeDate({ date })}
               mode="date"
             />
-            <Button title="확인" onPress={() => clickButton()} />
+            <View style={styles.btnContainer}>
+              <CustomButton title="확인" onPress={() => clickButton()} />
+            </View>
           </View>
         </View>
       ) : null}

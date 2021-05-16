@@ -14,7 +14,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { List } from 'react-native-paper';
 import { RegisterContext } from '../../contexts';
 import axios from 'axios';
-import { DateModal } from '../../components';
+import { DateModal, CustomButton } from '../../components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ScrollView } from 'react-native-gesture-handler';
 
 // 식품 등록 화면
 const RegisterScreen = ({ navigation }) => {
@@ -26,9 +28,8 @@ const RegisterScreen = ({ navigation }) => {
     },
     img: {
       marginLeft: 15,
-      marginBottom: 25,
-      width: 180,
-      height: 180,
+      width: 150,
+      height: 150,
     },
     row: {
       flexDirection: 'row',
@@ -38,7 +39,7 @@ const RegisterScreen = ({ navigation }) => {
       width: 250,
     },
     text: {
-      fontSize: 21,
+      fontSize: 20,
       color: '#4d4d4d',
       marginTop: 10,
     },
@@ -58,15 +59,21 @@ const RegisterScreen = ({ navigation }) => {
     icon: {
       marginTop: 11,
     },
+    button: {
+      marginTop: 10,
+      alignItems: 'center',
+    },
   });
 
   // 등록 화면에서 공통으로 사용할 바코드, 유통기한 변수, 메소드
   const { barcode, expirationDate } = useContext(RegisterContext);
 
-  // 순서대로 사진, 식품명, 품목, 유통기한
+  // 순서대로 사진, 식품명, 재료명, 품목, 유통기한
   const [img, setImg] = useState<string>('');
   const [name, setName] = useState<string>('');
+  const [ingredient, setIngredient] = useState<string>('');
   const [category, setCategory] = useState<string>('');
+  const [categoryId, setCategoryId] = useState<number>(0);
   const [date, setDate] = useState<string>(
     new Date().toISOString().split('T')[0]
   );
@@ -80,6 +87,7 @@ const RegisterScreen = ({ navigation }) => {
   // 품목 이름 설정하는 메소드
   const getCategory = (item) => {
     setCategory(item.title);
+    setCategoryId(item.id);
     setExpanded(false);
   };
 
@@ -152,16 +160,23 @@ const RegisterScreen = ({ navigation }) => {
     <List.Item title={item.title} onPress={() => getCategory(item)} />
   );
 
+  // 입력값 초기화
+  const resetTextInput = () => {
+    setName('');
+    setIngredient('');
+    setDate('');
+    setCategory('');
+    setCategoryId(0);
+    setDate(new Date().toISOString().split('T')[0]);
+    setImg('');
+  };
+
   // 읽어온 바코드 값이 있을 때
   useEffect(() => {
     if (barcode.length > 0) {
       findDataByBarcode();
     } else {
-      setName('');
-      setDate('');
-      setCategory('');
-      setDate('');
-      setImg('');
+      resetTextInput();
     }
   }, [barcode]);
 
@@ -192,96 +207,160 @@ const RegisterScreen = ({ navigation }) => {
       .catch((err) => {
         console.log(err.response);
         alert('스캔하신 바코드의 정보가 없습니다.');
+        resetTextInput();
       });
   };
 
+  // 날짜 선택 모달 control 하는 변수, 메소드
   const [isModal, setModal] = useState<boolean>(false);
   const closeModal = () => {
     setModal(false);
   };
 
+  //상품 등록을 위한 냉장고 ID 가져옴
+  const [refrigerId, setRefId] = useState<String>('');
+  AsyncStorage.getItem('userInfo', (err, res) => {
+    const user = JSON.parse(res);
+    setRefId(user.refrigeratorId);
+  });
+
+  //상품 등록하는 메소드
+  const registerProduct = () => {
+    if (name.length == 0) {
+      alert('상품명을 입력해주세요');
+      return;
+    } else if (ingredient.length == 0) {
+      alert('재료명을 입력해주세요.');
+      return;
+    } else if (category.length == 0) {
+      alert('품목을 선택해주세요.');
+      return;
+    } else if (date.length == 0) {
+      alert('유통기한을 입력해주세요.');
+      return;
+    }
+
+    axios
+      .post(`http://10.0.2.2:8080/refrigerator/${refrigerId}`, {
+        name: name,
+        expirationDate: date,
+        ingredient: ingredient,
+        category: categoryId,
+      })
+      .then((res) => {
+        alert('등록이 완료되었습니다.');
+        resetTextInput();
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('등록에 실패했습니다.');
+      });
+  };
+
   return (
     <View style={styles.container}>
-      {img.length > 0 ? (
-        <Image source={{ uri: img }} style={styles.img} />
-      ) : (
-        <Image source={images.noImg} style={styles.img} />
-      )}
-      <View style={styles.row}>
-        <View style={styles.textBox}>
-          <Text style={styles.text}>상품명</Text>
-          <TextInput style={styles.input} value={name}></TextInput>
-        </View>
-        <View>
-          <TouchableOpacity
-            style={styles.touch}
-            onPressOut={() => {
-              navigation.navigate('Barcode');
-            }}
-          >
-            <MaterialCommunityIcons
-              name="barcode-scan"
-              size={36}
-              color="#000000"
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.row}>
-        <View style={styles.textBox}>
-          <List.Accordion
-            title="품목"
-            titleStyle={[styles.text, styles.listText]}
-            expanded={expanded}
-            onPress={() => toggleExpanded()}
-          >
-            <FlatList
-              data={list}
-              renderItem={listItem}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          </List.Accordion>
-          <TextInput
-            style={styles.input}
-            value={category}
-            editable={false}
-          ></TextInput>
-        </View>
-      </View>
-      <View style={styles.row}>
-        <View style={styles.textBox}>
-          <View style={styles.row}>
-            <Text style={styles.text}>유통기한</Text>
+      <ScrollView>
+        {img.length > 0 ? (
+          <Image source={{ uri: img }} style={styles.img} />
+        ) : (
+          <Image source={images.noImg} style={styles.img} />
+        )}
+        <View style={styles.row}>
+          <View style={styles.textBox}>
+            <Text style={styles.text}>상품명</Text>
+            <TextInput
+              style={styles.input}
+              value={name}
+              onChangeText={setName}
+            ></TextInput>
+          </View>
+          <View>
             <TouchableOpacity
-              style={styles.icon}
-              onPressOut={() => {
-                setModal(true);
+              style={styles.touch}
+              onPress={() => {
+                navigation.navigate('Barcode');
               }}
             >
               <MaterialCommunityIcons
-                name="calendar"
-                size={28}
+                name="barcode-scan"
+                size={32}
                 color="#000000"
               />
             </TouchableOpacity>
           </View>
+        </View>
+        <View style={styles.textBox}>
+          <Text style={styles.text}>재료명</Text>
           <TextInput
             style={styles.input}
-            value={date}
-            editable={false}
+            value={ingredient}
+            onChangeText={setIngredient}
           ></TextInput>
         </View>
-        <View>
-          <TouchableOpacity
-            style={styles.touch}
-            onPressOut={() => {
-              navigation.navigate('OCR');
-            }}
-          >
-            <MaterialCommunityIcons name="camera" size={36} color="#000000" />
-          </TouchableOpacity>
+        <View style={styles.row}>
+          <View style={styles.textBox}>
+            <List.Accordion
+              title="품목"
+              titleStyle={[styles.text, styles.listText]}
+              expanded={expanded}
+              onPress={() => toggleExpanded()}
+            >
+              <FlatList
+                data={list}
+                renderItem={listItem}
+                keyExtractor={(item, index) => index.toString()}
+              />
+            </List.Accordion>
+            <TextInput
+              style={styles.input}
+              value={category}
+              editable={false}
+            ></TextInput>
+          </View>
         </View>
-      </View>
+        <View style={styles.row}>
+          <View style={styles.textBox}>
+            <View style={styles.row}>
+              <Text style={styles.text}>유통기한</Text>
+              <TouchableOpacity
+                style={styles.icon}
+                onPress={() => {
+                  setModal(true);
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="calendar"
+                  size={28}
+                  color="#000000"
+                />
+              </TouchableOpacity>
+            </View>
+            <TextInput
+              style={styles.input}
+              value={date}
+              editable={false}
+            ></TextInput>
+          </View>
+          <View>
+            <TouchableOpacity
+              style={styles.touch}
+              onPress={() => {
+                navigation.navigate('OCR');
+              }}
+            >
+              <MaterialCommunityIcons name="camera" size={32} color="#000000" />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.button}>
+          <CustomButton
+            title="등록"
+            onPress={() => {
+              registerProduct();
+            }}
+          />
+        </View>
+      </ScrollView>
 
       <DateModal isModal={isModal} close={closeModal} />
     </View>

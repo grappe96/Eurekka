@@ -80,13 +80,13 @@ const Footer = ({ navigation }) => {
         <View style={styles.btnContainer}>
           <TouchableOpacity
             style={styles.recipeBtn}
-            onPressOut={() => navigation.navigate('RecipeList')}
+            onPress={() => navigation.navigate('RecipeList')}
           >
             <MaterialCommunityIcons name="chef-hat" size={30} color="#F0F0FA" />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.registerBtn}
-            onPressOut={() => navigation.navigate('Register')}
+            onPress={() => navigation.navigate('Register')}
           >
             <MaterialCommunityIcons
               name="barcode-scan"
@@ -96,7 +96,7 @@ const Footer = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.listBtn}
-            onPressOut={() => navigation.navigate('ProductList')}
+            onPress={() => navigation.navigate('ProductList')}
           >
             <MaterialCommunityIcons
               name="view-list"
@@ -106,7 +106,7 @@ const Footer = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       )}
-      <TouchableOpacity onPressOut={() => toggleClick()}>
+      <TouchableOpacity onPress={() => toggleClick()}>
         {isClick ? (
           <Image source={images.menu} style={styles.clickedImg} />
         ) : (

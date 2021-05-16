@@ -211,10 +211,11 @@ public class OCRServiceImpl implements OCRService {
 						break;
 					}
 				}
-				if (Integer.parseInt(month) > 12 || Integer.parseInt(day) > 31) {
-					return "TRY AGAIN";
-				}
 			}
+			if (Integer.parseInt(month) > 12 || Integer.parseInt(day) > 31) {
+				return "TRY AGAIN";
+			}
+
 			return year + "-" + month + "-" + day;
 
 		} catch (Exception e) {

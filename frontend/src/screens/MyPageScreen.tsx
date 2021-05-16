@@ -222,20 +222,7 @@ const MyPageScreen = () => {
   ];
 
   var lineData = {
-    labels: [
-      '1월',
-      '2월',
-      '3월',
-      '4월',
-      '5월',
-      '6월',
-      '7월',
-      '8월',
-      '9월',
-      '10월',
-      '11월',
-      '12월',
-    ],
+    labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
     datasets: [
       {
         data: [
@@ -384,7 +371,7 @@ const MyPageScreen = () => {
     setCustom(false);
   };
 
-  const [img1, setImg1] = useState<boolean>(true);
+  const [img1, setImg1] = useState<boolean>(false);
   const [img2, setImg2] = useState<boolean>(false);
   const [img3, setImg3] = useState<boolean>(false);
   const [img4, setImg4] = useState<boolean>(false);
@@ -428,7 +415,7 @@ const MyPageScreen = () => {
         width: 63,
         height: 63,
         marginLeft: 3,
-        borderColor: '#C2B8FF',
+        borderColor: '#FF4C4C',
         borderWidth: 3,
         borderRadius: 50,
       },
@@ -536,41 +523,67 @@ const MyPageScreen = () => {
         setImg6(true);
       }
     };
+
+    const setInitialImg = () => {
+      setImg1(false);
+      setImg2(false);
+      setImg3(false);
+      setImg4(false);
+      setImg5(false);
+      setImg6(false);
+      switch (props.image) {
+        case 'img1':
+          setImg1(true);
+          break;
+        case 'img2':
+          setImg2(true);
+          break;
+        case 'img3':
+          setImg3(true);
+          break;
+        case 'img4':
+          setImg4(true);
+          break;
+        case 'img5':
+          setImg5(true);
+          break;
+        case 'img6':
+          setImg6(true);
+          break;
+      }
+      setOpen(false);
+    };
+
+    useEffect(() => {
+      if (isOpen) {
+        setInitialImg();
+      }
+    }, []);
+
     return (
       <>
         {props.isModal ? (
           <View style={styles.container}>
             <View style={styles.modal}>
-              <Text style={styles.title}>
-                변경하고 싶은 프로필 사진을 선택해주세요
-              </Text>
+              <Text style={styles.title}>변경하고 싶은 프로필 사진을 선택해주세요</Text>
               <View style={styles.imgContainer}>
                 <TouchableOpacity onPress={() => clickImg('img1')}>
                   {img1 ? (
-                    <Image
-                      source={images.img1}
-                      style={styles.profileImgSelect}
-                    />
+                    <Image source={images.img1} style={styles.profileImgSelect} />
                   ) : (
                     <Image source={images.img1} style={styles.profileImg} />
                   )}
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => clickImg('img2')}>
                   {img2 ? (
-                    <Image
-                      source={images.img2}
-                      style={styles.profileImgSelect}
-                    />
+                    <Image source={images.img2} style={styles.profileImgSelect} />
                   ) : (
                     <Image source={images.img2} style={styles.profileImg} />
                   )}
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => clickImg('img3')}>
                   {img3 ? (
-                    <Image
-                      source={images.img3}
-                      style={styles.profileImgSelect}
-                    />
+                    <Image source={images.img3} style={styles.profileImgSelect} />
                   ) : (
                     <Image source={images.img3} style={styles.profileImg} />
                   )}
@@ -579,30 +592,21 @@ const MyPageScreen = () => {
               <View style={styles.imgContainer}>
                 <TouchableOpacity onPress={() => clickImg('img4')}>
                   {img4 ? (
-                    <Image
-                      source={images.img4}
-                      style={styles.profileImgSelect}
-                    />
+                    <Image source={images.img4} style={styles.profileImgSelect} />
                   ) : (
                     <Image source={images.img4} style={styles.profileImg} />
                   )}
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => clickImg('img5')}>
                   {img5 ? (
-                    <Image
-                      source={images.img5}
-                      style={styles.profileImgSelect}
-                    />
+                    <Image source={images.img5} style={styles.profileImgSelect} />
                   ) : (
                     <Image source={images.img5} style={styles.profileImg} />
                   )}
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => clickImg('img6')}>
                   {img6 ? (
-                    <Image
-                      source={images.img6}
-                      style={styles.profileImgSelect}
-                    />
+                    <Image source={images.img6} style={styles.profileImgSelect} />
                   ) : (
                     <Image source={images.img6} style={styles.profileImg} />
                   )}
@@ -637,6 +641,7 @@ const MyPageScreen = () => {
   const closeModal = () => {
     setModal(false);
   };
+  const [isOpen, setOpen] = useState<boolean>(false);
 
   return (
     <View>
@@ -648,7 +653,9 @@ const MyPageScreen = () => {
                 icon="pencil"
                 color={Colors.grey600}
                 size={20}
-                onPress={() => setModal(true)}
+                onPress={() => {
+                  setModal(true), setOpen(true);
+                }}
               />
             </View>
             <GetImage image={userInfo.profileImg} />
@@ -657,9 +664,7 @@ const MyPageScreen = () => {
           </View>
           <View style={styles.chartContainer}>
             <View style={styles.titleContainer}>
-              <Text style={styles.chartTitle}>
-                {curMonthChart.curMonth}월 음식 소비량
-              </Text>
+              <Text style={styles.chartTitle}>{curMonthChart.curMonth}월 음식 소비량</Text>
             </View>
             <PieChart
               data={pieData}
@@ -687,7 +692,7 @@ const MyPageScreen = () => {
                 backgroundColor: theme.background,
                 backgroundGradientFrom: theme.background,
                 backgroundGradientTo: theme.background,
-                color: (opacity = 1) => `rgba(96, 109, 202, ${opacity})`,
+                color: (opacity = 1) => `rgba(55, 55, 70, ${opacity})`,
               }}
             />
             <View style={styles.titleContainer}>
@@ -772,7 +777,7 @@ const MyPageScreen = () => {
           </View>
         </View>
       </ScrollView>
-      <ImgModal isModal={isModal} close={closeModal} />
+      <ImgModal isModal={isModal} close={closeModal} image={userInfo.profileImg} />
     </View>
   );
 };

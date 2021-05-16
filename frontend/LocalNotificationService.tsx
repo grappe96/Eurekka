@@ -1,5 +1,4 @@
 import PushNotification from 'react-native-push-notification';
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { Platform } from 'react-native';
 
 class LocalNotificationService {
@@ -24,7 +23,6 @@ class LocalNotificationService {
         //Only call callback if not from foreground
         if (Platform.OS === 'ios') {
           // (required) Called when a remote is received or opened, or local notification is opened
-          notification.finish(PushNotificationIOS.FetchResult.NoData);
         }
       },
 
@@ -98,7 +96,6 @@ class LocalNotificationService {
 
   cancelAllLocalNotifications = () => {
     if (Platform.OS === 'ios') {
-      PushNotificationIOS.removeAllDeliveredNotifications();
     } else {
       PushNotification.cancelAllLocalNotifications();
     }

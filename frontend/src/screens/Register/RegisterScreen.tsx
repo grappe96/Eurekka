@@ -192,7 +192,7 @@ const RegisterScreen = ({ navigation }) => {
   // 바코드 데이터 조회
   const findDataByBarcode = () => {
     axios
-      .get(`http://10.0.2.2:8080/barcode`, {
+      .get(`http://k4a404.p.ssafy.io:5000/barcode`, {
         params: {
           code: barcode,
         },

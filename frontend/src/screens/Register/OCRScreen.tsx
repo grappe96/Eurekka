@@ -76,11 +76,15 @@ const OCRScreen = ({ navigation }) => {
     });
 
     try {
-      const res = await axios.post(`http://10.0.2.2:8080/ocr`, formData, {
-        headers: {
-          'context-type': 'multipart/form-data',
-        },
-      });
+      const res = await axios.post(
+        `http://k4a404.p.ssafy.io:5000/ocr`,
+        formData,
+        {
+          headers: {
+            'context-type': 'multipart/form-data',
+          },
+        }
+      );
       const result = res.data;
       if (result == 'TRY AGAIN')
         alert('올바른 날짜 형식이 아닙니다. 다시 시도해주세요.');

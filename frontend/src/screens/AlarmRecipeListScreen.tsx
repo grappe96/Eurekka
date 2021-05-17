@@ -76,7 +76,7 @@ const RecipeListScreen = ({ route, navigation }) => {
   const getRecipes = async () => {
     axios
       .get(
-        `http://k4a404.p.ssafy.io:5050/recipe/alarmRecipe/${refrigerId}&${ingredient}`
+        `http://k4a404.p.ssafy.io/recipe/alarmRecipe/${refrigerId}&${ingredient}`
       )
       .then(({ data }) => {
         let tmp = [];

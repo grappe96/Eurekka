@@ -7,6 +7,7 @@ import { RegisterProvider, TokenProvider } from './contexts';
 import { fcmService } from '../FCMService';
 import { localNotificationService } from '../LocalNotificationService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import messaging from '@react-native-firebase/messaging';
 
 // Root 역할을 하는 컴포넌트
 const App = () => {
@@ -45,6 +46,17 @@ const App = () => {
       localNotificationService.unRegister();
     };
   }, []);
+  // const getFcmToken = async () => {
+  //   const fcmToken = await messaging().getToken();
+  //   AsyncStorage.setItem('deviceToken', fcmToken);
+  // };
+  // useEffect(() => {
+  //   getFcmToken();
+  //   const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+  //     Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+  //   });
+  //   return unsubscribe;
+  // });
 
   // src/theme.tsx 적용, 상태바 숨김, Nagivation에 등록된 화면들 조회
   return (

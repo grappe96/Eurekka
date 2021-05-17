@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { LoginScreen } from '../screens';
+import { IntroScreen, LoginScreen } from '../screens';
 
 const Stack = createStackNavigator();
 
@@ -8,7 +8,12 @@ const Stack = createStackNavigator();
 const AuthStack = () => {
   // stack에 등록할 컴포넌트들, 초기 화면인 Login에 헤더 숨기는 옵션
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="Intro">
+      <Stack.Screen
+        name="Intro"
+        component={IntroScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="Login"
         component={LoginScreen}

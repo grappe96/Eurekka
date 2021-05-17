@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -14,8 +14,6 @@ import { Button, IconButton, Colors } from 'react-native-paper';
 import { images } from '../common/images';
 import { theme } from '../common/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { blue200 } from 'react-native-paper/lib/typescript/styles/colors';
-import { color } from 'react-native-reanimated';
 
 const MyPageScreen = () => {
   const [token, setToken] = useState<String>('');
@@ -124,7 +122,7 @@ const MyPageScreen = () => {
 
   const getUserInfo = async () => {
     await axios
-      .get(`http://k4a404.p.ssafy.io:5000/user/info`, {
+      .get(`http://eurekka.kr:5000/user/info`, {
         headers: {
           'content-type': 'application/json',
           jwt: token,
@@ -140,7 +138,7 @@ const MyPageScreen = () => {
 
   const getCurmonth = async () => {
     await axios
-      .get(`http://k4a404.p.ssafy.io:5000/statistics/curmonth`, {
+      .get(`http://eurekka.kr:5000/statistics/curmonth`, {
         headers: {
           'content-type': 'application/json',
           jwt: token,
@@ -156,7 +154,7 @@ const MyPageScreen = () => {
 
   const getMonthly = async () => {
     await axios
-      .get(`http://k4a404.p.ssafy.io:5000/statistics/monthly`, {
+      .get(`http://eurekka.kr:5000/statistics/monthly`, {
         headers: {
           'content-type': 'application/json',
           jwt: token,
@@ -172,7 +170,7 @@ const MyPageScreen = () => {
 
   const getCategory = async () => {
     await axios
-      .get(`http://k4a404.p.ssafy.io:5000/statistics/category`, {
+      .get(`http://eurekka.kr:5000/statistics/category`, {
         headers: {
           'content-type': 'application/json',
           jwt: token,
@@ -222,7 +220,20 @@ const MyPageScreen = () => {
   ];
 
   var lineData = {
-    labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+    labels: [
+      '1월',
+      '2월',
+      '3월',
+      '4월',
+      '5월',
+      '6월',
+      '7월',
+      '8월',
+      '9월',
+      '10월',
+      '11월',
+      '12월',
+    ],
     datasets: [
       {
         data: [
@@ -448,7 +459,7 @@ const MyPageScreen = () => {
 
       await axios
         .put(
-          `http://k4a404.p.ssafy.io:5000/user/info`,
+          `http://eurekka.kr:5000/user/info`,
           {
             name: userInfo.name,
             profileImg: img,
@@ -565,25 +576,36 @@ const MyPageScreen = () => {
         {props.isModal ? (
           <View style={styles.container}>
             <View style={styles.modal}>
-              <Text style={styles.title}>변경하고 싶은 프로필 사진을 선택해주세요</Text>
+              <Text style={styles.title}>
+                변경하고 싶은 프로필 사진을 선택해주세요
+              </Text>
               <View style={styles.imgContainer}>
                 <TouchableOpacity onPress={() => clickImg('img1')}>
                   {img1 ? (
-                    <Image source={images.img1} style={styles.profileImgSelect} />
+                    <Image
+                      source={images.img1}
+                      style={styles.profileImgSelect}
+                    />
                   ) : (
                     <Image source={images.img1} style={styles.profileImg} />
                   )}
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => clickImg('img2')}>
                   {img2 ? (
-                    <Image source={images.img2} style={styles.profileImgSelect} />
+                    <Image
+                      source={images.img2}
+                      style={styles.profileImgSelect}
+                    />
                   ) : (
                     <Image source={images.img2} style={styles.profileImg} />
                   )}
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => clickImg('img3')}>
                   {img3 ? (
-                    <Image source={images.img3} style={styles.profileImgSelect} />
+                    <Image
+                      source={images.img3}
+                      style={styles.profileImgSelect}
+                    />
                   ) : (
                     <Image source={images.img3} style={styles.profileImg} />
                   )}
@@ -592,21 +614,30 @@ const MyPageScreen = () => {
               <View style={styles.imgContainer}>
                 <TouchableOpacity onPress={() => clickImg('img4')}>
                   {img4 ? (
-                    <Image source={images.img4} style={styles.profileImgSelect} />
+                    <Image
+                      source={images.img4}
+                      style={styles.profileImgSelect}
+                    />
                   ) : (
                     <Image source={images.img4} style={styles.profileImg} />
                   )}
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => clickImg('img5')}>
                   {img5 ? (
-                    <Image source={images.img5} style={styles.profileImgSelect} />
+                    <Image
+                      source={images.img5}
+                      style={styles.profileImgSelect}
+                    />
                   ) : (
                     <Image source={images.img5} style={styles.profileImg} />
                   )}
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => clickImg('img6')}>
                   {img6 ? (
-                    <Image source={images.img6} style={styles.profileImgSelect} />
+                    <Image
+                      source={images.img6}
+                      style={styles.profileImgSelect}
+                    />
                   ) : (
                     <Image source={images.img6} style={styles.profileImg} />
                   )}
@@ -664,7 +695,9 @@ const MyPageScreen = () => {
           </View>
           <View style={styles.chartContainer}>
             <View style={styles.titleContainer}>
-              <Text style={styles.chartTitle}>{curMonthChart.curMonth}월 음식 소비량</Text>
+              <Text style={styles.chartTitle}>
+                {curMonthChart.curMonth}월 음식 소비량
+              </Text>
             </View>
             <PieChart
               data={pieData}
@@ -777,7 +810,11 @@ const MyPageScreen = () => {
           </View>
         </View>
       </ScrollView>
-      <ImgModal isModal={isModal} close={closeModal} image={userInfo.profileImg} />
+      <ImgModal
+        isModal={isModal}
+        close={closeModal}
+        image={userInfo.profileImg}
+      />
     </View>
   );
 };

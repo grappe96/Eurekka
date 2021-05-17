@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { images } from '../../common/images';
 import { Image, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AlarmContext } from '../../contexts/AlarmContext';
 
 // Header component
 function Header({ navigation }) {
@@ -27,6 +28,8 @@ function Header({ navigation }) {
     },
   });
 
+  const { hasAlarm } = useContext(AlarmContext);
+
   // 알림, 로고, 마이페이지
   return (
     <View style={styles.row}>
@@ -34,12 +37,21 @@ function Header({ navigation }) {
         style={styles.touchArea}
         onPress={() => navigation.navigate('AlarmList')}
       >
-        <MaterialCommunityIcons
-          style={styles.icon}
-          name="bell-outline"
-          size={32}
-          color="#606dca"
-        />
+        {hasAlarm ? (
+          <MaterialCommunityIcons
+            style={styles.icon}
+            name="bell-alert"
+            size={32}
+            color="#FB5C6F"
+          />
+        ) : (
+          <MaterialCommunityIcons
+            style={styles.icon}
+            name="bell-outline"
+            size={32}
+            color="#606dca"
+          />
+        )}
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.logo}

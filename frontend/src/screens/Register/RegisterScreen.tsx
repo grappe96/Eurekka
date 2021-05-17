@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import {
+  SafeAreaView,
   View,
   Image,
   StyleSheet,
@@ -26,8 +27,11 @@ const RegisterScreen = ({ navigation }) => {
       padding: 25,
       height: '100%',
     },
+    scrollView: {
+      alignContent: 'center',
+    },
     img: {
-      marginLeft: 15,
+      alignSelf: 'center',
       width: 150,
       height: 150,
     },
@@ -58,15 +62,28 @@ const RegisterScreen = ({ navigation }) => {
     },
     icon: {
       marginTop: 11,
+      marginLeft: 5,
     },
     button: {
-      marginTop: 10,
-      alignItems: 'center',
+      marginTop: 15,
+      marginRight: 32,
+      alignItems: 'flex-end',
     },
   });
 
   // 등록 화면에서 공통으로 사용할 바코드, 유통기한 변수, 메소드
-  const { barcode, expirationDate, updateCode } = useContext(RegisterContext);
+  const { barcode, expirationDate, updateCode, updateDate } =
+    useContext(RegisterContext);
+
+  const setTime = () => {
+    const cur = new Date();
+    const utc = cur.getTime() + cur.getTimezoneOffset() * 60 * 1000;
+
+    const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+    const kr_time = new Date(utc + KR_TIME_DIFF);
+
+    return kr_time.toISOString().split('T')[0];
+  };
 
   // 순서대로 사진, 식품명, 재료명, 품목, 유통기한
   const [img, setImg] = useState<string>('');
@@ -74,9 +91,7 @@ const RegisterScreen = ({ navigation }) => {
   const [ingredient, setIngredient] = useState<string>('');
   const [category, setCategory] = useState<string>('');
   const [categoryId, setCategoryId] = useState<number>(0);
-  const [date, setDate] = useState<string>(
-    new Date().toISOString().split('T')[0]
-  );
+  const [date, setDate] = useState<string>(setTime());
 
   // 품목 Accordian 확장하는 변수, 메소드
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -164,10 +179,9 @@ const RegisterScreen = ({ navigation }) => {
   const resetTextInput = () => {
     setName('');
     setIngredient('');
-    setDate('');
     setCategory('');
     setCategoryId(0);
-    setDate(new Date().toISOString().split('T')[0]);
+    setDate(setTime());
     setImg('');
   };
 
@@ -185,14 +199,14 @@ const RegisterScreen = ({ navigation }) => {
     if (expirationDate.length > 0) {
       setDate(expirationDate);
     } else {
-      setDate(new Date().toISOString().split('T')[0]);
+      setDate(setTime());
     }
   }, [expirationDate]);
 
   // 바코드 데이터 조회
   const findDataByBarcode = () => {
     axios
-      .get(`http://k4a404.p.ssafy.io:5000/barcode`, {
+      .get(`http://eurekka.kr:5000/barcode`, {
         params: {
           code: barcode,
         },
@@ -240,7 +254,7 @@ const RegisterScreen = ({ navigation }) => {
     }
 
     axios
-      .post(`http://k4a404.p.ssafy.io:5000/refrigerator/${refrigerId}`, {
+      .post(`http://eurekka.kr:5000/refrigerator/${refrigerId}`, {
         name: name,
         expirationDate: date,
         ingredient: ingredient,
@@ -249,6 +263,7 @@ const RegisterScreen = ({ navigation }) => {
       .then((res) => {
         alert('등록이 완료되었습니다.');
         updateCode('');
+        updateDate('');
       })
       .catch((err) => {
         console.log(err);
@@ -256,9 +271,26 @@ const RegisterScreen = ({ navigation }) => {
       });
   };
 
+  let flatListRef = useRef(null);
+  const toTop = () => {
+    if (flatListRef.current == null) return;
+    flatListRef.current.scrollTo({ animated: true, y: 0 });
+  };
+  useEffect(() => {
+    const reload = navigation.addListener('focus', () => {
+      toTop();
+    });
+    return reload;
+  }, [navigation]);
+
   return (
-    <View style={styles.container}>
-      <ScrollView>
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        style={styles.scrollView}
+        ref={(ref) => {
+          flatListRef.current = ref;
+        }}
+      >
         {img.length > 0 ? (
           <Image source={{ uri: img }} style={styles.img} />
         ) : (
@@ -362,7 +394,7 @@ const RegisterScreen = ({ navigation }) => {
       </ScrollView>
 
       <DateModal isModal={isModal} close={closeModal} />
-    </View>
+    </SafeAreaView>
   );
 };
 

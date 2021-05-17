@@ -89,7 +89,7 @@ const Footer = ({ navigation }) => {
             onPress={() => navigation.navigate('Register')}
           >
             <MaterialCommunityIcons
-              name="barcode-scan"
+              name="plus-thick"
               size={30}
               color="#F0F0FA"
             />

@@ -1,3 +1,4 @@
+import IntroScreen from './IntroScreen';
 import LoginScreen from './LoginScreen';
 import HomeScreen from './HomeScreen';
 import ProductListScreen from './ProductListScreen';
@@ -12,6 +13,7 @@ import AlarmListScreen from './AlarmListScreen';
 import AlarmRecipeListScreen from './AlarmRecipeListScreen';
 
 export {
+  IntroScreen,
   LoginScreen,
   HomeScreen,
   ProductListScreen,

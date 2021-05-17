@@ -194,7 +194,7 @@ def create_app():
 
       check = False
       for product in products:   
-         now = datetime.datetime.now()
+         now = datetime.datetime.strptime(datetime.datetime.now().strftime("%Y-%m-%d 00:00:00"),'%Y-%m-%d %H:%M:%S')
          effectiveDays = (product['expirationDate'] - now).days
          if effectiveDays < 3 :
             check = True
@@ -274,7 +274,7 @@ def create_app():
       necessaryAlarmIngredient =pd.DataFrame()
       check = False
       for product in products:   
-         now = datetime.datetime.now()
+         now = datetime.datetime.strptime(datetime.datetime.now().strftime("%Y-%m-%d 00:00:00"),'%Y-%m-%d %H:%M:%S')
          effectiveDays = (product['expirationDate'] - now).days
          if effectiveDays < 3 :
             necessaryAlarmIngredient = necessaryAlarmIngredient.append({'name' : product['name'],'ingredient' : product['ingredient'],'dday' : effectiveDays},ignore_index=True)
@@ -460,7 +460,7 @@ def create_app():
          necessaryAlarmIngredient =[]
          check = False
          for product in products:   
-            now = datetime.datetime.now()
+            now = datetime.datetime.strptime(datetime.datetime.now().strftime("%Y-%m-%d 00:00:00"),'%Y-%m-%d %H:%M:%S')
             effectiveDays = (product['expirationDate'] - now).days
             if effectiveDays < 3 :
                necessaryAlarmIngredient.append(product['name'])

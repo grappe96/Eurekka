@@ -19,18 +19,6 @@ class LocalNotificationService {
         onOpenNotification(
           Platform.OS === 'ios' ? notification.data.item : notification.data
         );
-
-        //Only call callback if not from foreground
-        if (Platform.OS === 'ios') {
-          // (required) Called when a remote is received or opened, or local notification is opened
-        }
-      },
-
-      // IOS ONLY (optional): default: all - Permissions to register.
-      permissions: {
-        alert: true,
-        badge: true,
-        sound: true,
       },
 
       // Should the initial notification be popped automatically

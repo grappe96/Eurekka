@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
 import { StyleSheet, Image, Text, View, ScrollView } from 'react-native';
 import { DataTable, Chip } from 'react-native-paper';
 import { images } from '../common/images';
@@ -98,11 +97,21 @@ const RecipeDetailScreen = ({ route, navigation }) => {
                 </DataTable.Title>
               </DataTable.Header>
               <DataTable.Row>
-                <DataTable.Cell style={styles.energyTableContent}>{recipe.eng}</DataTable.Cell>
-                <DataTable.Cell style={styles.energyTableContent}>{recipe.car}</DataTable.Cell>
-                <DataTable.Cell style={styles.energyTableContent}>{recipe.pro}</DataTable.Cell>
-                <DataTable.Cell style={styles.energyTableContent}>{recipe.fat}</DataTable.Cell>
-                <DataTable.Cell style={styles.energyTableContent}>{recipe.nat}</DataTable.Cell>
+                <DataTable.Cell style={styles.energyTableContent}>
+                  {recipe.eng}
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.energyTableContent}>
+                  {recipe.car}
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.energyTableContent}>
+                  {recipe.pro}
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.energyTableContent}>
+                  {recipe.fat}
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.energyTableContent}>
+                  {recipe.nat}
+                </DataTable.Cell>
               </DataTable.Row>
             </DataTable>
             <View style={styles.bar}></View>

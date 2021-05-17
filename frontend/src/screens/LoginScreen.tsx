@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { KakaoOAuthToken, login } from '@react-native-seoul/kakao-login';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
@@ -48,19 +48,16 @@ const LoginScreen = () => {
   });
 
   const { updateToken } = useContext(TokenContext);
-  const [deviceToken, setDeviceToken] = useState('');
-  useEffect(() => {
-    AsyncStorage.getItem('deviceToken', (err, res) => setDeviceToken(res));
-  }, []);
 
   // kakao login 실행되면 받는 인증 토큰 서버로 전달
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login();
-    console.log(deviceToken);
-    if (deviceToken != null || deviceToken.length > 0) {
+    const deviceToken = AsyncStorage.getItem('deviceToken');
+
+    if ((await deviceToken).length > 0) {
       axios
         .post(
-          `http://k4a404.p.ssafy.io:5000/user/kakao/login`,
+          `http://eurekka.kr:5000/user/kakao/login`,
           {
             token: token.accessToken,
           },

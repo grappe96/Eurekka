@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components/native';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import ProductList, { Separator } from '../components/Product/ProductList';
 import { StyleSheet, SafeAreaView, FlatList, Text, View } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
 import { theme } from '../common/theme';
-import { List } from 'react-native-paper';
-import { black } from 'react-native-paper/lib/typescript/styles/colors';
-import { Fonts } from '../Fonts';
-import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProductListScreen = ({ navigation }) => {
@@ -22,16 +16,19 @@ const ProductListScreen = ({ navigation }) => {
   };
 
   const [products, setResult] = useState<Array<product>>([]);
-
+  const [token, setToken] = useState<String>('');
   const [refrigerId, setRefId] = useState<String>('');
   AsyncStorage.getItem('userInfo', (err, res) => {
     const user = JSON.parse(res);
     setRefId(user.refrigeratorId);
   });
+  AsyncStorage.getItem('token', (err, res) => {
+    setToken(res);
+  });
 
   const getProducts = async () => {
     axios
-      .get(`http://k4a404.p.ssafy.io:5000/refrigerator/${refrigerId}`)
+      .get(`http://eurekka.kr:5000/refrigerator/${refrigerId}`)
       .then(({ data }) => {
         setResult(data);
       })
@@ -41,21 +38,28 @@ const ProductListScreen = ({ navigation }) => {
       });
   };
 
+  let flatListRef = useRef(null);
+  const toTop = () => {
+    if (flatListRef.current == null) return;
+    flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+  };
   useEffect(() => {
-    if (refrigerId.length != 0) {
-      getProducts();
-    }
+    if (refrigerId.length != 0) getProducts();
   }, [refrigerId]);
-
-  const [token, setToken] = useState<String>('');
-  AsyncStorage.getItem('token', (err, res) => {
-    setToken(res);
-  });
+  useEffect(() => {
+    const reload = navigation.addListener('focus', () => {
+      if (refrigerId.length != 0) {
+        getProducts();
+        toTop();
+      }
+    });
+    return reload;
+  }, [navigation]);
 
   const eatProduct = async (item) => {
     axios
       .post(
-        `http://k4a404.p.ssafy.io:5000/refrigerator/eat`,
+        `http://eurekka.kr:5000/refrigerator/eat`,
         {
           id: item.id,
           name: item.name,
@@ -80,7 +84,7 @@ const ProductListScreen = ({ navigation }) => {
   const abandonProduct = async (item) => {
     axios
       .post(
-        `http://k4a404.p.ssafy.io:5000/refrigerator/abandon`,
+        `http://eurekka.kr:5000/refrigerator/abandon`,
         {
           id: item.id,
           name: item.name,
@@ -110,6 +114,9 @@ const ProductListScreen = ({ navigation }) => {
       {products.length > 0 ? (
         <View style={styles.listItem}>
           <FlatList
+            ref={(ref) => {
+              flatListRef.current = ref;
+            }}
             data={products}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (

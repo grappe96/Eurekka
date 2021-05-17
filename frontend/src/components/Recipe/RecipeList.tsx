@@ -1,15 +1,7 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
-import { List, ProgressBar, Colors } from 'react-native-paper';
-import { images } from '../../common/images';
+import { List, ProgressBar } from 'react-native-paper';
 import { theme } from '../../common/theme';
 
 export const Separator = () => <View style={styles.separator} />;

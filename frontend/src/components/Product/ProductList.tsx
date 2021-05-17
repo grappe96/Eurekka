@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Animated, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, Animated, Image } from 'react-native';
 import { List } from 'react-native-paper';
 import { Swipeable, RectButton } from 'react-native-gesture-handler';
 import { images } from '../../common/images';
@@ -72,7 +72,14 @@ const RightActions = ({ progress, dragX, onPressEat, onPressAbandon }) => {
   );
 };
 
-const ProductList = ({ id, category, dday, name, onEatPress, onAbandonPress }) => {
+const ProductList = ({
+  id,
+  category,
+  dday,
+  name,
+  onEatPress,
+  onAbandonPress,
+}) => {
   var img;
   switch (category) {
     case 0:
@@ -136,7 +143,9 @@ const ProductList = ({ id, category, dday, name, onEatPress, onAbandonPress }) =
         <View style={styles.container}>
           <List.Item
             title={name}
-            left={(props) => <Image source={img} style={{ width: 40, height: 40 }} />}
+            left={(props) => (
+              <Image source={img} style={{ width: 40, height: 40 }} />
+            )}
             right={(props) => <Text style={{ padding: 7 }}>D - {dday}</Text>}
           />
         </View>
@@ -158,8 +167,12 @@ const ProductList = ({ id, category, dday, name, onEatPress, onAbandonPress }) =
         <View style={styles.container}>
           <List.Item
             title={name}
-            left={(props) => <Image source={img} style={{ width: 40, height: 40 }} />}
-            right={(props) => <Text style={{ padding: 7, color: '#FB5C6F' }}>{day}일 지남</Text>}
+            left={(props) => (
+              <Image source={img} style={{ width: 40, height: 40 }} />
+            )}
+            right={(props) => (
+              <Text style={{ padding: 7, color: '#FB5C6F' }}>{day}일 지남</Text>
+            )}
           />
         </View>
       </Swipeable>

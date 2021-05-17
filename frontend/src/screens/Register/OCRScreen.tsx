@@ -76,7 +76,7 @@ const OCRScreen = ({ navigation }) => {
     });
 
     axios
-      .post(`http://k4a404.p.ssafy.io:5000/ocr`, formData, {
+      .post(`http://eurekka.kr:5000/ocr`, formData, {
         headers: {
           'context-type': 'multipart/form-data',
         },

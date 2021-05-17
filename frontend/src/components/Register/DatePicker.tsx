@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { RegisterContext } from '../../contexts';
@@ -33,7 +33,19 @@ const DateModal = (props) => {
   });
 
   const { updateDate } = useContext(RegisterContext);
-  const [date, setDate] = useState(new Date());
+  const setTime = () => {
+    const cur = new Date();
+    const utc = cur.getTime() + cur.getTimezoneOffset() * 60 * 1000;
+
+    const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+    const kr_time = new Date(utc + KR_TIME_DIFF);
+
+    return kr_time;
+  };
+  const [date, setDate] = useState(setTime());
+  useEffect(() => {
+    setDate(setTime());
+  }, [props.isModal]);
   const changeDate = ({ date }) => {
     setDate(date);
   };

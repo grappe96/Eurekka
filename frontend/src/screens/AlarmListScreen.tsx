@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { List } from 'react-native-paper';
 import { theme } from '../common/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AlarmContext } from '../contexts';
 
 const NotificationList = ({ navigation }) => {
   const styles = StyleSheet.create({
@@ -35,16 +36,22 @@ const NotificationList = ({ navigation }) => {
     },
   });
 
+  const { updateHasAlarm, hasAlarm } = useContext(AlarmContext);
   const [refrigerId, setRefId] = useState<String>('');
-  AsyncStorage.getItem('userInfo', (err, res) => {
-    const user = JSON.parse(res);
-    setRefId(user.refrigeratorId);
-  });
+  useEffect(() => {
+    console.log('알람리스트');
+    updateHasAlarm(false);
+    console.log(hasAlarm);
+    AsyncStorage.getItem('userInfo', (err, res) => {
+      const user = JSON.parse(res);
+      setRefId(user.refrigeratorId);
+    });
+  }, []);
 
   const [list, setList] = useState([]);
   const getNotifiList = () => {
     axios
-      .get(`http://k4a404.p.ssafy.io/recipe/alarmList/${refrigerId}`)
+      .get(`http://eurekka.kr:8000/recipe/alarmList/${refrigerId}`)
       .then(({ data }) => {
         if (data == '정보없음') {
           setList([]);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { StyleSheet, SafeAreaView, FlatList, Text, View } from 'react-native';
 import { theme } from '../common/theme';
@@ -74,7 +74,7 @@ const RecipeListScreen = ({ navigation }) => {
 
   const getRecipes = async () => {
     axios
-      .get(`http://k4a404.p.ssafy.io/recipe/${refrigerId}`)
+      .get(`http://eurekka.kr:8000/recipe/${refrigerId}`)
       .then(({ data }) => {
         // const obj = JSON.parse(data);
         var a = JSON.stringify(data);
@@ -92,11 +92,23 @@ const RecipeListScreen = ({ navigation }) => {
       });
   };
 
+  let flatListRef = useRef(null);
+  const toTop = () => {
+    if (flatListRef.current == null) return;
+    flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+  };
   useEffect(() => {
-    if (refrigerId.length != 0) {
-      getRecipes();
-    }
+    if (refrigerId.length != 0) getRecipes();
   }, [refrigerId]);
+  useEffect(() => {
+    const reload = navigation.addListener('focus', () => {
+      if (refrigerId.length != 0) {
+        getRecipes();
+        toTop();
+      }
+    });
+    return reload;
+  }, [navigation, refrigerId]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -105,6 +117,9 @@ const RecipeListScreen = ({ navigation }) => {
           <Text style={styles.title}>레시피</Text>
         </View>
         <FlatList
+          ref={(ref) => {
+            flatListRef.current = ref;
+          }}
           data={recipes}
           keyExtractor={(item) => item.seq.toString()}
           renderItem={({ item }) => (

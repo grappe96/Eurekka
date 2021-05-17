@@ -2,6 +2,7 @@
 
 import Fridge from '../../assets/images/login/refrigerator.png';
 import Button from '../../assets/images/login/kakao_login.png';
+import Intro from '../../assets/images/intro.gif';
 import Loading from '../../assets/images/eurekka_loading.gif';
 import Logo from '../../assets/images/header/title.png';
 import OpenedFridge from '../../assets/images/home/refrigerator-open.png';
@@ -36,6 +37,7 @@ import Img6 from '../../assets/images/philosopher/img6.png'
 export const images = {
   fridgeImg: Fridge,
   btnImg: Button,
+  introImg : Intro,
   loadImg: Loading,
   logoImg: Logo,
   openImg: OpenedFridge,

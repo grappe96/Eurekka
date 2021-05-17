@@ -74,7 +74,7 @@ const RecipeListScreen = ({ navigation }) => {
 
   const getRecipes = async () => {
     axios
-      .get(`http://k4a404.p.ssafy.io:5050/recipe/${refrigerId}`)
+      .get(`http://k4a404.p.ssafy.io/recipe/${refrigerId}`)
       .then(({ data }) => {
         // const obj = JSON.parse(data);
         var a = JSON.stringify(data);

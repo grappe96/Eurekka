@@ -44,7 +44,7 @@ const NotificationList = ({ navigation }) => {
   const [list, setList] = useState([]);
   const getNotifiList = () => {
     axios
-      .get(`http://k4a404.p.ssafy.io:5050/alarmList/${refrigerId}`)
+      .get(`http://k4a404.p.ssafy.io/recipe/alarmList/${refrigerId}`)
       .then(({ data }) => {
         if (data == '정보없음') {
           setList([]);

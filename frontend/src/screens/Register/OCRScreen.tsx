@@ -64,7 +64,7 @@ const OCRScreen = ({ navigation }) => {
   };
 
   // 촬영하거나 갤러리에서 불러온 이미지 백으로 업로드
-  const uploadProfileImage = async (image) => {
+  const uploadProfileImage = (image) => {
     if (image.didCancel == true) return;
 
     const formData = new FormData();
@@ -75,29 +75,27 @@ const OCRScreen = ({ navigation }) => {
       type: image.type,
     });
 
-    try {
-      const res = await axios.post(
-        `http://k4a404.p.ssafy.io:5000/ocr`,
-        formData,
-        {
-          headers: {
-            'context-type': 'multipart/form-data',
-          },
+    axios
+      .post(`http://k4a404.p.ssafy.io:5000/ocr`, formData, {
+        headers: {
+          'context-type': 'multipart/form-data',
+        },
+      })
+      .then(async (res) => {
+        if (res.data == 'TRY AGAIN')
+          alert('올바른 날짜 형식이 아닙니다. 다시 시도해주세요.');
+        else {
+          const setDate = () => {
+            updateDate(res.data);
+          };
+          await setDate();
+          navigation.navigate('Register');
         }
-      );
-      const result = res.data;
-      if (result == 'TRY AGAIN')
-        alert('올바른 날짜 형식이 아닙니다. 다시 시도해주세요.');
-      else {
-        const setDate = async () => {
-          updateDate(result);
-        };
-        await setDate();
-        navigation.navigate('Register');
-      }
-    } catch (err) {
-      alert('유통기한을 가져올 수가 없습니다.');
-    }
+      })
+      .catch((err) => {
+        console.log(err.response);
+        alert('유통기한을 가져올 수가 없습니다.');
+      });
   };
 
   return (

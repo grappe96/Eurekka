@@ -66,7 +66,7 @@ const RegisterScreen = ({ navigation }) => {
   });
 
   // 등록 화면에서 공통으로 사용할 바코드, 유통기한 변수, 메소드
-  const { barcode, expirationDate } = useContext(RegisterContext);
+  const { barcode, expirationDate, updateCode } = useContext(RegisterContext);
 
   // 순서대로 사진, 식품명, 재료명, 품목, 유통기한
   const [img, setImg] = useState<string>('');
@@ -200,7 +200,6 @@ const RegisterScreen = ({ navigation }) => {
       .then((res) => {
         console.log(res.data);
         setCategory(res.data.category);
-        setDate(res.data.id.date.split('T')[0]);
         setImg(res.data.imgUrl);
         setName(res.data.name);
       })
@@ -249,7 +248,7 @@ const RegisterScreen = ({ navigation }) => {
       })
       .then((res) => {
         alert('등록이 완료되었습니다.');
-        resetTextInput();
+        updateCode('');
       })
       .catch((err) => {
         console.log(err);

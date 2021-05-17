@@ -107,20 +107,26 @@ const ProductListScreen = ({ navigation }) => {
       <View style={styles.titleBox}>
         <Text style={styles.title}>전체</Text>
       </View>
-      <View style={styles.listItem}>
-        <FlatList
-          data={products}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <ProductList
-              {...item}
-              onEatPress={() => eatProduct(item)}
-              onAbandonPress={() => abandonProduct(item)}
-            />
-          )}
-          ItemSeparatorComponent={() => <Separator />}
-        />
-      </View>
+      {products.length > 0 ? (
+        <View style={styles.listItem}>
+          <FlatList
+            data={products}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <ProductList
+                {...item}
+                onEatPress={() => eatProduct(item)}
+                onAbandonPress={() => abandonProduct(item)}
+              />
+            )}
+            ItemSeparatorComponent={() => <Separator />}
+          />
+        </View>
+      ) : (
+        <View style={styles.noListContainer}>
+          <Text style={styles.noListText}>등록된 식품이 없습니다.</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -170,6 +176,15 @@ const styles = StyleSheet.create({
     top: 10,
     color: '#999',
     fontWeight: 'bold',
+  },
+  noListContainer: {
+    flex: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noListText: {
+    fontSize: 15,
+    color: '#666666',
   },
 });
 

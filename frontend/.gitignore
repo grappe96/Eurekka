@@ -40,13 +40,15 @@ DerivedData
 project.xcworkspace
 
 # Android/IntelliJ
-#
+# VSCode
 build/
 .idea
 .gradle
 local.properties
 *.iml
 *.hprof
+android/gradle.properties
+.vscode/
 
 # node.js
 #

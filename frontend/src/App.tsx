@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { StatusBar, AppState } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { StatusBar, AppState, Alert } from 'react-native';
 import { ThemeProvider } from 'styled-components/native';
 import { theme } from './common/theme';
 import Navigation from './navigations';
@@ -7,9 +7,23 @@ import { RegisterProvider, TokenProvider, AlarmProvider } from './contexts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import PushNotification from 'react-native-push-notification';
+import NotifiService from '../NotifiService';
 
 // Root 역할을 하는 컴포넌트
 const App = () => {
+  const [state, setState] = useState({});
+  const onRegister = (token) => {
+    setState({ registerToken: token.token, fcmRegistered: true });
+  };
+  const onNotif = (notif) => {
+    const data = notif.data;
+    Alert.alert(data.body, data.title);
+  };
+  const handlePerm = (permission) => {
+    Alert.alert('Permissions', JSON.stringify(permission));
+  };
+  const notif = new NotifiService(onRegister, onNotif);
+
   const childRef = useRef(null);
   const appState = useRef(AppState.currentState);
 
@@ -38,19 +52,18 @@ const App = () => {
   const forgroundListener = () => {
     messaging().onMessage(async (message) => {
       childRef.current.changeHasAlarmToTrue();
-      const data = message.data;
-      alert(data.title);
     });
   };
 
   useEffect(() => {
     getDeviceToken();
     forgroundListener();
+
     AppState.addEventListener('change', _handleAppStateChange);
 
     return () => {
-      PushNotification.removeAllDeliveredNotifications();
       AppState.removeEventListener('change', _handleAppStateChange);
+      notif.cancelAll();
     };
   }, []);
 

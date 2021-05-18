@@ -62,6 +62,18 @@ const HomeScreen = ({ navigation }) => {
     text: {
       alignSelf: 'center',
     },
+    bottom: {
+      backgroundColor: '#00ff0000',
+      position: 'absolute',
+      bottom: 20,
+      width: '100%',
+      alignItems: 'center',
+    },
+    slogan: {
+      width: '70%',
+      height: 40,
+      resizeMode: 'contain',
+    },
   });
 
   const [token, setToken] = useState<String>('');
@@ -110,7 +122,7 @@ const HomeScreen = ({ navigation }) => {
     if (token.length > 0) {
       getUserInfo();
     }
-  }, []);
+  }, [token]);
   useEffect(() => {
     const reload = navigation.addListener('focus', () => {
       if (token.length > 0) {
@@ -118,7 +130,7 @@ const HomeScreen = ({ navigation }) => {
       }
     });
     return reload;
-  }, [navigation]);
+  }, [navigation, token]);
 
   // 빈 냉장고 위에 4개씩 가로 정렬된 TouchableOpacity 4행 안에 각 카테고리에 맞는 이미지와 navitate params
   return (
@@ -305,6 +317,9 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.side}></View>
           </TouchableOpacity>
         </View>
+      </View>
+      <View style={styles.bottom}>
+        <Image source={images.slogan} style={styles.slogan} />
       </View>
     </View>
   );

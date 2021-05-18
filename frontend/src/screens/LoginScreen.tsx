@@ -52,7 +52,7 @@ const LoginScreen = () => {
   // kakao login 실행되면 받는 인증 토큰 서버로 전달
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login();
-    const deviceToken = AsyncStorage.getItem('deviceToken');
+    const deviceToken = await AsyncStorage.getItem('deviceToken');
 
     if ((await deviceToken).length > 0) {
       axios

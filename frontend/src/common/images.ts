@@ -33,6 +33,7 @@ import Img3 from '../../assets/images/philosopher/img3.png';
 import Img4 from '../../assets/images/philosopher/img4.png';
 import Img5 from '../../assets/images/philosopher/img5.png';
 import Img6 from '../../assets/images/philosopher/img6.png';
+import Slogan from '../../assets/images/home/main-slogan.gif';
 
 export const images = {
   fridgeImg: Fridge,
@@ -68,4 +69,5 @@ export const images = {
   img4: Img4,
   img5: Img5,
   img6: Img6,
+  slogan: Slogan,
 };

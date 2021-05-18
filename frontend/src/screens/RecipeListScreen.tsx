@@ -147,12 +147,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    color: '#E8EEF7',
+    color: '#F0F0FA',
   },
   listHead: {
     width: 370,
     height: 50,
-    backgroundColor: '#09246D',
+    backgroundColor: '#95A0C0',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     justifyContent: 'center',

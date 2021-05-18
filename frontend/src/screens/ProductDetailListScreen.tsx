@@ -118,29 +118,32 @@ const ProductDetailListScreen = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.titleBox}>
-        <Text style={styles.title}>{categoryName[categoryId]}</Text>
+      <View style={styles.listItem}>
+        <View style={styles.listHead}>
+          <Text style={styles.title}>{categoryName[categoryId]}</Text>
+        </View>
+        {products.length > 0 ? (
+          <View style={styles.listItem}>
+            <FlatList
+              data={products}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <ProductList
+                  {...item}
+                  onEatPress={() => eatProduct(item)}
+                  onAbandonPress={() => abandonProduct(item)}
+                />
+              )}
+              ItemSeparatorComponent={() => <Separator />}
+              style={styles.list}
+            />
+          </View>
+        ) : (
+          <View style={styles.noListContainer}>
+            <Text style={styles.noListText}>등록된 식품이 없습니다.</Text>
+          </View>
+        )}
       </View>
-      {products.length > 0 ? (
-        <View style={styles.listItem}>
-          <FlatList
-            data={products}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <ProductList
-                {...item}
-                onEatPress={() => eatProduct(item)}
-                onAbandonPress={() => abandonProduct(item)}
-              />
-            )}
-            ItemSeparatorComponent={() => <Separator />}
-          />
-        </View>
-      ) : (
-        <View style={styles.noListContainer}>
-          <Text style={styles.noListText}>등록된 식품이 없습니다.</Text>
-        </View>
-      )}
     </SafeAreaView>
   );
 };
@@ -150,26 +153,26 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.background,
   },
-  titleBox: {
-    flex: 1,
+  listHead: {
+    marginTop: 20,
+    width: 370,
+    height: 50,
+    backgroundColor: '#0C276F',
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
   },
   title: {
     fontSize: 20,
-    color: 'black',
+    color: '#F0F0FA',
+  },
+  list: {
+    width: 370,
   },
   listItem: {
-    flex: 10,
-  },
-  rectButton: {
-    flex: 1,
-    height: 80,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-    backgroundColor: theme.background,
+    marginBottom: 45,
+    alignItems: 'center',
   },
   separator: {
     backgroundColor: 'rgb(200, 199, 204)',
@@ -192,12 +195,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   noListContainer: {
-    flex: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
   noListText: {
-    fontSize: 15,
+    marginTop: 30,
+    fontSize: 16,
     color: '#666666',
   },
 });

@@ -18,8 +18,8 @@ const RecipeList = ({ seq, title, percentage, img, onRecipePress }) => {
           )}
           right={(props) => (
             <View style={styles.rightSection}>
-              <Text style={{ fontSize: 13 }}>냉장고 속 재료 일치도</Text>
-              <Text style={styles.percent}>{per}%</Text>
+              <Text style={{ fontSize: 13 }}>냉장고 속 재료</Text>
+              <Text style={styles.percent}>{per}% 포함</Text>
               <View style={styles.progressSection}>
                 <ProgressBar progress={percentage} color={'#4A63FF'} />
               </View>

@@ -17,18 +17,34 @@ import { RegisterContext } from '../../contexts';
 import axios from 'axios';
 import { DateModal, CustomButton } from '../../components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ScrollView } from 'react-native-gesture-handler';
 
 // 식품 등록 화면
 const RegisterScreen = ({ navigation }) => {
   const styles = StyleSheet.create({
+    flatlist: {
+      backgroundColor: theme.background,
+    },
     container: {
       backgroundColor: theme.background,
-      padding: 25,
       height: '100%',
+      marginTop: 20,
+      alignItems: 'center',
     },
-    scrollView: {
-      alignContent: 'center',
+    title: {
+      fontSize: 20,
+      color: '#E8EEF7',
+    },
+    header: {
+      width: 370,
+      height: 50,
+      backgroundColor: '#606DCA',
+      borderTopLeftRadius: 25,
+      borderTopRightRadius: 25,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    body: {
+      marginLeft: 5,
     },
     img: {
       alignSelf: 'center',
@@ -38,36 +54,46 @@ const RegisterScreen = ({ navigation }) => {
     row: {
       flexDirection: 'row',
     },
-    textBox: {
-      marginHorizontal: 20,
-      width: 250,
-    },
     text: {
       fontSize: 20,
       color: '#4d4d4d',
-      marginTop: 10,
+      alignSelf: 'center',
+      width: 80,
+    },
+    scroll: {
+      maxHeight: 120,
     },
     listText: {
       marginLeft: -15,
       marginTop: -10,
       marginBottom: -10,
+      fontSize: 20,
+      color: '#4d4d4d',
     },
     input: {
       borderBottomColor: '#000000',
       borderBottomWidth: 1,
       color: '#000000',
+      width: 200,
+      marginHorizontal: 10,
+    },
+    dateInput: {
+      borderBottomColor: '#000000',
+      borderBottomWidth: 1,
+      color: '#000000',
+      width: 160,
+      marginHorizontal: 10,
     },
     touch: {
       marginTop: 22,
-    },
-    icon: {
-      marginTop: 11,
-      marginLeft: 5,
+      marginLeft: 10,
     },
     button: {
-      marginTop: 15,
-      marginRight: 32,
-      alignItems: 'flex-end',
+      marginTop: 20,
+      alignSelf: 'flex-end',
+    },
+    date: {
+      marginTop: 50,
     },
   });
 
@@ -89,7 +115,7 @@ const RegisterScreen = ({ navigation }) => {
   const [img, setImg] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [ingredient, setIngredient] = useState<string>('');
-  const [category, setCategory] = useState<string>('');
+  const [category, setCategory] = useState<string>('품목');
   const [categoryId, setCategoryId] = useState<number>(0);
   const [date, setDate] = useState<string>(setTime());
 
@@ -179,7 +205,7 @@ const RegisterScreen = ({ navigation }) => {
   const resetTextInput = () => {
     setName('');
     setIngredient('');
-    setCategory('');
+    setCategory('품목');
     setCategoryId(0);
     setDate(setTime());
     setImg('');
@@ -212,7 +238,6 @@ const RegisterScreen = ({ navigation }) => {
         },
       })
       .then((res) => {
-        console.log(res.data);
         setCategory(res.data.category);
         setImg(res.data.imgUrl);
         setName(res.data.name);
@@ -245,7 +270,7 @@ const RegisterScreen = ({ navigation }) => {
     } else if (ingredient.length == 0) {
       alert('재료명을 입력해주세요.');
       return;
-    } else if (category.length == 0) {
+    } else if (category == '품목') {
       alert('품목을 선택해주세요.');
       return;
     } else if (date.length == 0) {
@@ -284,28 +309,24 @@ const RegisterScreen = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        style={styles.scrollView}
-        ref={(ref) => {
-          flatListRef.current = ref;
-        }}
-      >
+    <SafeAreaView>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>상품 등록</Text>
+        </View>
         {img.length > 0 ? (
           <Image source={{ uri: img }} style={styles.img} />
         ) : (
           <Image source={images.noImg} style={styles.img} />
         )}
-        <View style={styles.row}>
-          <View style={styles.textBox}>
+        <View style={styles.body}>
+          <View style={styles.row}>
             <Text style={styles.text}>상품명</Text>
             <TextInput
               style={styles.input}
               value={name}
               onChangeText={setName}
             ></TextInput>
-          </View>
-          <View>
             <TouchableOpacity
               style={styles.touch}
               onPress={() => {
@@ -319,20 +340,18 @@ const RegisterScreen = ({ navigation }) => {
               />
             </TouchableOpacity>
           </View>
-        </View>
-        <View style={styles.textBox}>
-          <Text style={styles.text}>재료명</Text>
-          <TextInput
-            style={styles.input}
-            value={ingredient}
-            onChangeText={setIngredient}
-          ></TextInput>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.textBox}>
+          <View style={styles.row}>
+            <Text style={styles.text}>재료명</Text>
+            <TextInput
+              style={styles.input}
+              value={ingredient}
+              onChangeText={setIngredient}
+            ></TextInput>
+          </View>
+          <View style={styles.scroll}>
             <List.Accordion
-              title="품목"
-              titleStyle={[styles.text, styles.listText]}
+              title={category}
+              titleStyle={[styles.listText]}
               expanded={expanded}
               onPress={() => toggleExpanded()}
             >
@@ -342,57 +361,51 @@ const RegisterScreen = ({ navigation }) => {
                 keyExtractor={(item, index) => index.toString()}
               />
             </List.Accordion>
-            <TextInput
-              style={styles.input}
-              value={category}
-              editable={false}
-            ></TextInput>
           </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.textBox}>
+          <View style={expanded ? styles.date : null}>
             <View style={styles.row}>
               <Text style={styles.text}>유통기한</Text>
+              <TextInput
+                style={styles.dateInput}
+                value={date}
+                editable={false}
+              ></TextInput>
               <TouchableOpacity
-                style={styles.icon}
+                style={styles.touch}
                 onPress={() => {
                   setModal(true);
                 }}
               >
                 <MaterialCommunityIcons
                   name="calendar"
-                  size={28}
+                  size={32}
+                  color="#000000"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.touch}
+                onPress={() => {
+                  navigation.navigate('OCR');
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="camera"
+                  size={32}
                   color="#000000"
                 />
               </TouchableOpacity>
             </View>
-            <TextInput
-              style={styles.input}
-              value={date}
-              editable={false}
-            ></TextInput>
-          </View>
-          <View>
-            <TouchableOpacity
-              style={styles.touch}
-              onPress={() => {
-                navigation.navigate('OCR');
-              }}
-            >
-              <MaterialCommunityIcons name="camera" size={32} color="#000000" />
-            </TouchableOpacity>
+            <View style={styles.button}>
+              <CustomButton
+                title="등록하기"
+                onPress={() => {
+                  registerProduct();
+                }}
+              />
+            </View>
           </View>
         </View>
-        <View style={styles.button}>
-          <CustomButton
-            title="등록"
-            onPress={() => {
-              registerProduct();
-            }}
-          />
-        </View>
-      </ScrollView>
-
+      </View>
       <DateModal isModal={isModal} close={closeModal} />
     </SafeAreaView>
   );

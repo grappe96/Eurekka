@@ -6,8 +6,7 @@ import Navigation from './navigations';
 import { RegisterProvider, TokenProvider, AlarmProvider } from './contexts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
-import PushNotification from 'react-native-push-notification';
-import NotifiService from '../NotifiService';
+import NotifiService from '../NotifService';
 
 // Root 역할을 하는 컴포넌트
 const App = () => {
@@ -17,11 +16,10 @@ const App = () => {
   };
   const onNotif = (notif) => {
     const data = notif.data;
-    Alert.alert(data.body, data.title);
   };
-  const handlePerm = (permission) => {
-    Alert.alert('Permissions', JSON.stringify(permission));
-  };
+  // const handlePerm = (permission) => {
+  //   Alert.alert('Permissions', JSON.stringify(permission));
+  // };
   const notif = new NotifiService(onRegister, onNotif);
 
   const childRef = useRef(null);
@@ -52,6 +50,16 @@ const App = () => {
   const forgroundListener = () => {
     messaging().onMessage(async (message) => {
       childRef.current.changeHasAlarmToTrue();
+      notif.localNotif(message.data.body, message.data.title);
+    });
+  };
+
+  // 어플이 백그라운드에 있을 때
+  const backgroundListenr = () => {
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      await AsyncStorage.setItem('alarm', 'exist');
+      console.log('Message handled in the background!', remoteMessage);
+      notif.localNotif(remoteMessage.data.body, remoteMessage.data.title);
     });
   };
 

@@ -351,6 +351,7 @@ const RegisterScreen = ({ navigation }) => {
       .catch((err) => {
         console.log(err.response);
         alert('스캔하신 바코드의 정보가 없습니다.');
+        updateCode('');
         resetTextInput();
       });
   };
@@ -398,19 +399,18 @@ const RegisterScreen = ({ navigation }) => {
         resetTextInput();
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response);
         alert('등록에 실패했습니다.');
-        resetTextInput();
       });
   };
 
-  // 탭 눌렀을 때 reload
-  useEffect(() => {
-    const reload = navigation.addListener('focus', () => {
-      resetTextInput();
-    });
-    return reload;
-  }, [navigation]);
+  // // 탭 눌렀을 때 reload
+  // useEffect(() => {
+  //   const reload = navigation.addListener('focus', () => {
+  //     resetTextInput();
+  //   });
+  //   return reload;
+  // }, [navigation]);
 
   // 카메라 권한 요청
   const openCamera = () => {

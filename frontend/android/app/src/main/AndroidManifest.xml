@@ -17,7 +17,6 @@
     <meta-data android:name="expo.modules.updates.ENABLED" android:value="true"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="ALWAYS"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
-    <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions" />
 
     <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:theme="@style/Theme.App.SplashScreen" android:screenOrientation="portrait">
       <intent-filter>
@@ -43,26 +42,28 @@
               android:scheme="kakaoa7ed563778faacf1e9fa02ca8169ad62" />
       </intent-filter>
     </activity>
-    <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
-    <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver">
-        <intent-filter>
-            <action android:name="android.intent.action.BOOT_COMPLETED" />
-        </intent-filter>
-    </receiver>
-    <service
-        android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService"
-        android:exported="false" >
-        <intent-filter>
-            <action android:name="com.google.firebase.MESSAGING_EVENT" />
-        </intent-filter>
-    </service>
     <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
-                android:value="true"/>
-    <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_name"
-                android:value="Example-Channel"/>
-    <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_description"
-                android:value="Super channel description"/>
-    <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"
-                android:resource="@android:color/white"/> 
+                    android:value="false"/>
+        <!-- Change the resource name to your App's accent color - or any other color you want -->
+        <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"
+                    android:resource="@color/white"/> <!-- or @android:color/{name} to use a standard color -->
+
+        <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions" />
+        <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
+        <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service> 
   </application>
 </manifest>

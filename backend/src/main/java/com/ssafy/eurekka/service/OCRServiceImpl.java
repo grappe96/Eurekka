@@ -189,6 +189,7 @@ public class OCRServiceImpl implements OCRService {
 				}
 			} else {
 				year = "2021";
+				index = 0;
 				for (int i = index; i < preExpirationDate.length; i++) {
 					if ((preExpirationDate[i] - '0') < 10 && (preExpirationDate[i] - '0') >= 0) {
 						month += preExpirationDate[i];

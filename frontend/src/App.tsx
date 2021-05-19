@@ -55,7 +55,7 @@ const App = () => {
   };
 
   // 어플이 백그라운드에 있을 때
-  const backgroundListenr = () => {
+  const backgroundListener = () => {
     messaging().setBackgroundMessageHandler(async (remoteMessage) => {
       await AsyncStorage.setItem('alarm', 'exist');
       console.log('Message handled in the background!', remoteMessage);
@@ -66,6 +66,7 @@ const App = () => {
   useEffect(() => {
     getDeviceToken();
     forgroundListener();
+    backgroundListener();
 
     AppState.addEventListener('change', _handleAppStateChange);
 

@@ -39,9 +39,7 @@ const NotificationList = ({ navigation }) => {
   const { updateHasAlarm, hasAlarm } = useContext(AlarmContext);
   const [refrigerId, setRefId] = useState<String>('');
   useEffect(() => {
-    console.log('알람리스트');
     updateHasAlarm(false);
-    console.log(hasAlarm);
     AsyncStorage.getItem('userInfo', (err, res) => {
       const user = JSON.parse(res);
       setRefId(user.refrigeratorId);

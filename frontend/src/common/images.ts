@@ -27,17 +27,18 @@ import Seasoning from '../../assets/images/category/seasoning.png';
 import Snack from '../../assets/images/category/snack.png';
 import NoImg from '../../assets/images/noImage.png';
 import Chef from '../../assets/images/recipe/chef.png';
-import Img1 from '../../assets/images/philosopher/img1.png'
-import Img2 from '../../assets/images/philosopher/img2.png'
-import Img3 from '../../assets/images/philosopher/img3.png'
-import Img4 from '../../assets/images/philosopher/img4.png'
-import Img5 from '../../assets/images/philosopher/img5.png'
-import Img6 from '../../assets/images/philosopher/img6.png'
+import Img1 from '../../assets/images/philosopher/img1.png';
+import Img2 from '../../assets/images/philosopher/img2.png';
+import Img3 from '../../assets/images/philosopher/img3.png';
+import Img4 from '../../assets/images/philosopher/img4.png';
+import Img5 from '../../assets/images/philosopher/img5.png';
+import Img6 from '../../assets/images/philosopher/img6.png';
+import Slogan from '../../assets/images/home/main-slogan.gif';
 
 export const images = {
   fridgeImg: Fridge,
   btnImg: Button,
-  introImg : Intro,
+  introImg: Intro,
   loadImg: Loading,
   logoImg: Logo,
   openImg: OpenedFridge,
@@ -62,10 +63,11 @@ export const images = {
   snack: Snack,
   noImg: NoImg,
   chef: Chef,
-  img1 : Img1,
-  img2 : Img2,
-  img3 : Img3,
-  img4 : Img4,
-  img5 : Img5,
-  img6 : Img6,
+  img1: Img1,
+  img2: Img2,
+  img3: Img3,
+  img4: Img4,
+  img5: Img5,
+  img6: Img6,
+  slogan: Slogan,
 };

@@ -54,7 +54,7 @@ const ProductListScreen = ({ navigation }) => {
       }
     });
     return reload;
-  }, [navigation]);
+  }, [navigation, refrigerId]);
 
   const eatProduct = async (item) => {
     axios
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     width: 370,
   },
   listItem: {
-    marginBottom: 45,
+    marginBottom: 60,
     alignItems: 'center',
   },
   separator: {

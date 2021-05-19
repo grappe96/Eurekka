@@ -1,3 +1,4 @@
 export const fonts = {
-    RIDI : 'RIDIBatang'
+  RIDI: 'RIDIBatang',
+  GMarket: 'GmarketSansMedium',
 };

@@ -1,55 +1,33 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { View, SafeAreaView, PermissionsAndroid, Platform } from 'react-native';
 import { CameraScreen } from 'react-native-camera-kit';
 import { RegisterContext } from '../../contexts';
 
 function BarcodeScreen({ navigation }) {
-  const { updateCode } = useContext(RegisterContext);
+  // 바코드 업데이트 메소드, 카메라 권한 변수
+  const { updateCode, permission } = useContext(RegisterContext);
 
+  // 스캔한 바코드 값 가져오기
   const onBarcodeScan = async (qrvalue) => {
-    // Called after te successful scanning of QRCode/Barcode
     await updateCode(qrvalue);
     navigation.navigate('Register');
   };
 
-  useEffect(() => {
-    openScanner();
-  }, []);
-
-  const openScanner = () => {
-    // To Start Scanning
-    if (Platform.OS === 'android') {
-      async function requestCameraPermission() {
-        try {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.CAMERA
-          );
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            // If CAMERA Permission is granted
-          } else {
-            alert('CAMERA permission denied');
-          }
-        } catch (err) {
-          alert('Camera permission err');
-          console.warn(err);
-        }
-      }
-      // Calling the camera permission function
-      requestCameraPermission();
-    }
-  };
-
   return (
-    <SafeAreaView>
-      <View>
-        <CameraScreen
-          scanBarcode
-          onReadCode={(event) =>
-            onBarcodeScan(event.nativeEvent.codeStringValue)
-          }
-        />
-      </View>
-    </SafeAreaView>
+    <>
+      {permission ? (
+        <SafeAreaView>
+          <View>
+            <CameraScreen
+              scanBarcode
+              onReadCode={(event) =>
+                onBarcodeScan(event.nativeEvent.codeStringValue)
+              }
+            />
+          </View>
+        </SafeAreaView>
+      ) : null}
+    </>
   );
 }
 

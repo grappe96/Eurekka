@@ -39,6 +39,7 @@ public class MainActivity extends ReactActivity {
         super.onConfigurationChanged(newConfig);
         Intent intent = new Intent("onConfigurationChanged");
         intent.putExtra("newConfig", newConfig);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         sendBroadcast(intent);
     }
 
@@ -46,7 +47,7 @@ public class MainActivity extends ReactActivity {
   protected void onCreate(Bundle savedInstanceState) {
     // super.onCreate(null);
     super.onCreate(savedInstanceState);
-//    getHashKey();
+    getHashKey();
 //    getFCMToken();
     // SplashScreen.show(...) has to be called after super.onCreate(...)
     // Below line is handled by '@expo/configure-splash-screen' command and it's discouraged to modify it manually

@@ -4,7 +4,7 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 const CustomButton = (props) => {
   const styles = StyleSheet.create({
     button: {
-      backgroundColor: '#606dca',
+      backgroundColor: '#09246D',
       borderRadius: 15,
       padding: 10,
     },

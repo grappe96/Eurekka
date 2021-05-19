@@ -4,5 +4,5 @@ import com.ssafy.eurekka.vo.Barcode;
 
 public interface BarcodeService {
 
-  Barcode findBarcode(Double code);
+  Barcode findBarcode(String code);
 }

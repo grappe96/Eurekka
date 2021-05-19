@@ -13,7 +13,7 @@ public class BarcodeServiceImpl implements BarcodeService{
   private BarcodeRepository barcodeRepository;
 
   @Override
-  public Barcode findBarcode(Double code) {
+  public Barcode findBarcode(String code) {
     Optional<Barcode> found = barcodeRepository.findByCode(code);
     if (found.isPresent()) {
       return found.get();

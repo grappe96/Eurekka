@@ -2,7 +2,7 @@ import PushNotification from 'react-native-push-notification';
 
 class NotificationHandler {
   onNotification(notification) {
-    console.log('NotificationHandler:', notification);
+    // console.log('NotificationHandler:', notification);
 
     if (typeof this.onNotification === 'function') {
       this.onNotification(notification);
@@ -10,7 +10,7 @@ class NotificationHandler {
   }
 
   onRegister(token) {
-    console.log('NotificationHandler:', token);
+    // console.log('NotificationHandler:', token);
 
     if (typeof this.onRegister === 'function') {
       this.onRegister(token);
@@ -18,11 +18,11 @@ class NotificationHandler {
   }
 
   onAction(notification) {
-    console.log('Notification action received:');
-    console.log(notification.action);
-    console.log(notification);
+    // console.log('Notification action received:');
+    // console.log(notification.action);
+    // console.log(notification);
 
-    if (notification.action === 'Yes') {
+    if (notification.action === '확인') {
       PushNotification.invokeApp(notification);
     }
   }

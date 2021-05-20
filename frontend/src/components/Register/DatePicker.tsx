@@ -44,7 +44,7 @@ const DateModal = (props) => {
   };
   const [date, setDate] = useState(setTime());
   useEffect(() => {
-    setDate(setTime());
+    if (props.isModal) setDate(setTime());
   }, [props.isModal]);
   const changeDate = ({ date }) => {
     setDate(date);
@@ -64,6 +64,7 @@ const DateModal = (props) => {
               date={date}
               onDateChange={(date) => changeDate({ date })}
               mode="date"
+              locale="ko"
             />
             <View style={styles.btnContainer}>
               <CustomButton title="확인" onPress={() => clickButton()} />

@@ -266,7 +266,6 @@ const RegisterScreen = ({ navigation }) => {
     setIngredient('');
     setCategory('');
     setCategoryId(0);
-    setDate(setTime());
     setImg('');
   };
 
@@ -281,11 +280,8 @@ const RegisterScreen = ({ navigation }) => {
 
   // 읽어온 유통기한 값이 있을 때
   useEffect(() => {
-    if (expirationDate.length > 0) {
-      setDate(expirationDate);
-    } else {
-      setDate(setTime());
-    }
+    if (expirationDate.length > 0) setDate(expirationDate);
+    else setDate(setTime());
   }, [expirationDate]);
 
   // 바코드 데이터 조회
@@ -380,9 +376,6 @@ const RegisterScreen = ({ navigation }) => {
     } else if (category.length == 0) {
       alert('품목을 선택해주세요.');
       return;
-    } else if (date.length == 0) {
-      alert('유통기한을 입력해주세요.');
-      return;
     }
 
     axios
@@ -394,8 +387,9 @@ const RegisterScreen = ({ navigation }) => {
       })
       .then((res) => {
         alert('등록이 완료되었습니다.');
+        setDate(setTime());
         updateCode('');
-        updateDate('');
+        updateDate(setTime());
         resetTextInput();
       })
       .catch((err) => {

@@ -14,9 +14,7 @@ const App = () => {
   const onRegister = (token) => {
     setState({ registerToken: token.token, fcmRegistered: true });
   };
-  const onNotif = (notif) => {
-    const data = notif.data;
-  };
+  const onNotif = (notif) => {};
   // const handlePerm = (permission) => {
   //   Alert.alert('Permissions', JSON.stringify(permission));
   // };
@@ -55,7 +53,7 @@ const App = () => {
   };
 
   // 어플이 백그라운드에 있을 때
-  const backgroundListenr = () => {
+  const backgroundListener = () => {
     messaging().setBackgroundMessageHandler(async (remoteMessage) => {
       await AsyncStorage.setItem('alarm', 'exist');
       console.log('Message handled in the background!', remoteMessage);
@@ -66,6 +64,7 @@ const App = () => {
   useEffect(() => {
     getDeviceToken();
     forgroundListener();
+    backgroundListener();
 
     AppState.addEventListener('change', _handleAppStateChange);
 

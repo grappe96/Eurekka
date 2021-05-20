@@ -36,6 +36,9 @@
   font-size: 65px;
   font-weight: lighter;
 }
+h1 {
+  margin-top: 25%;
+}
 #banner #text-box #link-button {
   margin-top: 13%;
   text-align: left;
@@ -46,6 +49,12 @@
   color: #ffffff;
   text-decoration: none;
   text-align: center;
+}
+#banner #text-box #link-button #link img {
+  width: 161px;
+  height: 47px;
+  object-fit: cover;
+  object-position: 50% 50%;
 }
 
 /* refridge */
@@ -184,4 +193,11 @@
 
 #bottom #text-box #title {
   font-size: 35px;
+}
+
+#bottom #link img {
+  width: 161px;
+  height: 47px;
+  object-fit: cover;
+  object-position: 50% 50%;
 }

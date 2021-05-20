@@ -46,24 +46,12 @@ public class JwtServiceImpl implements JwtService {
       b.withIssuer(ISSUER);
       // 토큰 payload 작성, key - value 형식, 객체도 가능
       b.withClaim("email", email);
-      // 토큰 만료날짜 지정 => 무한대 [검증되면 주석 삭제 예정]
-      //b.withExpiresAt(expiresAt());
       return b.sign(Algorithm.HMAC256(SECRET));
     } catch (JWTCreationException jwtCreationException) {
       logger.info(jwtCreationException.getLocalizedMessage());
     }
     return null;
   }
-
-  // encode
-  // 만료시간 없이 무한대로 주기 위해 우선 주석처리. [검증되면 주석 삭제 예정]
-//  private Date expiresAt() {
-//    Calendar cal = Calendar.getInstance();
-//    //cal.setTime(new Date());
-//    // 6시간
-//    cal.add(Calendar.HOUR, 6);
-//    return cal.getTime();
-//  }
 
   // encode
   public static class TokenRes {

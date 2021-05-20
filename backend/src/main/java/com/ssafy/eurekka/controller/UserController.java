@@ -44,9 +44,6 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> kakaoLogin(HttpServletRequest req,@RequestBody @ApiParam(value ="카카오에서 받은 access_token으로 회원정보 가져와 회원가입 및 로그인", required = true) String token){
 		logger.info("kakaoLogin - 호출");
 		String deviceToken = req.getHeader("deviceToken");
-		// {"token":"CZOhrggq9h1CyqsabF3dc0FhyXcBrjFe0hiPmAo9c-wAAAF5MXMRKA"}
-		// @RequestBody로 받지 않으면 null로 인식되는데, 이 때문에 json 괄호도 다 포함된 하나의 String으로 간주된다.
-		// 따라서 subString으로 token값만 가져오게 했다.
 		token = token.substring(10,64);
 
 		// access_token으로 회원정보 가져오기

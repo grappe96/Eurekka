@@ -14,9 +14,7 @@ const App = () => {
   const onRegister = (token) => {
     setState({ registerToken: token.token, fcmRegistered: true });
   };
-  const onNotif = (notif) => {
-    const data = notif.data;
-  };
+  const onNotif = (notif) => {};
   // const handlePerm = (permission) => {
   //   Alert.alert('Permissions', JSON.stringify(permission));
   // };

@@ -16,6 +16,7 @@ export default {
 
 <style>
 @import './assets/css/home.css';
+@import './assets/css/media.css';
 
 @font-face {
   font-family: 'ChosunSg';
@@ -42,8 +43,8 @@ body {
   padding: 0;
   margin: 0;
   height: 100%;
-  width: 1590px;
-  overflow-x: scroll;
+  /* width: 1690px;
+  overflow-x: scroll; */
 }
 
 #app {

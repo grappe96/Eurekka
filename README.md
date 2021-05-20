@@ -20,7 +20,7 @@
 
 <h3><a href="https://www.notion.so/junwoong/c64ce6e51351438386d86f1b4bab0670">Notion으로 가기</a></h3>
 
-<h3><a href="">UCC 바로가기</a></h3>
+<h3><a href="https://youtu.be/ihT_rfOTWhQ">UCC 바로가기</a></h3>
 
 <div>
   	바쁜 현대인을 위해 언제 어디서나 간편하게 냉장고 관리할 수 있는, 보유하고 있는 식품을 토대로 레시피를 추천해 주는,<br> 통계로 소비 습관을 한 눈에 볼 수 있는 모바일 애플리케이션입니다! 
@@ -46,7 +46,7 @@
 * Frontend / Backend의 사용 Package
 * 코드 실행 방법
 
-### 🧚‍♂️[크루원 소개](#크루원-소개)
+### 🧚‍♂ ️[크루원 소개](#크루원-소개)
 
 
 

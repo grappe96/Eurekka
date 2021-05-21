@@ -15,9 +15,7 @@ const App = () => {
     setState({ registerToken: token.token, fcmRegistered: true });
   };
   const onNotif = (notif) => {};
-  // const handlePerm = (permission) => {
-  //   Alert.alert('Permissions', JSON.stringify(permission));
-  // };
+
   const notif = new NotifiService(onRegister, onNotif);
 
   const childRef = useRef(null);
@@ -56,7 +54,6 @@ const App = () => {
   const backgroundListener = () => {
     messaging().setBackgroundMessageHandler(async (remoteMessage) => {
       await AsyncStorage.setItem('alarm', 'exist');
-      console.log('Message handled in the background!', remoteMessage);
       notif.localNotif(remoteMessage.data.body, remoteMessage.data.title);
     });
   };

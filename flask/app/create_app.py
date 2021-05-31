@@ -14,18 +14,18 @@ warnings.filterwarnings('ignore')
 def create_app():
    app = Flask(__name__)
 
-   app.config["MONGO_URI"] = "mongodb://k4a404.p.ssafy.io:17562/eurekka"
-   app.config['MONGO_HOST'] = 'k4a404.p.ssafy.io'
-   app.config['MONGO_PORT'] = '17562'
-   app.config["MONGO_DBNAME"] = "eurekka"
-   app.config['MONGO_USERNAME'] = 'A404'
-   app.config['MONGO_PASSWORD'] = '!&flkj234598fwpro$^&*@@&gdk66k;fihi10gdfvhl49gnflkvmw945%$%!!*^%fgfga'
+   app.config["MONGO_URI"] = {MONGO_URI}
+   app.config['MONGO_HOST'] = {MONGO_HOST}
+   app.config['MONGO_PORT'] = {MONGO_PORT}
+   app.config["MONGO_DBNAME"] = {MONGO_DBNAME}
+   app.config['MONGO_USERNAME'] = {MONGO_USERNAME}
+   app.config['MONGO_PASSWORD'] = {MONGO_PASSWORD}
    app.config['MONGO_AUTH_SOURCE'] = 'admin' # root user is typically defined in admin db
    app.config['JSON_AS_ASCII'] = False
 
    mongo = PyMongo(app)
 
-   APIKEY = "AAAAbJys5pQ:APA91bFkH7uAoWrakN-xJyNIZpOSnA-PA1hUONVyOvEOXJ1mRV_KGT10t8ti1VGnt_bTYkS2FBdAuSAnYIZgfSmL0hbbbQ3GR2ALD2YfGVIJGcSHz7Zl7U0sZ1HOC03kFlc4r2BlPUkK"
+   APIKEY = {FIREBASE_APIKEY}
    # 파이어베이스 콘솔에서 얻어 온 서버 키를 넣어 줌
    pushService = FCMNotification(APIKEY)
 
